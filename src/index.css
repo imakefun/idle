@@ -1,0 +1,67 @@
+/* CSS Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Dark mode colors (default) */
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2a2a2a;
+  --bg-tertiary: #3a3a3a;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --border: #444444;
+  --accent: #00aaff;
+  --accent-hover: #0088cc;
+
+  /* Status colors */
+  --hp-color: #ff0000;
+  --stamina-color: #0066ff;
+  --food-color: #ff9900;
+  --water-color: #00ccff;
+  --xp-color: #4444ff;
+
+  /* Semantic colors */
+  --success: #44ff44;
+  --warning: #ffff44;
+  --error: #ff4444;
+  --info: #4444ff;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+               'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent zoom on iOS */
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}

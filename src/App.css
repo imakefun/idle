@@ -1,0 +1,142 @@
+/* Mobile-first App Layout */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  background-color: var(--bg-secondary);
+  border-bottom: 2px solid var(--border);
+  padding: 1rem;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+  color: var(--accent);
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.main-content {
+  flex: 1;
+  padding: 1rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.footer {
+  background-color: var(--bg-secondary);
+  border-top: 2px solid var(--border);
+  padding: 0.75rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* Welcome Screen */
+.welcome-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1rem;
+  min-height: 50vh;
+}
+
+.welcome-screen h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--accent);
+}
+
+.welcome-screen p {
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+}
+
+/* Buttons - Mobile-first (min 48x48px touch targets) */
+.btn {
+  min-height: 48px;
+  min-width: 100px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+}
+
+.btn-primary:active {
+  opacity: 0.8;
+}
+
+/* Game Content */
+.game-content {
+  max-width: 100%;
+}
+
+/* Responsive breakpoints */
+
+/* Tablet (>= 640px) */
+@media (min-width: 640px) {
+  .header h1 {
+    font-size: 2rem;
+  }
+
+  .main-content {
+    padding: 1.5rem;
+  }
+
+  .welcome-screen {
+    padding: 3rem 2rem;
+  }
+}
+
+/* Desktop (>= 1024px) */
+@media (min-width: 1024px) {
+  .main-content {
+    max-width: 1200px;
+    padding: 2rem;
+  }
+
+  .header h1 {
+    font-size: 2.5rem;
+  }
+
+  .btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 170, 255, 0.3);
+  }
+}
