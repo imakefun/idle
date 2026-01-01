@@ -2,8 +2,12 @@ import { useState, useCallback, useEffect } from 'react'
 import './App.css'
 import useGameLoop from './hooks/useGameLoop'
 import useSaveGame from './hooks/useSaveGame'
+import useGameData from './hooks/useGameData'
 
 function App() {
+  // Load game data from Google Sheets
+  const { data: gameData, loading: dataLoading, error: dataError, refresh: refreshData } = useGameData();
+
   // Initialize game state
   const [gameState, setGameState] = useState(() => {
     // Try to load saved game on mount
@@ -68,6 +72,40 @@ function App() {
     return `${hours}h ${minutes % 60}m ${seconds % 60}s`;
   };
 
+  // Show loading screen while data is loading
+  if (dataLoading) {
+    return (
+      <div className="app">
+        <header className="header">
+          <h1>Norrath Idle</h1>
+          <p className="subtitle">A Text-Based Idle RPG</p>
+        </header>
+        <main className="main-content">
+          <div className="welcome-screen">
+            <h2>Loading Game Data...</h2>
+            <p style={{ marginTop: '1rem' }}>🌐 Fetching data from Google Sheets...</p>
+            <div style={{
+              marginTop: '2rem',
+              width: '100%',
+              maxWidth: '300px',
+              height: '4px',
+              background: 'var(--bg-secondary)',
+              borderRadius: '2px',
+              overflow: 'hidden'
+            }}>
+              <div style={{
+                width: '100%',
+                height: '100%',
+                background: 'var(--accent)',
+                animation: 'loading 1.5s ease-in-out infinite'
+              }} />
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="app">
       <header className="header">
@@ -103,7 +141,41 @@ function App() {
               <p>✅ Phase 1.1: Project Setup Complete</p>
               <p>✅ Phase 1.2: Game Loop Active</p>
               <p>✅ Phase 1.3: Save/Load System Working</p>
+              <p>✅ Phase 1.5: Google Sheets Integration Active</p>
             </div>
+
+            {/* Data status indicator */}
+            {gameData && (
+              <div style={{
+                marginTop: '1.5rem',
+                padding: '1rem',
+                background: 'var(--bg-secondary)',
+                borderRadius: '8px',
+                fontSize: '0.875rem'
+              }}>
+                <p style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>📊 Game Data Loaded:</p>
+                <p>• {Object.keys(gameData.races || {}).length} Races</p>
+                <p>• {Object.keys(gameData.classes || {}).length} Classes</p>
+                <p>• {Object.keys(gameData.monsters || {}).length} Monsters</p>
+                <p>• {Object.keys(gameData.items || {}).length} Items</p>
+                <p>• {Object.keys(gameData.zones || {}).length} Zones</p>
+                <button
+                  onClick={refreshData}
+                  style={{
+                    marginTop: '0.5rem',
+                    padding: '0.25rem 0.5rem',
+                    fontSize: '0.75rem',
+                    background: 'var(--bg-tertiary)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    color: 'var(--text-primary)'
+                  }}
+                >
+                  🔄 Refresh Data
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <div className="game-content">
@@ -161,7 +233,7 @@ function App() {
       </main>
 
       <footer className="footer">
-        <p>Norrath Idle v0.1.0 | Phase 1: Core Foundation ✅</p>
+        <p>Norrath Idle v0.1.5 | Phase 1.5: Data Integration ✅</p>
       </footer>
     </div>
   )
