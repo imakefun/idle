@@ -3,6 +3,9 @@ import './App.css'
 import useGameLoop from './hooks/useGameLoop'
 import useSaveGame from './hooks/useSaveGame'
 import useGameData from './hooks/useGameData'
+import CharacterCreation from './components/Character/CharacterCreation'
+import { createCharacter } from './utils/characterHelpers'
+import { calculateXPForLevel, calculateDrainRate, formatCurrency } from './utils/calculations'
 
 function App() {
   // Load game data from Google Sheets
@@ -28,16 +31,27 @@ function App() {
 
   // Game loop callback
   const onGameTick = useCallback(({ deltaTime, tickCount }) => {
-    if (!gameState.gameStarted) return;
+    if (!gameState.gameStarted || !gameState.characterCreated) return;
 
-    setGameState(prev => ({
-      ...prev,
-      tickCount,
-      playTime: prev.playTime + deltaTime,
-      // Increment experience as a demo (1 XP per tick)
-      experience: prev.experience + 1,
-    }));
-  }, [gameState.gameStarted]);
+    setGameState(prev => {
+      const updates = {
+        tickCount,
+        playTime: prev.playTime + deltaTime
+      };
+
+      // Drain food and water over time
+      if (prev.level) {
+        const drainRate = calculateDrainRate(prev.level);
+        updates.food = Math.max(0, prev.food - drainRate);
+        updates.water = Math.max(0, prev.water - drainRate);
+      }
+
+      return {
+        ...prev,
+        ...updates
+      };
+    });
+  }, [gameState.gameStarted, gameState.characterCreated]);
 
   // Start the game loop
   const { tickCount } = useGameLoop(onGameTick, gameState.gameStarted);
@@ -46,7 +60,13 @@ function App() {
     setGameState(prev => ({
       ...prev,
       gameStarted: true,
+      characterCreated: false,
     }));
+  };
+
+  const handleCreateCharacter = (characterInfo) => {
+    const newCharacter = createCharacter(characterInfo, gameData);
+    setGameState(newCharacter);
   };
 
   const handleLoadGame = () => {
@@ -177,21 +197,129 @@ function App() {
               </div>
             )}
           </div>
+        ) : !gameState.characterCreated ? (
+          <CharacterCreation
+            gameData={gameData}
+            onCreateCharacter={handleCreateCharacter}
+          />
         ) : (
           <div className="game-content">
+            {/* Character Info Header */}
             <div className="game-stats" style={{
               background: 'var(--bg-secondary)',
               padding: '1rem',
               borderRadius: '8px',
               marginBottom: '1rem'
             }}>
-              <h3 style={{ marginBottom: '0.5rem' }}>Demo Stats (Phase 1 Test)</h3>
-              <p>⏱️ Play Time: {formatTime(gameState.playTime)}</p>
-              <p>🔄 Tick Count: {gameState.tickCount.toLocaleString()}</p>
-              <p>⭐ Experience: {gameState.experience.toLocaleString()}</p>
-              <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
-                Game Loop: Running at 10 ticks/second
+              <h3 style={{ marginBottom: '0.5rem' }}>{gameState.name} - Level {gameState.level}</h3>
+              <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+                {gameState.raceName} {gameState.className} | {gameData?.zones[gameState.currentZone]?.name || gameState.currentZone}
               </p>
+
+              {/* HP and Stamina */}
+              <div style={{ marginBottom: '0.5rem' }}>
+                <strong>HP:</strong> {gameState.hp}/{gameState.maxHp}
+                <div style={{
+                  width: '100%',
+                  height: '8px',
+                  background: 'var(--bg-tertiary)',
+                  borderRadius: '4px',
+                  overflow: 'hidden',
+                  marginTop: '0.25rem'
+                }}>
+                  <div style={{
+                    width: `${(gameState.hp / gameState.maxHp) * 100}%`,
+                    height: '100%',
+                    background: '#ff0000',
+                    transition: 'width 0.3s'
+                  }} />
+                </div>
+              </div>
+
+              <div style={{ marginBottom: '0.5rem' }}>
+                <strong>Stamina:</strong> {Math.floor(gameState.stamina)}/{gameState.maxStamina}
+                <div style={{
+                  width: '100%',
+                  height: '8px',
+                  background: 'var(--bg-tertiary)',
+                  borderRadius: '4px',
+                  overflow: 'hidden',
+                  marginTop: '0.25rem'
+                }}>
+                  <div style={{
+                    width: `${(gameState.stamina / gameState.maxStamina) * 100}%`,
+                    height: '100%',
+                    background: '#ffff00',
+                    transition: 'width 0.3s'
+                  }} />
+                </div>
+              </div>
+
+              {/* Food and Water */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '0.5rem' }}>
+                <div>
+                  <strong>Food:</strong> {Math.floor(gameState.food)}%
+                  <div style={{
+                    width: '100%',
+                    height: '6px',
+                    background: 'var(--bg-tertiary)',
+                    borderRadius: '3px',
+                    overflow: 'hidden',
+                    marginTop: '0.25rem'
+                  }}>
+                    <div style={{
+                      width: `${gameState.food}%`,
+                      height: '100%',
+                      background: gameState.food < 20 ? '#ff0000' : '#00ff00',
+                      transition: 'width 0.3s'
+                    }} />
+                  </div>
+                </div>
+                <div>
+                  <strong>Water:</strong> {Math.floor(gameState.water)}%
+                  <div style={{
+                    width: '100%',
+                    height: '6px',
+                    background: 'var(--bg-tertiary)',
+                    borderRadius: '3px',
+                    overflow: 'hidden',
+                    marginTop: '0.25rem'
+                  }}>
+                    <div style={{
+                      width: `${gameState.water}%`,
+                      height: '100%',
+                      background: gameState.water < 20 ? '#ff0000' : '#00ccff',
+                      transition: 'width 0.3s'
+                    }} />
+                  </div>
+                </div>
+              </div>
+
+              {/* XP Progress */}
+              <div style={{ marginTop: '0.5rem' }}>
+                <strong>XP:</strong> {gameState.xp}/{gameState.xpForNextLevel}
+                <div style={{
+                  width: '100%',
+                  height: '8px',
+                  background: 'var(--bg-tertiary)',
+                  borderRadius: '4px',
+                  overflow: 'hidden',
+                  marginTop: '0.25rem'
+                }}>
+                  <div style={{
+                    width: `${(gameState.xp / gameState.xpForNextLevel) * 100}%`,
+                    height: '100%',
+                    background: 'var(--accent)',
+                    transition: 'width 0.3s'
+                  }} />
+                </div>
+              </div>
+
+              {/* Stats and Other Info */}
+              <div style={{ marginTop: '1rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+                <p>⚔️ AC: {gameState.ac} | 💰 {formatCurrency(gameState.currency)}</p>
+                <p>⏱️ Play Time: {formatTime(gameState.playTime)}</p>
+              </div>
             </div>
 
             <div className="game-controls" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
@@ -233,7 +361,7 @@ function App() {
       </main>
 
       <footer className="footer">
-        <p>Norrath Idle v0.1.5 | Phase 1.5: Data Integration ✅</p>
+        <p>Norrath Idle v0.2.0 | Phase 2: Character System ✅</p>
       </footer>
     </div>
   )
@@ -243,9 +371,9 @@ function App() {
 function getInitialGameState() {
   return {
     gameStarted: false,
+    characterCreated: false,
     tickCount: 0,
     playTime: 0,
-    experience: 0,
   };
 }
 
