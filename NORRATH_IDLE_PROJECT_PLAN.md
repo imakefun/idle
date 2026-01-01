@@ -23,6 +23,7 @@ A slow-progression idle RPG focusing on skill grinding, inventory management, an
 - **Persistence:** localStorage (Key: `norrathIdleSave_v21`)
 - **Game Loop:** setInterval running at 100ms (10 ticks/second)
 - **Build Tool:** Create React App or Vite (recommended)
+- **Data Management:** Google Sheets API for game config/metadata synchronization
 
 ### Key Technical Requirements
 1. **Delta-time calculation** for frame-independent timing
@@ -30,6 +31,7 @@ A slow-progression idle RPG focusing on skill grinding, inventory management, an
 3. **Mobile-responsive** design (text-based UI)
 4. **Performance optimization** for continuous game loop
 5. **State serialization** for localStorage persistence
+6. **Google Sheets integration** for centralized game data management and balancing
 
 ---
 
@@ -55,23 +57,27 @@ src/
 │   ├── Tradeskills/
 │   └── UI/
 ├── data/
-│   ├── races.js
-│   ├── classes.js
-│   ├── monsters.js
-│   ├── items.js
-│   ├── zones.js
-│   └── recipes.js
+│   ├── races.js          (synced from Google Sheets)
+│   ├── classes.js        (synced from Google Sheets)
+│   ├── monsters.js       (synced from Google Sheets)
+│   ├── items.js          (synced from Google Sheets)
+│   ├── zones.js          (synced from Google Sheets)
+│   ├── recipes.js        (synced from Google Sheets)
+│   └── fallback/         (static fallback data)
 ├── systems/
 │   ├── GameLoop.js
 │   ├── SaveSystem.js
 │   ├── CombatEngine.js
-│   └── SkillSystem.js
+│   ├── SkillSystem.js
+│   └── DataSync.js       (Google Sheets integration)
 ├── utils/
 │   ├── calculations.js
-│   └── random.js
+│   ├── random.js
+│   └── sheetsApi.js      (Google Sheets API wrapper)
 ├── hooks/
 │   ├── useGameLoop.js
-│   └── useSaveGame.js
+│   ├── useSaveGame.js
+│   └── useGameData.js    (data loading with cache)
 └── App.js
 ```
 
@@ -106,6 +112,214 @@ const useGameLoop = (callback) => {
 - [ ] Add manual save/load buttons (for testing)
 - [ ] Handle save data versioning (`norrathIdleSave_v21`)
 - [ ] Add save migration logic for future updates
+
+---
+
+### Phase 1.5: Google Sheets Data Integration (Week 1.5-2)
+
+> **Purpose:** Centralize all game configuration and metadata in Google Sheets for easy balancing, content scaling, and collaboration without code changes.
+
+#### 1.5.1 Google Sheets Setup
+- [ ] Create Google Cloud Project
+- [ ] Enable Google Sheets API
+- [ ] Create API credentials (API Key for read-only public access OR OAuth 2.0 for private sheets)
+- [ ] Set up spreadsheet structure with multiple sheets:
+  - **Races** (columns: id, name, STR, STA, AGI, DEX, WIS, INT, CHA)
+  - **Classes** (columns: id, name, hpModifier, primaryStat, skills, startWeapon)
+  - **Monsters** (columns: id, name, level, hp, minDmg, maxDmg, ac, xpReward, rareVariant)
+  - **Items** (columns: id, name, type, stackable, maxStack, value, stats, slot)
+  - **Zones** (columns: id, name, isSafe, minLevel, maxLevel, monsters, npcs)
+  - **Recipes** (columns: id, name, skill, trivialLevel, ingredients, result, container)
+  - **LootTables** (columns: monsterId, itemId, dropChance, minQty, maxQty, currencyMin, currencyMax)
+  - **Skills** (columns: id, name, type, staminaCost, procChance, damageBonus)
+  - **NPCs** (columns: id, name, type, zone, inventory, dialogue)
+  - **QuestTemplates** (columns: id, type, targetType, minLevel, maxLevel, xpReward, copperReward)
+- [ ] Populate initial data rows for MVP content
+- [ ] Share spreadsheet (public read-only OR configure OAuth)
+
+**Example Spreadsheet Structure:**
+
+Sheet: **Monsters**
+| id | name | level | hp | minDmg | maxDmg | ac | xpReward | rareVariant |
+|----|------|-------|-----|--------|--------|-----|----------|-------------|
+| giant_rat | a giant rat | 1 | 25 | 1 | 3 | 5 | 10 | FALSE |
+| snake | a snake | 2 | 35 | 2 | 5 | 8 | 15 | FALSE |
+| gnoll_pup | a gnoll pup | 3 | 50 | 3 | 7 | 12 | 25 | TRUE |
+
+Sheet: **Items**
+| id | name | type | stackable | maxStack | value | damage | delay | ac | slot |
+|----|------|------|-----------|----------|-------|--------|-------|-----|------|
+| rusty_dagger | Rusty Dagger | weapon | FALSE | 1 | 5 | 3 | 20 | 0 | primary |
+| rat_ear | Rat Ear | junk | TRUE | 20 | 1 | 0 | 0 | 0 | NULL |
+| rations | Rations | consumable | TRUE | 20 | 3 | 0 | 0 | 0 | NULL |
+
+#### 1.5.2 API Integration
+- [ ] Install Google API client library: `npm install gapi-script` or use fetch API directly
+- [ ] Create `sheetsApi.js` utility:
+  ```javascript
+  // Fetch data from a specific sheet
+  async function fetchSheetData(spreadsheetId, sheetName) {
+    const range = `${sheetName}!A:Z`;
+    const apiKey = process.env.REACT_APP_GOOGLE_SHEETS_API_KEY;
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${apiKey}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+    return parseSheetToJSON(data.values);
+  }
+
+  // Convert 2D array to array of objects
+  function parseSheetToJSON(rows) {
+    const headers = rows[0];
+    return rows.slice(1).map(row => {
+      const obj = {};
+      headers.forEach((header, i) => {
+        obj[header] = row[i];
+      });
+      return obj;
+    });
+  }
+  ```
+- [ ] Add environment variable for Spreadsheet ID and API Key
+- [ ] Implement error handling for API failures
+- [ ] Add retry logic with exponential backoff
+
+#### 1.5.3 Data Synchronization System
+- [ ] Create `DataSync.js` system:
+  - Fetch all sheets on app initialization
+  - Transform sheet data to match internal data structures
+  - Type coercion (convert string numbers to integers, parse JSON columns)
+  - Validate required fields
+- [ ] Implement caching strategy:
+  ```javascript
+  {
+    data: {...},
+    lastFetch: timestamp,
+    ttl: 300000 // 5 minutes
+  }
+  ```
+- [ ] Store fetched data in localStorage for offline capability
+- [ ] Add "Refresh Data" button in dev/admin UI
+
+**Data Transform Examples:**
+```javascript
+// Transform Monsters sheet data
+function transformMonsterData(sheetRows) {
+  return sheetRows.reduce((acc, row) => {
+    acc[row.id] = {
+      name: row.name,
+      level: parseInt(row.level),
+      hp: parseInt(row.hp),
+      damage: {
+        min: parseInt(row.minDmg),
+        max: parseInt(row.maxDmg)
+      },
+      ac: parseInt(row.ac),
+      xpReward: parseInt(row.xpReward),
+      isRare: row.rareVariant === 'TRUE'
+    };
+    return acc;
+  }, {});
+}
+
+// Transform LootTables sheet data
+function transformLootTableData(sheetRows) {
+  const lootTables = {};
+  sheetRows.forEach(row => {
+    if (!lootTables[row.monsterId]) {
+      lootTables[row.monsterId] = {
+        currency: {
+          min: parseInt(row.currencyMin),
+          max: parseInt(row.currencyMax)
+        },
+        items: []
+      };
+    }
+    if (row.itemId) {
+      lootTables[row.monsterId].items.push({
+        itemId: row.itemId,
+        chance: parseFloat(row.dropChance),
+        quantity: {
+          min: parseInt(row.minQty),
+          max: parseInt(row.maxQty)
+        }
+      });
+    }
+  });
+  return lootTables;
+}
+```
+
+#### 1.5.4 Fallback System
+- [ ] Create static fallback data files in `src/data/fallback/`
+- [ ] Implement fallback logic if API fails:
+  ```javascript
+  async function loadGameData() {
+    try {
+      const data = await fetchFromGoogleSheets();
+      cacheData(data);
+      return data;
+    } catch (error) {
+      console.warn('Failed to fetch from Sheets, using fallback', error);
+      return loadFallbackData();
+    }
+  }
+  ```
+- [ ] Display warning banner if using fallback data
+- [ ] Log sync status to console (dev mode)
+
+#### 1.5.5 Custom Hook for Data Access
+- [ ] Create `useGameData.js` hook:
+  ```javascript
+  export function useGameData() {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [usingFallback, setUsingFallback] = useState(false);
+
+    useEffect(() => {
+      async function loadData() {
+        try {
+          const gameData = await DataSync.load();
+          setData(gameData);
+          setUsingFallback(false);
+        } catch (err) {
+          setError(err);
+          const fallback = await loadFallbackData();
+          setData(fallback);
+          setUsingFallback(true);
+        } finally {
+          setLoading(false);
+        }
+      }
+      loadData();
+    }, []);
+
+    return { data, loading, error, usingFallback };
+  }
+  ```
+- [ ] Use hook in App.js to load data before rendering game
+- [ ] Show loading screen while data fetches
+
+#### 1.5.6 Development Workflow
+- [ ] **Local Development:** Use cached/fallback data for fast iteration
+- [ ] **Testing:** Fetch fresh data on demand with "Refresh" button
+- [ ] **Production:** Fetch on app load, cache for 5 minutes
+- [ ] **Hot-reload:** Add webhook or polling to detect sheet changes (optional)
+
+#### 1.5.7 Data Validation
+- [ ] Validate all required fields exist
+- [ ] Check data types match expectations
+- [ ] Warn on missing IDs or broken references (e.g., monster references non-existent item)
+- [ ] Add schema validation (optional: use Zod or Yup)
+
+#### 1.5.8 Benefits Summary
+✅ **Easy Balancing:** Change numbers in Sheets, refresh game—no code deploy
+✅ **Content Scaling:** Add new monsters, items, zones without touching code
+✅ **Collaboration:** Non-programmers can add content
+✅ **Version Control:** Sheets has built-in revision history
+✅ **A/B Testing:** Duplicate sheet to test different balance configs
+✅ **Offline Mode:** Cached data works without internet
 
 ---
 
@@ -548,7 +762,10 @@ const useGameLoop = (callback) => {
 
 ## Data Files Reference
 
+> **Note:** All data files below are automatically generated from Google Sheets. Edit the spreadsheet to modify game content, then refresh the data sync in-game.
+
 ### races.js
+*Synced from Google Sheets → "Races" tab*
 ```javascript
 export const RACES = {
   HUMAN: {
@@ -564,6 +781,7 @@ export const RACES = {
 ```
 
 ### classes.js
+*Synced from Google Sheets → "Classes" tab*
 ```javascript
 export const CLASSES = {
   WARRIOR: {
@@ -578,6 +796,7 @@ export const CLASSES = {
 ```
 
 ### monsters.js
+*Synced from Google Sheets → "Monsters" and "LootTables" tabs*
 ```javascript
 export const MONSTERS = {
   GIANT_RAT: {
@@ -600,6 +819,7 @@ export const MONSTERS = {
 ```
 
 ### zones.js
+*Synced from Google Sheets → "Zones" tab*
 ```javascript
 export const ZONES = {
   QEYNOS: {
@@ -745,6 +965,7 @@ export const ZONES = {
 | Phase | Duration | Focus |
 |-------|----------|-------|
 | 1 | Week 1-2 | Foundation & Game Loop |
+| 1.5 | Week 1.5-2 | Google Sheets Data Integration |
 | 2 | Week 2-3 | Character System |
 | 3 | Week 3-4 | Inventory & Items |
 | 4 | Week 4 | Zones |
@@ -757,7 +978,7 @@ export const ZONES = {
 | 11 | Week 11 | NPCs |
 | 12 | Week 12 | Polish & Testing |
 
-**Total Estimated Time:** 12 weeks for MVP
+**Total Estimated Time:** 12 weeks for MVP (Phase 1.5 runs in parallel with Phase 1)
 
 ---
 
@@ -799,18 +1020,26 @@ export const ZONES = {
 - [React Hooks Documentation](https://react.dev/reference/react)
 - [Game Loop in React](https://medium.com/@pdx.lucasm/canvas-with-react-js-32e133c05258)
 
+### Google Sheets API
+- [Google Sheets API v4 Documentation](https://developers.google.com/sheets/api/guides/concepts)
+- [Quick Start Guide](https://developers.google.com/sheets/api/quickstart/js)
+- [API Reference](https://developers.google.com/sheets/api/reference/rest)
+- [Using API Keys](https://cloud.google.com/docs/authentication/api-keys)
+
 ---
 
 ## Notes
 
 - **Scope Management:** Start with Phase 1-5 for a playable prototype
-- **Balancing:** Numbers will need tuning based on playtesting
+- **Balancing:** Numbers will need tuning based on playtesting—use Google Sheets for quick iterations
 - **Save Versioning:** Include version number in save key for future migrations
 - **Mobile Testing:** Test on real devices early and often
 - **Code Organization:** Keep data separate from logic for easy balancing
+- **Google Sheets:** Set up the spreadsheet early (Phase 1.5) to enable content work parallel to code development
+- **Data Fallbacks:** Always maintain static fallback data for offline/development use
 
 ---
 
-**Document Version:** 1.0
+**Document Version:** 1.1
 **Last Updated:** 2026-01-01
 **Status:** Ready for Development
