@@ -186,6 +186,7 @@ const useGameLoop = (callback) => {
   - Add `VITE_SPREADSHEET_ID`
 
 - [ ] **Create GitHub Actions workflow** (`.github/workflows/deploy.yml`):
+  {% raw %}
   ```yaml
   name: Deploy to GitHub Pages
 
@@ -220,6 +221,7 @@ const useGameLoop = (callback) => {
             github_token: ${{ secrets.GITHUB_TOKEN }}
             publish_dir: ./dist
   ```
+  {% endraw %}
 
 **Deployment Workflow:**
 1. Push code to `main` branch
@@ -992,6 +994,7 @@ body {
 - [ ] **Compact formatting** to save vertical space
 
 **Example:**
+{% raw %}
 ```jsx
 <div className="combat-log" style={{
   height: '200px',
@@ -1006,6 +1009,7 @@ body {
   ))}
 </div>
 ```
+{% endraw %}
 
 #### 12.6 Status Bars & Meters
 
@@ -1020,6 +1024,7 @@ body {
 - [ ] **Smooth transitions** with CSS
 
 **Example:**
+{% raw %}
 ```jsx
 <div className="stat-bar">
   <div className="stat-bar-label">HP</div>
@@ -1036,6 +1041,7 @@ body {
   </div>
 </div>
 ```
+{% endraw %}
 
 #### 12.7 Notifications & Toast Messages
 
