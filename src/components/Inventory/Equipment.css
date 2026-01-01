@@ -1,0 +1,39 @@
+.equipment-container {
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.equipment-header {
+  margin: 0 0 0.75rem 0;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+}
+
+.equipment-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.equipment-slot {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.slot-label {
+  min-width: 80px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  text-align: right;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .slot-label {
+    min-width: 60px;
+    font-size: 0.75rem;
+  }
+}
