@@ -22,16 +22,19 @@ A slow-progression idle RPG focusing on skill grinding, inventory management, an
   - `useRef` for high-frequency game loop timers
 - **Persistence:** localStorage (Key: `norrathIdleSave_v21`)
 - **Game Loop:** setInterval running at 100ms (10 ticks/second)
-- **Build Tool:** Create React App or Vite (recommended)
+- **Build Tool:** Vite (recommended for fast builds and GitHub Pages deployment)
 - **Data Management:** Google Sheets API for game config/metadata synchronization
+- **Hosting:** GitHub Pages (static site, no server required)
+- **UI Framework:** Mobile-first responsive CSS (or optional: Tailwind CSS for rapid development)
 
 ### Key Technical Requirements
 1. **Delta-time calculation** for frame-independent timing
 2. **Auto-save** on every tick or state change
-3. **Mobile-responsive** design (text-based UI)
+3. **Mobile-first responsive** design optimized for phones, works on desktop
 4. **Performance optimization** for continuous game loop
 5. **State serialization** for localStorage persistence
 6. **Google Sheets integration** for centralized game data management and balancing
+7. **Static deployment** compatible with GitHub Pages (no backend server needed)
 
 ---
 
@@ -40,11 +43,12 @@ A slow-progression idle RPG focusing on skill grinding, inventory management, an
 ### Phase 1: Core Foundation (Week 1-2)
 
 #### 1.1 Project Setup
-- [ ] Initialize React project (Vite recommended)
+- [ ] Initialize React project with Vite: `npm create vite@latest norrath-idle -- --template react`
 - [ ] Set up project structure and folder organization
 - [ ] Configure TypeScript (optional but recommended)
-- [ ] Install UI dependencies (if any)
+- [ ] Install UI dependencies (optional: `npm install -D tailwindcss` for mobile-first styling)
 - [ ] Set up Git repository and initial commit
+- [ ] Configure for GitHub Pages deployment (see section 1.4 below)
 
 **File Structure:**
 ```
@@ -113,16 +117,153 @@ const useGameLoop = (callback) => {
 - [ ] Handle save data versioning (`norrathIdleSave_v21`)
 - [ ] Add save migration logic for future updates
 
+#### 1.4 GitHub Pages Deployment Setup
+
+> **Purpose:** Configure the project for automatic deployment to GitHub Pages, enabling you to play and test directly in your browser without any server setup.
+
+**Why This Works Without a Server:**
+- React builds to static HTML/CSS/JS files
+- Google Sheets API works client-side with API keys (no backend needed)
+- localStorage handles all game saves locally in the browser
+- GitHub Pages serves static files for free
+
+**Setup Steps:**
+
+- [ ] **Configure Vite for GitHub Pages**
+
+  Edit `vite.config.js`:
+  ```javascript
+  import { defineConfig } from 'vite'
+  import react from '@vitejs/plugin-react'
+
+  export default defineConfig({
+    plugins: [react()],
+    base: '/idle/', // Replace 'idle' with your repo name
+  })
+  ```
+
+- [ ] **Add deployment scripts to `package.json`:**
+  ```json
+  {
+    "scripts": {
+      "dev": "vite",
+      "build": "vite build",
+      "preview": "vite preview",
+      "deploy": "npm run build && gh-pages -d dist"
+    }
+  }
+  ```
+
+- [ ] **Install gh-pages package:** `npm install -D gh-pages`
+
+- [ ] **Enable GitHub Pages in repo settings:**
+  - Go to repository Settings → Pages
+  - Source: Deploy from branch
+  - Branch: `gh-pages` (will be created automatically)
+  - Folder: `/ (root)`
+
+- [ ] **Create `.env` file for API key (DO NOT commit this):**
+  ```
+  VITE_GOOGLE_SHEETS_API_KEY=your_api_key_here
+  VITE_SPREADSHEET_ID=your_spreadsheet_id_here
+  ```
+
+- [ ] **Add `.env` to `.gitignore`:**
+  ```
+  .env
+  .env.local
+  ```
+
+- [ ] **Use environment variables in code:**
+  ```javascript
+  const API_KEY = import.meta.env.VITE_GOOGLE_SHEETS_API_KEY;
+  const SPREADSHEET_ID = import.meta.env.VITE_SPREADSHEET_ID;
+  ```
+
+- [ ] **For production, add secrets to GitHub:**
+  - Settings → Secrets and variables → Actions
+  - Add `VITE_GOOGLE_SHEETS_API_KEY`
+  - Add `VITE_SPREADSHEET_ID`
+
+- [ ] **Create GitHub Actions workflow** (`.github/workflows/deploy.yml`):
+  ```yaml
+  name: Deploy to GitHub Pages
+
+  on:
+    push:
+      branches: [ main ]
+    workflow_dispatch:
+
+  jobs:
+    build-and-deploy:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+
+        - name: Setup Node
+          uses: actions/setup-node@v3
+          with:
+            node-version: '18'
+
+        - name: Install dependencies
+          run: npm ci
+
+        - name: Build
+          env:
+            VITE_GOOGLE_SHEETS_API_KEY: ${{ secrets.VITE_GOOGLE_SHEETS_API_KEY }}
+            VITE_SPREADSHEET_ID: ${{ secrets.VITE_SPREADSHEET_ID }}
+          run: npm run build
+
+        - name: Deploy
+          uses: peaceiris/actions-gh-pages@v3
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: ./dist
+  ```
+
+**Deployment Workflow:**
+1. Push code to `main` branch
+2. GitHub Actions automatically builds and deploys
+3. Game is live at `https://yourusername.github.io/idle/`
+4. Any changes pushed to `main` auto-deploy
+
+**Manual Deploy (Alternative):**
+```bash
+npm run deploy
+```
+
+**Testing Locally Before Deploy:**
+```bash
+npm run dev
+# Opens at http://localhost:5173
+```
+
+**Benefits:**
+- ✅ No server costs
+- ✅ No server maintenance
+- ✅ Instant deploys via Git push
+- ✅ Free SSL certificate
+- ✅ Global CDN for fast loading
+- ✅ Version control through Git
+
 ---
 
 ### Phase 1.5: Google Sheets Data Integration (Week 1.5-2)
 
 > **Purpose:** Centralize all game configuration and metadata in Google Sheets for easy balancing, content scaling, and collaboration without code changes.
 
+> **Static Hosting Compatible:** This works perfectly with GitHub Pages! The Google Sheets API v4 supports client-side API keys for public sheets—no backend server required.
+
 #### 1.5.1 Google Sheets Setup
-- [ ] Create Google Cloud Project
+- [ ] Create Google Cloud Project at [console.cloud.google.com](https://console.cloud.google.com)
 - [ ] Enable Google Sheets API
-- [ ] Create API credentials (API Key for read-only public access OR OAuth 2.0 for private sheets)
+- [ ] Create API Key credentials (NOT OAuth - we want simple read-only access)
+  - **Restrict the API key** to Google Sheets API only
+  - **Add HTTP referrer restrictions** (e.g., `https://yourusername.github.io/*`)
+- [ ] Create your Google Spreadsheet
+- [ ] **Make spreadsheet publicly readable:**
+  - Click "Share" → "Anyone with the link" → Viewer
+  - This allows the API to read it without authentication
 - [ ] Set up spreadsheet structure with multiple sheets:
   - **Races** (columns: id, name, STR, STA, AGI, DEX, WIS, INT, CHA)
   - **Classes** (columns: id, name, hpModifier, primaryStat, skills, startWeapon)
@@ -723,40 +864,325 @@ function transformLootTableData(sheetRows) {
 
 ---
 
-### Phase 12: UI/UX Polish (Week 12)
+### Phase 12: Mobile-First UI/UX (Week 12)
 
-#### 12.1 Layout Design
-- [ ] Mobile-first responsive design
-- [ ] Text-based interface (minimal graphics)
-- [ ] Clear information hierarchy
-- [ ] Tabs or sections for:
-  - Character stats
-  - Inventory
-  - Combat log
-  - Quests
-  - Tradeskills
-  - Map/Zones
+> **Design Philosophy:** Optimize for mobile phones first, then scale up to tablets and desktops. Text-based, clean, and performant.
 
-#### 12.2 Combat Log
-- [ ] Scrollable text feed
-- [ ] Color-coded messages (damage, healing, skill-ups, loot)
-- [ ] Timestamp (optional)
-- [ ] Auto-scroll to bottom
-- [ ] Max message limit (performance)
+#### 12.1 Mobile-First Layout Design
 
-#### 12.3 Notifications
-- [ ] Level up notifications
-- [ ] Skill up notifications
-- [ ] Quest completion alerts
-- [ ] Low food/water warnings
-- [ ] Death message
+**HTML Meta Tags (Required for Mobile):**
+```html
+<!-- index.html -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#1a1a1a">
+<meta name="mobile-web-app-capable" content="yes">
+```
 
-#### 12.4 Mobile Optimization
-- [ ] Touch-friendly buttons (min 44x44px)
-- [ ] Prevent zoom on input focus
-- [ ] Optimized font sizes
-- [ ] Minimal scrolling needs
-- [ ] Portrait orientation focus
+**Layout Structure:**
+- [ ] **Single-column layout** on mobile (< 768px)
+- [ ] **Responsive grid** on tablet/desktop (>= 768px)
+- [ ] **Fixed header** with game title, level, HP/Stamina bars
+- [ ] **Tabbed navigation** at bottom (mobile) or sidebar (desktop)
+- [ ] **Sticky footer** with primary actions (Attack, Rest, etc.)
+- [ ] Text-based interface (minimal graphics/icons)
+- [ ] Clear visual hierarchy with whitespace
+
+**Tab Navigation:**
+- [ ] Character (stats, equipment)
+- [ ] Combat (current target, attack button, log)
+- [ ] Inventory (items, equipped gear)
+- [ ] Quests (active, available, completed)
+- [ ] Town (NPCs, merchants, trainers)
+- [ ] Crafting (tradeskills, recipes)
+
+**CSS Framework Options:**
+- **Option A:** Vanilla CSS with CSS Grid and Flexbox (full control)
+- **Option B:** Tailwind CSS (rapid development, utility-first)
+  ```bash
+  npm install -D tailwindcss postcss autoprefixer
+  npx tailwindcss init
+  ```
+
+#### 12.2 Responsive Breakpoints
+```css
+/* Mobile-first approach */
+/* Base styles: Mobile (< 640px) */
+.container { padding: 1rem; }
+
+/* Tablet (>= 640px) */
+@media (min-width: 640px) {
+  .container { padding: 1.5rem; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Desktop (>= 1024px) */
+@media (min-width: 1024px) {
+  .container { max-width: 1200px; margin: 0 auto; }
+  .sidebar { display: block; }
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
+```
+
+#### 12.3 Touch-Friendly Interactive Elements
+
+**Button Specifications:**
+- [ ] **Minimum touch target:** 44x44px (Apple HIG) or 48x48px (Material Design)
+- [ ] **Button spacing:** 8px minimum between interactive elements
+- [ ] **Active states:** Visual feedback on tap (`:active` pseudo-class)
+- [ ] **Disabled states:** Clear visual distinction for unavailable actions
+
+**Example Button CSS:**
+```css
+.btn {
+  min-height: 48px;
+  min-width: 100px;
+  padding: 12px 24px;
+  font-size: 16px; /* Prevents zoom on iOS */
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn:active {
+  transform: scale(0.98);
+  opacity: 0.8;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+```
+
+#### 12.4 Typography for Mobile
+
+**Font Sizes:**
+- [ ] Base font: 16px minimum (prevents iOS zoom)
+- [ ] Headings: 1.5rem - 2rem
+- [ ] Body text: 1rem (16px)
+- [ ] Small text: 0.875rem (14px minimum)
+- [ ] Input fields: 16px minimum (prevents zoom on focus)
+
+**Font Stack:**
+```css
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+               'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+```
+
+#### 12.5 Combat Log
+
+**Mobile Optimizations:**
+- [ ] **Fixed height container** with `overflow-y: auto`
+- [ ] **Auto-scroll to bottom** on new messages
+- [ ] **Color-coded messages:**
+  - Damage dealt: Red (#ff4444)
+  - Damage taken: Orange (#ff8844)
+  - Healing: Green (#44ff44)
+  - XP gain: Blue (#4444ff)
+  - Loot: Yellow (#ffff44)
+  - Skill-ups: Purple (#ff44ff)
+- [ ] **Timestamp** (optional, toggle in settings)
+- [ ] **Max 100 messages** (clear old ones for performance)
+- [ ] **Compact formatting** to save vertical space
+
+**Example:**
+```jsx
+<div className="combat-log" style={{
+  height: '200px',
+  overflowY: 'auto',
+  fontSize: '14px',
+  lineHeight: '1.4'
+}}>
+  {messages.map((msg, i) => (
+    <div key={i} style={{ color: msg.color }}>
+      {msg.text}
+    </div>
+  ))}
+</div>
+```
+
+#### 12.6 Status Bars & Meters
+
+**HP/Stamina/Food/Water Bars:**
+- [ ] **Visual progress bars** (not just numbers)
+- [ ] **Color-coded:**
+  - HP: Red (#ff0000) → gradient to dark red
+  - Stamina: Blue (#0066ff)
+  - Food: Orange (#ff9900)
+  - Water: Cyan (#00ccff)
+- [ ] **Percentage text overlay** on bars
+- [ ] **Smooth transitions** with CSS
+
+**Example:**
+```jsx
+<div className="stat-bar">
+  <div className="stat-bar-label">HP</div>
+  <div className="stat-bar-container">
+    <div
+      className="stat-bar-fill"
+      style={{
+        width: `${(hp / maxHp) * 100}%`,
+        backgroundColor: '#ff0000',
+        transition: 'width 0.3s ease'
+      }}
+    />
+    <span className="stat-bar-text">{hp}/{maxHp}</span>
+  </div>
+</div>
+```
+
+#### 12.7 Notifications & Toast Messages
+
+- [ ] **Toast notifications** for important events
+- [ ] **Non-blocking** (appear at top, auto-dismiss)
+- [ ] **Priority levels:**
+  - Critical: Death, level up (red, persist until dismissed)
+  - Important: Skill up, quest complete (yellow, 5s)
+  - Info: Loot drops (white, 3s)
+- [ ] **Stack multiple toasts** vertically
+- [ ] **Tap to dismiss** on mobile
+
+**Libraries (Optional):**
+- React Hot Toast: `npm install react-hot-toast`
+- React Toastify: `npm install react-toastify`
+
+#### 12.8 Mobile Performance Optimizations
+
+- [ ] **Lazy load components** not in current tab
+- [ ] **Virtualize long lists** (e.g., inventory with 100+ items)
+- [ ] **Debounce expensive operations** (combat calculations, auto-save)
+- [ ] **Use CSS transforms** instead of position changes (better for animations)
+- [ ] **Minimize re-renders** with React.memo, useMemo, useCallback
+- [ ] **Service worker** for offline capability (optional)
+
+**Virtualization for Inventory:**
+```bash
+npm install react-window
+```
+
+#### 12.9 Dark Mode (Default) with Light Mode Option
+
+**Color Palette:**
+```css
+:root {
+  /* Dark mode (default) */
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2a2a2a;
+  --bg-tertiary: #3a3a3a;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --border: #444444;
+  --accent: #00aaff;
+}
+
+[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --bg-tertiary: #e5e5e5;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --border: #cccccc;
+  --accent: #0088cc;
+}
+```
+
+- [ ] **Toggle button** in settings
+- [ ] **Save preference** to localStorage
+- [ ] **Respect system preference** (optional): `prefers-color-scheme`
+
+#### 12.10 Testing Checklist
+
+**Mobile Devices (Test on Real Devices):**
+- [ ] iPhone SE (small screen, 375px width)
+- [ ] iPhone 14 Pro (standard, 393px width)
+- [ ] iPhone 14 Pro Max (large, 430px width)
+- [ ] Android (Samsung Galaxy S23, 360px width)
+- [ ] Tablet (iPad, 768px width)
+
+**Browsers:**
+- [ ] Safari iOS (primary mobile browser)
+- [ ] Chrome Android
+- [ ] Chrome Desktop
+- [ ] Firefox Desktop
+- [ ] Safari macOS
+
+**Orientation:**
+- [ ] Portrait (primary)
+- [ ] Landscape (ensure playability)
+
+**Interactions:**
+- [ ] Touch gestures work (tap, scroll)
+- [ ] No zoom on input focus
+- [ ] No horizontal scrolling
+- [ ] Buttons are easily tappable
+- [ ] Swipe gestures don't conflict (if implemented)
+
+**Performance:**
+- [ ] 60 FPS on game loop
+- [ ] No lag when switching tabs
+- [ ] Fast initial load (<3 seconds)
+- [ ] Combat log scrolling is smooth
+
+#### 12.11 Accessibility (A11y)
+
+- [ ] **Semantic HTML** (use `<button>`, `<nav>`, `<main>`, etc.)
+- [ ] **ARIA labels** for screen readers
+- [ ] **Keyboard navigation** (Tab, Enter, Space)
+- [ ] **Focus indicators** (visible outline on focused elements)
+- [ ] **Alt text** for any images/icons
+- [ ] **Color contrast** meets WCAG AA standard (4.5:1 ratio)
+
+**Example:**
+```jsx
+<button
+  aria-label="Attack current target"
+  disabled={!target}
+>
+  Attack
+</button>
+```
+
+#### 12.12 Desktop Enhancements
+
+**When screen width >= 1024px:**
+- [ ] **Two-column layout:** Stats/Combat on left, Inventory/Quests on right
+- [ ] **Persistent sidebar navigation** instead of tabs
+- [ ] **Larger font sizes** (scale up by 10-20%)
+- [ ] **Keyboard shortcuts:**
+  - `A` - Attack
+  - `I` - Inventory tab
+  - `Q` - Quests tab
+  - `T` - Town tab
+  - `C` - Character tab
+- [ ] **Hover states** on buttons (not just `:active`)
+- [ ] **Wider max-width** (1200px container)
+
+#### 12.13 Loading & Error States
+
+- [ ] **Initial loading screen** while fetching Google Sheets data
+- [ ] **Skeleton loaders** for async content
+- [ ] **Error boundaries** for React errors
+- [ ] **Fallback UI** when Google Sheets fails (show banner, use cached data)
+- [ ] **"No internet" detection** and message
+
+**Example Loading Screen:**
+```jsx
+{loading ? (
+  <div className="loading-screen">
+    <div className="spinner" />
+    <p>Loading Norrath Idle...</p>
+    <p className="text-sm">Fetching game data...</p>
+  </div>
+) : (
+  <GameUI />
+)}
+```
 
 ---
 
@@ -965,6 +1391,7 @@ export const ZONES = {
 | Phase | Duration | Focus |
 |-------|----------|-------|
 | 1 | Week 1-2 | Foundation & Game Loop |
+| 1.4 | Week 1-2 | GitHub Pages Deployment Setup |
 | 1.5 | Week 1.5-2 | Google Sheets Data Integration |
 | 2 | Week 2-3 | Character System |
 | 3 | Week 3-4 | Inventory & Items |
@@ -976,9 +1403,11 @@ export const ZONES = {
 | 9 | Week 9 | Economy & Loot |
 | 10 | Week 10 | Tradeskills |
 | 11 | Week 11 | NPCs |
-| 12 | Week 12 | Polish & Testing |
+| 12 | Week 12 | Mobile-First UI/UX & Testing |
 
-**Total Estimated Time:** 12 weeks for MVP (Phase 1.5 runs in parallel with Phase 1)
+**Total Estimated Time:** 12 weeks for MVP
+- Phases 1.4 and 1.5 run in parallel with Phase 1
+- Deploy to GitHub Pages early for continuous testing
 
 ---
 
@@ -1040,6 +1469,21 @@ export const ZONES = {
 
 ---
 
-**Document Version:** 1.1
+**Document Version:** 1.2
 **Last Updated:** 2026-01-01
 **Status:** Ready for Development
+
+---
+
+## Quick Start Summary
+
+**To get started immediately:**
+
+1. **Initialize Vite + React:** `npm create vite@latest norrath-idle -- --template react`
+2. **Set up GitHub Pages:** Follow Phase 1.4 instructions
+3. **Create Google Sheet:** Follow Phase 1.5.1 for game data
+4. **Start building:** Begin with game loop (Phase 1.2) and save system (Phase 1.3)
+5. **Deploy early:** Push to GitHub Pages after Phase 1 to enable testing on mobile devices
+6. **Iterate:** Update Google Sheet for balancing, refresh game to see changes
+
+**Game will run at:** `https://yourusername.github.io/idle/`
