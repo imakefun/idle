@@ -4,8 +4,10 @@ import useGameLoop from './hooks/useGameLoop'
 import useSaveGame from './hooks/useSaveGame'
 import useGameData from './hooks/useGameData'
 import CharacterCreation from './components/Character/CharacterCreation'
-import { createCharacter } from './utils/characterHelpers'
-import { calculateXPForLevel, calculateDrainRate, formatCurrency } from './utils/calculations'
+import Inventory from './components/Inventory/Inventory'
+import Equipment from './components/Inventory/Equipment'
+import { createCharacter, consumeItem, equipItem, removeItemFromInventory, addItemToInventory } from './utils/characterHelpers'
+import { calculateXPForLevel, calculateDrainRate, formatCurrency, calculateAC } from './utils/calculations'
 
 function App() {
   // Load game data from Google Sheets
@@ -81,6 +83,57 @@ function App() {
       deleteSave();
       setGameState(getInitialGameState());
     }
+  };
+
+  // Item handlers
+  const handleUseItem = (item) => {
+    setGameState(prev => {
+      const result = consumeItem(prev.inventory, item.id, prev);
+      if (result.success) {
+        return { ...prev };
+      }
+      return prev;
+    });
+  };
+
+  const handleEquipItem = (item) => {
+    setGameState(prev => {
+      const result = equipItem(prev.inventory, prev.equipped, item.id);
+      if (result.success) {
+        // Recalculate AC after equipping
+        const newAC = calculateAC(prev.equipped, prev.stats.AGI);
+        return { ...prev, ac: newAC };
+      }
+      return prev;
+    });
+  };
+
+  const handleDropItem = (item) => {
+    if (window.confirm(`Drop ${item.name}?`)) {
+      setGameState(prev => {
+        removeItemFromInventory(prev.inventory, item.id, 1);
+        return { ...prev };
+      });
+    }
+  };
+
+  const handleUnequipItem = (item) => {
+    setGameState(prev => {
+      // Find the slot the item is in
+      const slot = Object.keys(prev.equipped).find(s => prev.equipped[s]?.id === item.id);
+      if (slot) {
+        // Add to inventory
+        const result = addItemToInventory(prev.inventory, item, 1);
+        if (result.success) {
+          // Remove from equipped
+          delete prev.equipped[slot];
+          // Recalculate AC
+          const newAC = calculateAC(prev.equipped, prev.stats.AGI);
+          return { ...prev, ac: newAC };
+        }
+      }
+      return prev;
+    });
   };
 
   // Format time display
@@ -322,6 +375,20 @@ function App() {
               </div>
             </div>
 
+            {/* Equipment and Inventory */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
+              <Equipment
+                equipped={gameState.equipped}
+                onUnequip={handleUnequipItem}
+              />
+              <Inventory
+                inventory={gameState.inventory}
+                onUseItem={handleUseItem}
+                onEquipItem={handleEquipItem}
+                onDropItem={handleDropItem}
+              />
+            </div>
+
             <div className="game-controls" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
               <button
                 className="btn btn-primary"
@@ -361,7 +428,7 @@ function App() {
       </main>
 
       <footer className="footer">
-        <p>Norrath Idle v0.2.0 | Phase 2: Character System ✅</p>
+        <p>Norrath Idle v0.3.0 | Phase 3: Inventory & Items ✅</p>
       </footer>
     </div>
   )

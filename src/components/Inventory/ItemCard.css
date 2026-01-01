@@ -1,0 +1,195 @@
+.item-card {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.item-card:hover {
+  border-color: var(--accent);
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+.item-card.empty {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.item-card.empty:hover {
+  transform: none;
+  border-color: var(--border);
+}
+
+.item-card.equipped {
+  border-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.item-card.weapon {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(139, 69, 19, 0.2) 100%);
+}
+
+.item-card.armor {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(192, 192, 192, 0.2) 100%);
+}
+
+.item-card.consumable {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(50, 205, 50, 0.2) 100%);
+}
+
+.item-icon {
+  font-size: 1.5rem;
+  user-select: none;
+}
+
+.item-quantity {
+  position: absolute;
+  bottom: 2px;
+  right: 4px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 0.75rem;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: bold;
+}
+
+/* Tooltip */
+.item-tooltip {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 8px;
+  background: rgba(20, 20, 20, 0.98);
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  padding: 0.75rem;
+  min-width: 200px;
+  max-width: 300px;
+  z-index: 1000;
+  pointer-events: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Prevent tooltip from going off-screen */
+.item-card:nth-child(n+8) .item-tooltip {
+  top: auto;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.tooltip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.item-name {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.item-name.common {
+  color: var(--text-primary);
+}
+
+.item-name.uncommon {
+  color: #1eff00;
+}
+
+.item-name.rare {
+  color: #0070dd;
+}
+
+.item-name.epic {
+  color: #a335ee;
+}
+
+.item-type {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: capitalize;
+}
+
+.tooltip-stats,
+.tooltip-consumable {
+  margin-bottom: 0.5rem;
+}
+
+.stat-line {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  margin: 0.25rem 0;
+}
+
+.tooltip-value,
+.tooltip-slot {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.tooltip-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.action-btn {
+  flex: 1;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.action-btn.danger {
+  background: #cc0000;
+}
+
+.action-btn.danger:hover {
+  background: #ff0000;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .item-card {
+    width: 50px;
+    height: 50px;
+  }
+
+  .item-icon {
+    font-size: 1.25rem;
+  }
+
+  .item-tooltip {
+    min-width: 180px;
+    font-size: 0.875rem;
+  }
+}
