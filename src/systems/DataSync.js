@@ -112,7 +112,8 @@ function transformClasses(rows) {
       name: row.name,
       hpModifier: parseInt(row.hpModifier) || 15,
       primaryStat: row.primaryStat || 'STR',
-      description: row.description || ''
+      description: row.description || '',
+      starterWeapon: row.starterWeapon || ''
     };
   });
   return classes;

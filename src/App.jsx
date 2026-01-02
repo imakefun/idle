@@ -8,6 +8,7 @@ import Inventory from './components/Inventory/Inventory'
 import Equipment from './components/Inventory/Equipment'
 import { createCharacter, consumeItem, equipItem, removeItemFromInventory, addItemToInventory } from './utils/characterHelpers'
 import { calculateXPForLevel, calculateDrainRate, formatCurrency, calculateAC } from './utils/calculations'
+import { clearCache } from './systems/DataSync'
 
 function App() {
   // Load game data from Google Sheets
@@ -136,6 +137,12 @@ function App() {
     });
   };
 
+  // Clear cache and refresh data
+  const handleClearCacheAndRefresh = () => {
+    clearCache();
+    refreshData();
+  };
+
   // Format time display
   const formatTime = (ms) => {
     const seconds = Math.floor(ms / 1000);
@@ -232,21 +239,37 @@ function App() {
                 <p>• {Object.keys(gameData.monsters || {}).length} Monsters</p>
                 <p>• {Object.keys(gameData.items || {}).length} Items</p>
                 <p>• {Object.keys(gameData.zones || {}).length} Zones</p>
-                <button
-                  onClick={refreshData}
-                  style={{
-                    marginTop: '0.5rem',
-                    padding: '0.25rem 0.5rem',
-                    fontSize: '0.75rem',
-                    background: 'var(--bg-tertiary)',
-                    border: '1px solid var(--border)',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    color: 'var(--text-primary)'
-                  }}
-                >
-                  🔄 Refresh Data
-                </button>
+                <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.5rem' }}>
+                  <button
+                    onClick={refreshData}
+                    style={{
+                      padding: '0.25rem 0.5rem',
+                      fontSize: '0.75rem',
+                      background: 'var(--bg-tertiary)',
+                      border: '1px solid var(--border)',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      color: 'var(--text-primary)'
+                    }}
+                  >
+                    🔄 Refresh Data
+                  </button>
+                  <button
+                    onClick={handleClearCacheAndRefresh}
+                    style={{
+                      padding: '0.25rem 0.5rem',
+                      fontSize: '0.75rem',
+                      background: 'var(--accent)',
+                      border: '1px solid var(--accent)',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      color: 'white'
+                    }}
+                    title="Clear cached data and refresh from Google Sheets"
+                  >
+                    🗑️ Clear Cache & Refresh
+                  </button>
+                </div>
               </div>
             )}
           </div>

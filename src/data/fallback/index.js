@@ -73,28 +73,32 @@ export const fallbackData = {
       name: 'Warrior',
       hpModifier: '22',
       primaryStat: 'STR',
-      description: 'Masters of melee combat'
+      description: 'Masters of melee combat',
+      starterWeapon: 'rusty_dagger'
     },
     {
       id: 'monk',
       name: 'Monk',
       hpModifier: '18',
       primaryStat: 'STR',
-      description: 'Unarmed combat specialists'
+      description: 'Unarmed combat specialists',
+      starterWeapon: ''
     },
     {
       id: 'rogue',
       name: 'Rogue',
       hpModifier: '16',
       primaryStat: 'DEX',
-      description: 'Stealth and precision fighters'
+      description: 'Stealth and precision fighters',
+      starterWeapon: 'rusty_dagger'
     },
     {
       id: 'cleric',
       name: 'Cleric',
       hpModifier: '15',
       primaryStat: 'WIS',
-      description: 'Healers and divine magic users'
+      description: 'Healers and divine magic users',
+      starterWeapon: 'cracked_staff'
     }
   ],
 
