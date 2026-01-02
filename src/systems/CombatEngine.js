@@ -177,7 +177,8 @@ export function processCombatRound(player, monster, gameData) {
   const playerAC = parseInt(player.ac) || 0;
 
   // Determine weapon skill
-  const weaponSkillId = getWeaponSkill(weaponType);
+  const skillDefs = gameData?.skills || {};
+  const weaponSkillId = getWeaponSkill(weaponType, skillDefs);
   const weaponSkill = player.skills?.[weaponSkillId]?.current || 0;
   const offenseSkill = player.skills?.offense?.current || 0;
   const combinedSkill = Math.floor((weaponSkill + offenseSkill) / 2);
@@ -193,8 +194,8 @@ export function processCombatRound(player, monster, gameData) {
     for (const abilityId of activeAbilities) {
       if (player.skills?.[abilityId] && !abilityUsed) {
         // Check requirements (shield for bash, piercing weapon for backstab, etc.)
-        if (checkAbilityRequirements(abilityId, player.equipped)) {
-          const abilityResult = checkAbilityProc(abilityId, player.skills[abilityId].current, player.stamina);
+        if (checkAbilityRequirements(abilityId, player.equipped, skillDefs)) {
+          const abilityResult = checkAbilityProc(abilityId, player.skills[abilityId].current, player.stamina, skillDefs);
 
           if (abilityResult.success) {
             abilityUsed = abilityId;
@@ -206,7 +207,7 @@ export function processCombatRound(player, monster, gameData) {
 
             // Add ability damage (except doubleAttack which just attacks twice)
             if (abilityId !== 'doubleAttack') {
-              const abilityDamage = calculateAbilityDamage(abilityId, damage, player.skills[abilityId].current);
+              const abilityDamage = calculateAbilityDamage(abilityId, damage, player.skills[abilityId].current, skillDefs);
               damage += abilityDamage;
 
               logs.push({
@@ -236,7 +237,8 @@ export function processCombatRound(player, monster, gameData) {
       const skillUpResult = attemptSkillUp(
         weaponSkillId,
         player.skills[weaponSkillId].current,
-        player.skills[weaponSkillId].max
+        player.skills[weaponSkillId].max,
+        skillDefs
       );
 
       if (skillUpResult.success) {
@@ -254,7 +256,8 @@ export function processCombatRound(player, monster, gameData) {
       const offenseUpResult = attemptSkillUp(
         'offense',
         player.skills.offense.current,
-        player.skills.offense.max
+        player.skills.offense.max,
+        skillDefs
       );
 
       if (offenseUpResult.success) {
@@ -351,7 +354,8 @@ export function processCombatRound(player, monster, gameData) {
       const dodgeUpResult = attemptSkillUp(
         'dodge',
         player.skills.dodge.current,
-        player.skills.dodge.max
+        player.skills.dodge.max,
+        skillDefs
       );
 
       if (dodgeUpResult.success) {
@@ -392,7 +396,8 @@ export function processCombatRound(player, monster, gameData) {
       const defenseUpResult = attemptSkillUp(
         'defense',
         player.skills.defense.current,
-        player.skills.defense.max
+        player.skills.defense.max,
+        skillDefs
       );
 
       if (defenseUpResult.success) {

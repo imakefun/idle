@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import './Combat.css';
 
 export default function Combat({
@@ -15,6 +15,15 @@ export default function Combat({
   onToggleRest,
   combatLog
 }) {
+  const combatLogRef = useRef(null);
+
+  // Auto-scroll to bottom when new log entries are added
+  useEffect(() => {
+    if (combatLogRef.current) {
+      combatLogRef.current.scrollTop = combatLogRef.current.scrollHeight;
+    }
+  }, [combatLog]);
+
   if (!gameData || !gameData.zones) {
     return null;
   }
@@ -123,7 +132,7 @@ export default function Combat({
       {/* Combat Log */}
       <div className="combat-log-container">
         <h3>Combat Log</h3>
-        <div className="combat-log">
+        <div className="combat-log" ref={combatLogRef}>
           {combatLog.length === 0 ? (
             <p className="log-empty">No recent combat activity</p>
           ) : (

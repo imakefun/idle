@@ -46,8 +46,8 @@ export function updateSkillCaps(skills, newLevel) {
  * Attempt to skill up
  * Returns { success: boolean, newValue: number, skillId: string, skillName: string }
  */
-export function attemptSkillUp(skillId, currentSkill, skillCap) {
-  const skill = SKILL_DEFINITIONS[skillId];
+export function attemptSkillUp(skillId, currentSkill, skillCap, skillDefinitions = SKILL_DEFINITIONS) {
+  const skill = skillDefinitions[skillId];
   if (!skill) return { success: false };
 
   // Can't skill up if at cap
@@ -75,8 +75,8 @@ export function attemptSkillUp(skillId, currentSkill, skillCap) {
  * Check if an active ability should proc
  * Returns { success: boolean, abilityId: string, abilityName: string }
  */
-export function checkAbilityProc(abilityId, skillLevel, stamina) {
-  const ability = SKILL_DEFINITIONS[abilityId];
+export function checkAbilityProc(abilityId, skillLevel, stamina, skillDefinitions = SKILL_DEFINITIONS) {
+  const ability = skillDefinitions[abilityId];
   if (!ability || ability.type !== 'active') {
     return { success: false };
   }
@@ -106,8 +106,8 @@ export function checkAbilityProc(abilityId, skillLevel, stamina) {
 /**
  * Calculate bonus damage from an ability
  */
-export function calculateAbilityDamage(abilityId, weaponDamage, skillLevel) {
-  const ability = SKILL_DEFINITIONS[abilityId];
+export function calculateAbilityDamage(abilityId, weaponDamage, skillLevel, skillDefinitions = SKILL_DEFINITIONS) {
+  const ability = skillDefinitions[abilityId];
   if (!ability) return 0;
 
   // Kick and Bash use flat bonus
@@ -127,8 +127,8 @@ export function calculateAbilityDamage(abilityId, weaponDamage, skillLevel) {
 /**
  * Check if player has the requirements for an ability
  */
-export function checkAbilityRequirements(abilityId, equipped) {
-  const ability = SKILL_DEFINITIONS[abilityId];
+export function checkAbilityRequirements(abilityId, equipped, skillDefinitions = SKILL_DEFINITIONS) {
+  const ability = skillDefinitions[abilityId];
   if (!ability) return false;
 
   // Check for shield requirement (Bash)
@@ -151,11 +151,11 @@ export function checkAbilityRequirements(abilityId, equipped) {
 /**
  * Get active abilities for current class
  */
-export function getActiveAbilities(skills) {
+export function getActiveAbilities(skills, skillDefinitions = SKILL_DEFINITIONS) {
   const activeAbilities = [];
 
   Object.keys(skills).forEach(skillId => {
-    const skill = SKILL_DEFINITIONS[skillId];
+    const skill = skillDefinitions[skillId];
     if (skill && skill.type === 'active') {
       activeAbilities.push({
         id: skillId,
