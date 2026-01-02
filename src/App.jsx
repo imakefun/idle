@@ -38,6 +38,9 @@ function App() {
   // Combat log state (not saved, resets on page load)
   const [combatLog, setCombatLog] = useState([]);
 
+  // Tab navigation state
+  const [activeTab, setActiveTab] = useState('game');
+
   // Add log entry
   const addCombatLog = useCallback((logEntry) => {
     setCombatLog(prev => [...prev.slice(-99), logEntry]); // Keep last 100 entries
@@ -517,17 +520,72 @@ function App() {
           />
         ) : (
           <div className="game-content">
-            {/* Character Info Header */}
-            <div className="game-stats" style={{
-              background: 'var(--bg-secondary)',
-              padding: '1rem',
-              borderRadius: '8px',
-              marginBottom: '1rem'
+            {/* Tab Navigation */}
+            <div style={{
+              display: 'flex',
+              gap: '0.5rem',
+              marginBottom: '1rem',
+              borderBottom: '2px solid var(--border)',
+              paddingBottom: '0.5rem'
             }}>
-              <h3 style={{ marginBottom: '0.5rem' }}>{gameState.name} - Level {gameState.level}</h3>
-              <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-                {gameState.raceName} {gameState.className} | {gameData?.zones[gameState.currentZone]?.name || gameState.currentZone}
-              </p>
+              <button
+                onClick={() => setActiveTab('game')}
+                style={{
+                  padding: '0.5rem 1rem',
+                  background: activeTab === 'game' ? 'var(--accent)' : 'var(--bg-secondary)',
+                  color: activeTab === 'game' ? 'white' : 'var(--text-primary)',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontWeight: activeTab === 'game' ? 'bold' : 'normal'
+                }}
+              >
+                🎮 Game
+              </button>
+              <button
+                onClick={() => setActiveTab('player')}
+                style={{
+                  padding: '0.5rem 1rem',
+                  background: activeTab === 'player' ? 'var(--accent)' : 'var(--bg-secondary)',
+                  color: activeTab === 'player' ? 'white' : 'var(--text-primary)',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontWeight: activeTab === 'player' ? 'bold' : 'normal'
+                }}
+              >
+                👤 Player
+              </button>
+              <button
+                onClick={() => setActiveTab('settings')}
+                style={{
+                  padding: '0.5rem 1rem',
+                  background: activeTab === 'settings' ? 'var(--accent)' : 'var(--bg-secondary)',
+                  color: activeTab === 'settings' ? 'white' : 'var(--text-primary)',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontWeight: activeTab === 'settings' ? 'bold' : 'normal'
+                }}
+              >
+                ⚙️ Settings
+              </button>
+            </div>
+
+            {/* Game Tab */}
+            {activeTab === 'game' && (
+              <>
+                {/* Character Info Header */}
+                <div className="game-stats" style={{
+                  background: 'var(--bg-secondary)',
+                  padding: '1rem',
+                  borderRadius: '8px',
+                  marginBottom: '1rem'
+                }}>
+                  <h3 style={{ marginBottom: '0.5rem' }}>{gameState.name} - Level {gameState.level}</h3>
+                  <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+                    {gameState.raceName} {gameState.className} | {gameData?.zones[gameState.currentZone]?.name || gameState.currentZone}
+                  </p>
 
               {/* HP and Stamina */}
               <div style={{ marginBottom: '0.5rem' }}>
@@ -629,90 +687,146 @@ function App() {
               </div>
 
               {/* Stats and Other Info */}
-              <div style={{ marginTop: '1rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
-                <p>⚔️ AC: {gameState.ac} | 💰 {formatCurrency(gameState.currency)}</p>
-                <p>⏱️ Play Time: {formatTime(gameState.playTime)}</p>
-              </div>
-            </div>
+                  <div style={{ marginTop: '1rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+                    <p>⚔️ AC: {gameState.ac} | 💰 {formatCurrency(gameState.currency)}</p>
+                    <p>⏱️ Play Time: {formatTime(gameState.playTime)}</p>
+                  </div>
+                </div>
 
-            {/* Equipment and Inventory */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
-              <Equipment
-                equipped={gameState.equipped}
-                onUnequip={handleUnequipItem}
-              />
-              <Inventory
-                inventory={gameState.inventory}
-                onUseItem={handleUseItem}
-                onEquipItem={handleEquipItem}
-                onDropItem={handleDropItem}
-              />
-            </div>
+                {/* Combat (only show when NOT in safe zone) */}
+                {!gameData?.zones?.[gameState.currentZone]?.isSafe && (
+                  <Combat
+                    gameData={gameData}
+                    currentZone={gameState.currentZone}
+                    currentCamp={gameState.currentCamp}
+                    characterLevel={gameState.level}
+                    target={gameState.target}
+                    isResting={gameState.isResting}
+                    food={gameState.food}
+                    water={gameState.water}
+                    onAttack={handleAttack}
+                    onClearTarget={handleClearTarget}
+                    onToggleRest={handleToggleRest}
+                    combatLog={combatLog}
+                  />
+                )}
 
-            {/* Skills */}
-            <Skills skills={gameState.skills} skillDefinitions={gameData?.skills} />
+                {/* Guild Master (only show in safe zones) */}
+                {gameData?.zones?.[gameState.currentZone]?.isSafe && (
+                  <GuildMaster
+                    playerClass={gameState.class}
+                    playerLevel={gameState.level}
+                    playerCurrency={gameState.currency}
+                    playerSkills={gameState.skills}
+                    onTrainSkill={handleTrainSkill}
+                  />
+                )}
 
-            {/* Guild Master (only in safe zones) */}
-            {gameData?.zones?.[gameState.currentZone]?.isSafe && (
-              <GuildMaster
-                playerClass={gameState.class}
-                playerLevel={gameState.level}
-                playerCurrency={gameState.currency}
-                playerSkills={gameState.skills}
-                onTrainSkill={handleTrainSkill}
-              />
+                {/* Zone Travel */}
+                <div style={{ marginBottom: '1rem' }}>
+                  <Zones
+                    gameData={gameData}
+                    currentZone={gameState.currentZone}
+                    currentCamp={gameState.currentCamp}
+                    characterLevel={gameState.level}
+                    onZoneChange={handleZoneChange}
+                    onCampChange={handleCampChange}
+                  />
+                </div>
+              </>
             )}
 
-            {/* Combat */}
-            <Combat
-              gameData={gameData}
-              currentZone={gameState.currentZone}
-              currentCamp={gameState.currentCamp}
-              characterLevel={gameState.level}
-              target={gameState.target}
-              isResting={gameState.isResting}
-              food={gameState.food}
-              water={gameState.water}
-              onAttack={handleAttack}
-              onClearTarget={handleClearTarget}
-              onToggleRest={handleToggleRest}
-              combatLog={combatLog}
-            />
+            {/* Player Tab */}
+            {activeTab === 'player' && (
+              <>
+                {/* Equipment and Inventory */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
+                  <Equipment
+                    equipped={gameState.equipped}
+                    onUnequip={handleUnequipItem}
+                  />
+                  <Inventory
+                    inventory={gameState.inventory}
+                    onUseItem={handleUseItem}
+                    onEquipItem={handleEquipItem}
+                    onDropItem={handleDropItem}
+                  />
+                </div>
 
-            {/* Zone Travel */}
-            <div style={{ marginBottom: '1rem' }}>
-              <Zones
-                gameData={gameData}
-                currentZone={gameState.currentZone}
-                currentCamp={gameState.currentCamp}
-                characterLevel={gameState.level}
-                onZoneChange={handleZoneChange}
-                onCampChange={handleCampChange}
-              />
-            </div>
+                {/* Skills */}
+                <Skills skills={gameState.skills} skillDefinitions={gameData?.skills} />
+              </>
+            )}
 
-            <div className="game-controls" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-              <button
-                className="btn btn-primary"
-                onClick={() => saveGame()}
-              >
-                💾 Manual Save
-              </button>
+            {/* Settings Tab */}
+            {activeTab === 'settings' && (
+              <div style={{
+                background: 'var(--bg-secondary)',
+                padding: '1.5rem',
+                borderRadius: '8px'
+              }}>
+                <h3 style={{ marginBottom: '1rem' }}>⚙️ Settings</h3>
 
-              <button
-                className="btn btn-primary"
-                onClick={handleDeleteSave}
-              >
-                🗑️ Delete Save
-              </button>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '400px' }}>
+                  <div>
+                    <h4 style={{ marginBottom: '0.5rem' }}>💾 Save Game</h4>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => saveGame()}
+                      style={{ width: '100%' }}
+                    >
+                      💾 Manual Save
+                    </button>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
+                      Auto-saves every minute
+                    </p>
+                  </div>
 
-              <button
-                className="btn btn-primary"
-                onClick={() => setGameState(getInitialGameState())}
-              >
-                🔄 Reset Game
-              </button>
-            </div>
+                  <div>
+                    <h4 style={{ marginBottom: '0.5rem', color: '#ff6b6b' }}>🗑️ Reset Character</h4>
+                    <button
+                      className="btn btn-danger"
+                      onClick={handleResetCharacter}
+                      style={{
+                        width: '100%',
+                        background: '#ff6b6b',
+                        color: 'white'
+                      }}
+                    >
+                      🗑️ Delete Character
+                    </button>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
+                      This will permanently delete your character
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 style={{ marginBottom: '0.5rem' }}>🔄 Data Management</h4>
+                    <button
+                      onClick={async () => {
+                        clearCache();
+                        await refreshData();
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem 1rem',
+                        background: 'var(--bg-tertiary)',
+                        border: '1px solid var(--accent)',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        color: 'white'
+                      }}
+                      title="Clear cached data and refresh from Google Sheets"
+                    >
+                      🗑️ Clear Cache & Refresh
+                    </button>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
+                      Reload game data from Google Sheets
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <p style={{
               marginTop: '1rem',
