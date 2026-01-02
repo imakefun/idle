@@ -9,7 +9,7 @@ import Equipment from './components/Inventory/Equipment'
 import Zones from './components/Zones/Zones'
 import Combat from './components/Combat/Combat'
 import { createCharacter, consumeItem, equipItem, removeItemFromInventory, addItemToInventory } from './utils/characterHelpers'
-import { calculateXPForLevel, calculateDrainRate, formatCurrency, calculateAC } from './utils/calculations'
+import { calculateXPForLevel, calculateDrainRate, formatCurrency, calculateAC, calculateHPRegen } from './utils/calculations'
 import { clearCache } from './systems/DataSync'
 import { selectRandomMonster, processCombatRound } from './systems/CombatEngine'
 
@@ -58,6 +58,19 @@ function App() {
         const drainRate = calculateDrainRate(prev.level);
         updates.food = Math.max(0, prev.food - drainRate);
         updates.water = Math.max(0, prev.water - drainRate);
+      }
+
+      // HP Regeneration
+      if (prev.hp < prev.maxHp) {
+        const hpRegen = calculateHPRegen(
+          prev.maxHp,
+          prev.stats.STA,
+          prev.inCombat || false,
+          prev.isResting || false,
+          prev.food,
+          prev.water
+        );
+        updates.hp = Math.min(prev.maxHp, prev.hp + hpRegen);
       }
 
       // Combat processing
@@ -233,6 +246,7 @@ function App() {
       ...prev,
       target: newTarget,
       inCombat: true,
+      isResting: false, // Stop resting when combat starts
       lastAttackTick: tickCount // Start combat immediately
     }));
 
@@ -255,6 +269,13 @@ function App() {
       color: '#888888',
       message: `Combat ended.`
     });
+  };
+
+  const handleToggleRest = () => {
+    setGameState(prev => ({
+      ...prev,
+      isResting: !prev.isResting
+    }));
   };
 
   // Format time display
@@ -542,8 +563,12 @@ function App() {
               currentCamp={gameState.currentCamp}
               characterLevel={gameState.level}
               target={gameState.target}
+              isResting={gameState.isResting}
+              food={gameState.food}
+              water={gameState.water}
               onAttack={handleAttack}
               onClearTarget={handleClearTarget}
+              onToggleRest={handleToggleRest}
               combatLog={combatLog}
             />
 

@@ -115,8 +115,14 @@
   margin-bottom: 1rem;
 }
 
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
 .attack-button {
-  width: 100%;
   padding: 1rem;
   background: #ff4444;
   color: white;
@@ -144,12 +150,58 @@
   opacity: 0.5;
 }
 
+.rest-button {
+  padding: 1rem;
+  background: #4444ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rest-button:hover:not(:disabled) {
+  background: #6666ff;
+  transform: scale(1.02);
+}
+
+.rest-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.rest-button:disabled {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.rest-button.active {
+  background: #44ff44;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
 .combat-hint {
   margin-top: 0.5rem;
   text-align: center;
   font-size: 0.85rem;
   color: var(--text-secondary);
   font-style: italic;
+}
+
+.combat-hint.rest-warning {
+  color: #ffaa44;
 }
 
 /* Combat Log */
