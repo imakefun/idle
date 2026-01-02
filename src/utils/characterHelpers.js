@@ -35,28 +35,12 @@ export function generateStarterGear(classData, gameData) {
     });
   }
 
-  // Add class-specific starting weapon
-  let starterWeapon = null;
-
-  switch (classData.id) {
-    case 'warrior':
-    case 'rogue':
-      starterWeapon = items.rusty_dagger;
-      break;
-    case 'cleric':
-      starterWeapon = items.cracked_staff;
-      break;
-    case 'monk':
-      // Monks start unarmed, no weapon
-      starterWeapon = null;
-      break;
-    default:
-      starterWeapon = items.rusty_dagger;
-  }
-
-  // Equip the weapon if not monk
-  if (starterWeapon) {
-    equipped.primary = { ...starterWeapon, quantity: 1 };
+  // Add class-specific starting weapon (configured in class data)
+  if (classData.starterWeapon && classData.starterWeapon !== '') {
+    const starterWeapon = items[classData.starterWeapon];
+    if (starterWeapon) {
+      equipped.primary = { ...starterWeapon, quantity: 1 };
+    }
   }
 
   return { inventory, equipped };
