@@ -29,14 +29,19 @@ export async function loadGameData() {
     console.log('🌐 Fetching game data from Google Sheets...');
     const rawData = await fetchMultipleSheets(SHEET_NAMES);
 
-    // Check if any sheets failed to load
-    const failedSheets = Object.entries(rawData)
-      .filter(([_, data]) => data === null)
-      .map(([name]) => name);
+    // Check if any REQUIRED sheets failed to load
+    const requiredSheets = ['Races', 'Classes', 'Monsters', 'Items', 'Zones'];
+    const failedRequiredSheets = requiredSheets.filter(name => rawData[name] === null);
 
-    if (failedSheets.length > 0) {
-      console.warn('⚠️ Some sheets failed to load:', failedSheets);
-      throw new Error(`Failed to load sheets: ${failedSheets.join(', ')}`);
+    if (failedRequiredSheets.length > 0) {
+      console.warn('⚠️ Required sheets failed to load:', failedRequiredSheets);
+      throw new Error(`Failed to load required sheets: ${failedRequiredSheets.join(', ')}`);
+    }
+
+    // Check optional sheets and use fallback if missing
+    if (rawData.Camps === null || rawData.Camps === undefined) {
+      console.log('📋 Camps sheet not found, using fallback camps data');
+      rawData.Camps = fallbackData.Camps || [];
     }
 
     // Transform the data
