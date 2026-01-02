@@ -330,12 +330,20 @@ export const fallbackData = {
 
   Zones: [
     {
-      id: 'newbie_yard',
-      name: 'Newbie Yard',
+      id: 'qeynos',
+      name: 'Town of Qeynos',
       isSafe: 'TRUE',
       minLevel: '1',
+      maxLevel: '50',
+      description: 'A safe haven where merchants, trainers, and quest givers await'
+    },
+    {
+      id: 'newbie_yard',
+      name: 'Newbie Yard',
+      isSafe: 'FALSE',
+      minLevel: '1',
       maxLevel: '3',
-      description: 'A safe training area for beginners'
+      description: 'A training area for beginners with weak creatures'
     },
     {
       id: 'dark_forest',
@@ -344,6 +352,22 @@ export const fallbackData = {
       minLevel: '2',
       maxLevel: '5',
       description: 'A shadowy forest teeming with danger'
+    },
+    {
+      id: 'blackburrow',
+      name: 'Blackburrow',
+      isSafe: 'FALSE',
+      minLevel: '3',
+      maxLevel: '8',
+      description: 'The gnoll den, filled with dangerous creatures'
+    },
+    {
+      id: 'high_keep',
+      name: 'High Keep',
+      isSafe: 'FALSE',
+      minLevel: '5',
+      maxLevel: '12',
+      description: 'A fortress overrun by bandits and monsters'
     }
   ]
 };
