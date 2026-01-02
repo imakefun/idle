@@ -7,8 +7,12 @@ export default function Combat({
   currentCamp,
   characterLevel,
   target,
+  isResting,
+  food,
+  water,
   onAttack,
   onClearTarget,
+  onToggleRest,
   combatLog
 }) {
   if (!gameData || !gameData.zones) {
@@ -76,24 +80,43 @@ export default function Combat({
         </div>
       )}
 
-      {/* Attack Button */}
+      {/* Attack and Rest Buttons */}
       <div className="combat-actions">
-        <button
-          className="attack-button"
-          onClick={onAttack}
-          disabled={!canAttack}
-          title={
-            isSafeZone
-              ? 'Cannot attack in safe zones'
-              : !availableMonsters.length
-                ? 'No monsters available'
-                : 'Attack a random monster'
-          }
-        >
-          {target ? '⚔️ Continue Attack' : '⚔️ Attack'}
-        </button>
+        <div className="action-buttons">
+          <button
+            className="attack-button"
+            onClick={onAttack}
+            disabled={!canAttack}
+            title={
+              isSafeZone
+                ? 'Cannot attack in safe zones'
+                : !availableMonsters.length
+                  ? 'No monsters available'
+                  : 'Attack a random monster'
+            }
+          >
+            {target ? '⚔️ Continue Attack' : '⚔️ Attack'}
+          </button>
+          <button
+            className={`rest-button ${isResting ? 'active' : ''}`}
+            onClick={onToggleRest}
+            disabled={target !== null}
+            title={
+              target
+                ? 'Cannot rest while in combat'
+                : food > 30 && water > 30
+                  ? 'Rest for faster HP regeneration (3x)'
+                  : 'Need food and water > 30% to rest effectively'
+            }
+          >
+            {isResting ? '😴 Resting...' : '🛌 Rest'}
+          </button>
+        </div>
         {!canAttack && !isSafeZone && (
           <p className="combat-hint">Travel to a hostile zone to engage in combat</p>
+        )}
+        {isResting && (food <= 30 || water <= 30) && (
+          <p className="combat-hint rest-warning">⚠️ Low food/water reduces rest effectiveness</p>
         )}
       </div>
 

@@ -128,12 +128,48 @@ export function calculateTotalStats(raceStats, levelBonuses = {}, equipmentBonus
 
 /**
  * Calculate food/water drain rate per tick
- * Drains faster at higher levels (more active)
+ * Drains slower to make food/water last longer
  */
 export function calculateDrainRate(level) {
-  const baseRate = 0.05; // 0.05 per tick (10 ticks/second)
+  const baseRate = 0.015; // Reduced from 0.05 to make it 3x slower
   const levelMultiplier = 1 + (level * 0.01); // +1% per level
   return baseRate * levelMultiplier;
+}
+
+/**
+ * Calculate HP regeneration per tick
+ * Higher out of combat, lower in combat
+ * @param {number} maxHp - Character's max HP
+ * @param {number} stamina - Character's stamina stat
+ * @param {boolean} inCombat - Whether character is in combat
+ * @param {boolean} isResting - Whether character is resting
+ * @param {number} food - Food percentage (0-100)
+ * @param {number} water - Water percentage (0-100)
+ * @returns {number} - HP regenerated per tick
+ */
+export function calculateHPRegen(maxHp, stamina, inCombat, isResting, food, water) {
+  // Base regen scales with max HP and stamina
+  const baseRegen = (maxHp * 0.001) + (stamina * 0.01);
+
+  // In combat: very slow regen
+  if (inCombat) {
+    return Math.max(0.1, baseRegen * 0.1);
+  }
+
+  // Out of combat: normal regen
+  let multiplier = 1.0;
+
+  // Resting bonus (if food and water > 30%)
+  if (isResting && food > 30 && water > 30) {
+    multiplier = 3.0; // 3x regen when resting
+  }
+
+  // Starvation/dehydration penalty
+  if (food < 1 || water < 1) {
+    multiplier *= 0.1; // 90% penalty when starving/dehydrated
+  }
+
+  return Math.max(0.1, baseRegen * multiplier);
 }
 
 /**

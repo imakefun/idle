@@ -101,6 +101,7 @@ export function createCharacter(characterInfo, gameData) {
     // Combat
     target: null,
     inCombat: false,
+    isResting: false,
 
     // Inventory & Equipment
     inventory,
