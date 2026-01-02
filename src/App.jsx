@@ -7,9 +7,11 @@ import CharacterCreation from './components/Character/CharacterCreation'
 import Inventory from './components/Inventory/Inventory'
 import Equipment from './components/Inventory/Equipment'
 import Zones from './components/Zones/Zones'
+import Combat from './components/Combat/Combat'
 import { createCharacter, consumeItem, equipItem, removeItemFromInventory, addItemToInventory } from './utils/characterHelpers'
 import { calculateXPForLevel, calculateDrainRate, formatCurrency, calculateAC } from './utils/calculations'
 import { clearCache } from './systems/DataSync'
+import { selectRandomMonster, processCombatRound } from './systems/CombatEngine'
 
 function App() {
   // Load game data from Google Sheets
@@ -29,6 +31,14 @@ function App() {
     }
     return getInitialGameState();
   });
+
+  // Combat log state (not saved, resets on page load)
+  const [combatLog, setCombatLog] = useState([]);
+
+  // Add log entry
+  const addCombatLog = useCallback((logEntry) => {
+    setCombatLog(prev => [...prev.slice(-99), logEntry]); // Keep last 100 entries
+  }, []);
 
   // Save/load hooks
   const { saveGame, loadGame, hasSave, deleteSave } = useSaveGame(gameState, setGameState, true, 1000);
@@ -50,12 +60,54 @@ function App() {
         updates.water = Math.max(0, prev.water - drainRate);
       }
 
+      // Combat processing
+      if (prev.target && prev.inCombat) {
+        // Check weapon delay (attack every 2 seconds for now)
+        const timeSinceLastAttack = tickCount - (prev.lastAttackTick || 0);
+        const attackSpeed = prev.equipped?.primary?.delay ? parseInt(prev.equipped.primary.delay) / 10 : 2; // Delay / 10 = seconds
+
+        if (timeSinceLastAttack >= attackSpeed * 10) { // * 10 because tick is every 100ms
+          // Process combat round
+          const combatResult = processCombatRound(prev, prev.target, gameData);
+
+          // Add logs
+          combatResult.logs.forEach(log => addCombatLog(log));
+
+          // Apply updates
+          Object.assign(updates, combatResult.updates);
+
+          // Update target if still alive
+          if (!combatResult.monsterDied && combatResult.monster) {
+            updates.target = combatResult.monster;
+          }
+
+          // Handle player death
+          if (combatResult.updates.playerDied) {
+            // Respawn at bind point
+            updates.currentZone = prev.bindPoint;
+            updates.currentCamp = null;
+            updates.target = null;
+            updates.inCombat = false;
+            updates.hp = Math.floor(prev.maxHp * 0.5);
+            updates.stamina = Math.floor(prev.maxStamina * 0.5);
+
+            addCombatLog({
+              type: 'system',
+              color: '#ffff44',
+              message: `You wake up at your bind point...`
+            });
+          }
+
+          updates.lastAttackTick = tickCount;
+        }
+      }
+
       return {
         ...prev,
         ...updates
       };
     });
-  }, [gameState.gameStarted, gameState.characterCreated]);
+  }, [gameState.gameStarted, gameState.characterCreated, gameState.target, gameState.inCombat, gameData, addCombatLog]);
 
   // Start the game loop
   const { tickCount } = useGameLoop(onGameTick, gameState.gameStarted);
@@ -162,6 +214,47 @@ function App() {
       currentCamp: campId,
       target: null // Clear target when changing camps
     }));
+  };
+
+  // Combat handlers
+  const handleAttack = () => {
+    if (!gameData || !gameData.monsters) return;
+
+    // Get all available monsters (for now, all monsters)
+    // TODO: Filter by zone/camp
+    const monsters = Object.values(gameData.monsters);
+
+    if (monsters.length === 0) return;
+
+    // Select random monster and start combat
+    const newTarget = selectRandomMonster(monsters);
+
+    setGameState(prev => ({
+      ...prev,
+      target: newTarget,
+      inCombat: true,
+      lastAttackTick: tickCount // Start combat immediately
+    }));
+
+    addCombatLog({
+      type: 'system',
+      color: '#ffff44',
+      message: `You engage ${newTarget.name}!`
+    });
+  };
+
+  const handleClearTarget = () => {
+    setGameState(prev => ({
+      ...prev,
+      target: null,
+      inCombat: false
+    }));
+
+    addCombatLog({
+      type: 'system',
+      color: '#888888',
+      message: `Combat ended.`
+    });
   };
 
   // Format time display
@@ -441,6 +534,18 @@ function App() {
                 onDropItem={handleDropItem}
               />
             </div>
+
+            {/* Combat */}
+            <Combat
+              gameData={gameData}
+              currentZone={gameState.currentZone}
+              currentCamp={gameState.currentCamp}
+              characterLevel={gameState.level}
+              target={gameState.target}
+              onAttack={handleAttack}
+              onClearTarget={handleClearTarget}
+              combatLog={combatLog}
+            />
 
             {/* Zone Travel */}
             <div style={{ marginBottom: '1rem' }}>
