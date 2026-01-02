@@ -335,7 +335,7 @@ export const fallbackData = {
       isSafe: 'TRUE',
       minLevel: '1',
       maxLevel: '50',
-      description: 'A safe haven where merchants, trainers, and quest givers await'
+      description: 'A safe haven where merchants, trainers, and quest givers await. No monsters roam these protected streets.'
     },
     {
       id: 'newbie_yard',
@@ -343,31 +343,185 @@ export const fallbackData = {
       isSafe: 'FALSE',
       minLevel: '1',
       maxLevel: '3',
-      description: 'A training area for beginners with weak creatures'
+      description: 'Rolling hills and training grounds outside the city walls. Perfect for new adventurers to test their skills.'
     },
     {
       id: 'dark_forest',
       name: 'Dark Forest',
       isSafe: 'FALSE',
-      minLevel: '2',
-      maxLevel: '5',
-      description: 'A shadowy forest teeming with danger'
+      minLevel: '3',
+      maxLevel: '6',
+      description: 'Dense woodland shrouded in perpetual twilight. Strange sounds echo from the depths.'
     },
     {
       id: 'blackburrow',
       name: 'Blackburrow',
       isSafe: 'FALSE',
-      minLevel: '3',
-      maxLevel: '8',
-      description: 'The gnoll den, filled with dangerous creatures'
+      minLevel: '5',
+      maxLevel: '10',
+      description: 'A network of gnoll tunnels dug into the hillside. The stench of wet fur and decay fills the air.'
     },
     {
       id: 'high_keep',
       name: 'High Keep',
       isSafe: 'FALSE',
+      minLevel: '8',
+      maxLevel: '15',
+      description: 'Once a proud fortress, now overrun by bandits and fell creatures. Danger lurks in every shadow.'
+    }
+  ],
+
+  Camps: [
+    // Newbie Yard Camps
+    {
+      id: 'newbie_training_grounds',
+      name: 'Training Grounds',
+      zoneId: 'newbie_yard',
+      minLevel: '1',
+      maxLevel: '2',
+      description: 'A fenced area where guards watch over new fighters practicing on training dummies and weak creatures.'
+    },
+    {
+      id: 'newbie_practice_yard',
+      name: 'Practice Yard',
+      zoneId: 'newbie_yard',
+      minLevel: '1',
+      maxLevel: '2',
+      description: 'An open field dotted with scarecrows and inhabited by harmless rats and beetles.'
+    },
+    {
+      id: 'newbie_southern_fields',
+      name: 'Southern Fields',
+      zoneId: 'newbie_yard',
+      minLevel: '2',
+      maxLevel: '3',
+      description: 'Rolling grasslands south of the training area. Slightly tougher creatures wander here.'
+    },
+    {
+      id: 'newbie_northern_path',
+      name: 'Northern Path',
+      zoneId: 'newbie_yard',
+      minLevel: '2',
+      maxLevel: '3',
+      description: 'A dirt road leading toward the dark forest, where braver rats and snakes can be found.'
+    },
+
+    // Dark Forest Camps
+    {
+      id: 'forest_edge',
+      name: 'Forest Edge',
+      zoneId: 'dark_forest',
+      minLevel: '3',
+      maxLevel: '4',
+      description: 'The tree line where sunlight still penetrates. Snakes and spiders lurk in the underbrush.'
+    },
+    {
+      id: 'forest_grove',
+      name: 'Shadowed Grove',
+      zoneId: 'dark_forest',
+      minLevel: '4',
+      maxLevel: '5',
+      description: 'A clearing surrounded by ancient oaks. Wolves prowl between the trees.'
+    },
+    {
+      id: 'forest_depths',
+      name: 'Forest Depths',
+      zoneId: 'dark_forest',
       minLevel: '5',
+      maxLevel: '6',
+      description: 'The heart of the forest where light barely reaches. Dangerous predators make their dens here.'
+    },
+    {
+      id: 'forest_ruins',
+      name: 'Forgotten Ruins',
+      zoneId: 'dark_forest',
+      minLevel: '5',
+      maxLevel: '6',
+      description: 'Crumbling stone structures overgrown with vines. Undead creatures sometimes rise from the earth.'
+    },
+    {
+      id: 'forest_stream',
+      name: 'Dark Stream',
+      zoneId: 'dark_forest',
+      minLevel: '4',
+      maxLevel: '5',
+      description: 'A murky creek winding through the woods. Water-dwelling creatures and their prey gather here.'
+    },
+
+    // Blackburrow Camps
+    {
+      id: 'burrow_entrance',
+      name: 'Burrow Entrance',
+      zoneId: 'blackburrow',
+      minLevel: '5',
+      maxLevel: '6',
+      description: 'The mouth of the gnoll warren. Young gnolls guard the entryway.'
+    },
+    {
+      id: 'burrow_tunnels',
+      name: 'Winding Tunnels',
+      zoneId: 'blackburrow',
+      minLevel: '6',
+      maxLevel: '7',
+      description: 'Narrow passages carved through earth and stone. Gnoll scouts patrol these halls.'
+    },
+    {
+      id: 'burrow_den',
+      name: 'Central Den',
+      zoneId: 'blackburrow',
+      minLevel: '7',
+      maxLevel: '9',
+      description: 'A large cavern where gnoll families make their home. Warriors train here.'
+    },
+    {
+      id: 'burrow_depths',
+      name: 'Deep Chambers',
+      zoneId: 'blackburrow',
+      minLevel: '8',
+      maxLevel: '10',
+      description: 'The lowest levels where the strongest gnolls dwell. Treasure is rumored to be hidden here.'
+    },
+
+    // High Keep Camps
+    {
+      id: 'keep_courtyard',
+      name: 'Outer Courtyard',
+      zoneId: 'high_keep',
+      minLevel: '8',
+      maxLevel: '10',
+      description: 'The fortress entrance, now controlled by bandits and their guard dogs.'
+    },
+    {
+      id: 'keep_barracks',
+      name: 'Ruined Barracks',
+      zoneId: 'high_keep',
+      minLevel: '9',
+      maxLevel: '11',
+      description: 'Former soldier quarters now occupied by organized bandit gangs.'
+    },
+    {
+      id: 'keep_armory',
+      name: 'Old Armory',
+      zoneId: 'high_keep',
+      minLevel: '10',
       maxLevel: '12',
-      description: 'A fortress overrun by bandits and monsters'
+      description: 'Where weapons were once stored. Bandit leaders hoard stolen goods here.'
+    },
+    {
+      id: 'keep_towers',
+      name: 'Guard Towers',
+      zoneId: 'high_keep',
+      minLevel: '11',
+      maxLevel: '13',
+      description: 'Tall watchtowers offering strategic positions. Elite bandits and archers nest here.'
+    },
+    {
+      id: 'keep_throne',
+      name: 'Throne Room',
+      zoneId: 'high_keep',
+      minLevel: '12',
+      maxLevel: '15',
+      description: 'The heart of the fortress where a bandit lord has claimed the ancient throne.'
     }
   ]
 };

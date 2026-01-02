@@ -149,7 +149,18 @@ function App() {
     setGameState(prev => ({
       ...prev,
       currentZone: newZoneId,
+      currentCamp: null, // Clear camp when changing zones
       target: null // Clear target when changing zones
+    }));
+  };
+
+  // Handle camp travel
+  const handleCampChange = (zoneId, campId) => {
+    setGameState(prev => ({
+      ...prev,
+      currentZone: zoneId,
+      currentCamp: campId,
+      target: null // Clear target when changing camps
     }));
   };
 
@@ -435,8 +446,10 @@ function App() {
               <Zones
                 gameData={gameData}
                 currentZone={gameState.currentZone}
+                currentCamp={gameState.currentCamp}
                 characterLevel={gameState.level}
                 onZoneChange={handleZoneChange}
+                onCampChange={handleCampChange}
               />
             </div>
 
