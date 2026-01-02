@@ -10,7 +10,7 @@ const CACHE_KEY = 'norrathIdleGameData_v1';
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 // List of all sheets to fetch
-const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones'];
+const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps'];
 
 /**
  * Load game data with caching and fallback support
@@ -69,7 +69,8 @@ function transformGameData(rawData) {
     classes: transformClasses(rawData.Classes || []),
     monsters: transformMonsters(rawData.Monsters || []),
     items: transformItems(rawData.Items || []),
-    zones: transformZones(rawData.Zones || [])
+    zones: transformZones(rawData.Zones || []),
+    camps: transformCamps(rawData.Camps || [])
   };
 }
 
@@ -196,6 +197,26 @@ function transformZones(rows) {
 }
 
 /**
+ * Transform Camps sheet data
+ */
+function transformCamps(rows) {
+  const camps = {};
+  rows.forEach(row => {
+    if (!row.id) return;
+
+    camps[row.id] = {
+      id: row.id,
+      name: row.name,
+      zoneId: row.zoneId || '',
+      minLevel: parseInt(row.minLevel) || 1,
+      maxLevel: parseInt(row.maxLevel) || 1,
+      description: row.description || ''
+    };
+  });
+  return camps;
+}
+
+/**
  * Validate loaded game data
  */
 function validateGameData(data) {
@@ -216,6 +237,9 @@ function validateGameData(data) {
   }
   if (Object.keys(data.zones).length === 0) {
     errors.push('No zones loaded');
+  }
+  if (Object.keys(data.camps || {}).length === 0) {
+    console.warn('⚠️ No camps loaded - add a Camps sheet for micro-progression zones');
   }
 
   if (errors.length > 0) {

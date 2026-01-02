@@ -95,6 +95,7 @@ export function createCharacter(characterInfo, gameData) {
 
     // Location
     currentZone: 'qeynos',
+    currentCamp: null, // No camp selected initially
     bindPoint: 'qeynos',
 
     // Combat
