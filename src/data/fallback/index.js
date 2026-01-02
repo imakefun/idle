@@ -157,6 +157,193 @@ export const fallbackData = {
       ac: '15',
       xpReward: '35',
       isRare: 'FALSE'
+    },
+    {
+      id: 'young_spider',
+      name: 'a young spider',
+      level: '3',
+      hp: '45',
+      minDmg: '3',
+      maxDmg: '6',
+      ac: '10',
+      xpReward: '22',
+      isRare: 'FALSE'
+    },
+    {
+      id: 'gnoll_scout',
+      name: 'a gnoll scout',
+      level: '5',
+      hp: '80',
+      minDmg: '5',
+      maxDmg: '11',
+      ac: '18',
+      xpReward: '50',
+      isRare: 'FALSE'
+    },
+    {
+      id: 'dark_wolf',
+      name: 'a dark wolf',
+      level: '5',
+      hp: '75',
+      minDmg: '5',
+      maxDmg: '10',
+      ac: '16',
+      xpReward: '45',
+      isRare: 'FALSE'
+    },
+    {
+      id: 'gnoll_guard',
+      name: 'a gnoll guard',
+      level: '6',
+      hp: '95',
+      minDmg: '6',
+      maxDmg: '13',
+      ac: '20',
+      xpReward: '60',
+      isRare: 'FALSE'
+    },
+    {
+      id: 'skeletal_warrior',
+      name: 'a skeletal warrior',
+      level: '7',
+      hp: '110',
+      minDmg: '7',
+      maxDmg: '15',
+      ac: '22',
+      xpReward: '75',
+      isRare: 'FALSE'
+    },
+    {
+      id: 'gnoll_warrior',
+      name: 'a gnoll warrior',
+      level: '7',
+      hp: '115',
+      minDmg: '7',
+      maxDmg: '16',
+      ac: '24',
+      xpReward: '80',
+      isRare: 'FALSE'
+    },
+    {
+      id: 'gnoll_shaman',
+      name: 'a gnoll shaman',
+      level: '8',
+      hp: '125',
+      minDmg: '8',
+      maxDmg: '17',
+      ac: '26',
+      xpReward: '90',
+      isRare: 'FALSE'
+    },
+    {
+      id: 'bandit_thug',
+      name: 'a bandit thug',
+      level: '8',
+      hp: '120',
+      minDmg: '8',
+      maxDmg: '16',
+      ac: '25',
+      xpReward: '85',
+      isRare: 'FALSE'
+    },
+    {
+      id: 'guard_dog',
+      name: 'a guard dog',
+      level: '8',
+      hp: '105',
+      minDmg: '7',
+      maxDmg: '14',
+      ac: '22',
+      xpReward: '70',
+      isRare: 'FALSE'
+    },
+    {
+      id: 'bandit_guard',
+      name: 'a bandit guard',
+      level: '9',
+      hp: '135',
+      minDmg: '9',
+      maxDmg: '18',
+      ac: '28',
+      xpReward: '100',
+      isRare: 'FALSE'
+    },
+    {
+      id: 'bandit_archer',
+      name: 'a bandit archer',
+      level: '10',
+      hp: '130',
+      minDmg: '9',
+      maxDmg: '19',
+      ac: '26',
+      xpReward: '105',
+      isRare: 'FALSE'
+    },
+    {
+      id: 'bandit_veteran',
+      name: 'a bandit veteran',
+      level: '11',
+      hp: '150',
+      minDmg: '10',
+      maxDmg: '21',
+      ac: '30',
+      xpReward: '120',
+      isRare: 'FALSE'
+    },
+    {
+      id: 'bandit_mage',
+      name: 'a bandit mage',
+      level: '11',
+      hp: '140',
+      minDmg: '11',
+      maxDmg: '22',
+      ac: '28',
+      xpReward: '125',
+      isRare: 'FALSE'
+    },
+    {
+      id: 'bandit_captain',
+      name: 'a bandit captain',
+      level: '12',
+      hp: '165',
+      minDmg: '11',
+      maxDmg: '23',
+      ac: '32',
+      xpReward: '140',
+      isRare: 'FALSE'
+    },
+    {
+      id: 'elite_bandit',
+      name: 'an elite bandit',
+      level: '13',
+      hp: '180',
+      minDmg: '12',
+      maxDmg: '25',
+      ac: '34',
+      xpReward: '160',
+      isRare: 'FALSE'
+    },
+    {
+      id: 'bandit_champion',
+      name: 'a bandit champion',
+      level: '14',
+      hp: '200',
+      minDmg: '13',
+      maxDmg: '27',
+      ac: '36',
+      xpReward: '180',
+      isRare: 'FALSE'
+    },
+    {
+      id: 'bandit_lord',
+      name: 'the bandit lord',
+      level: '15',
+      hp: '250',
+      minDmg: '15',
+      maxDmg: '30',
+      ac: '40',
+      xpReward: '250',
+      isRare: 'TRUE'
     }
   ],
 
@@ -778,6 +965,104 @@ export const fallbackData = {
       maxLevel: '15',
       description: 'The heart of the fortress where a bandit lord has claimed the ancient throne.'
     }
+  ],
+
+  Spawns: [
+    // Newbie Yard - Training Grounds (Level 1-2)
+    { id: 'spawn_training_rat', campId: 'newbie_training_grounds', monsterId: 'giant_rat', weight: '100', minLevel: '1', maxLevel: '2' },
+    { id: 'spawn_training_beetle', campId: 'newbie_training_grounds', monsterId: 'fire_beetle', weight: '60', minLevel: '1', maxLevel: '2' },
+    { id: 'spawn_training_snake', campId: 'newbie_training_grounds', monsterId: 'snake', weight: '30', minLevel: '1', maxLevel: '2' },
+
+    // Newbie Yard - Practice Yard (Level 1-2)
+    { id: 'spawn_practice_rat', campId: 'newbie_practice_yard', monsterId: 'giant_rat', weight: '80', minLevel: '1', maxLevel: '2' },
+    { id: 'spawn_practice_beetle', campId: 'newbie_practice_yard', monsterId: 'fire_beetle', weight: '80', minLevel: '1', maxLevel: '2' },
+    { id: 'spawn_practice_snake', campId: 'newbie_practice_yard', monsterId: 'snake', weight: '40', minLevel: '1', maxLevel: '2' },
+
+    // Newbie Yard - Southern Fields (Level 2-3)
+    { id: 'spawn_southern_rat', campId: 'newbie_southern_fields', monsterId: 'giant_rat', weight: '50', minLevel: '2', maxLevel: '3' },
+    { id: 'spawn_southern_beetle', campId: 'newbie_southern_fields', monsterId: 'fire_beetle', weight: '70', minLevel: '2', maxLevel: '3' },
+    { id: 'spawn_southern_snake', campId: 'newbie_southern_fields', monsterId: 'snake', weight: '100', minLevel: '2', maxLevel: '3' },
+    { id: 'spawn_southern_spider', campId: 'newbie_southern_fields', monsterId: 'young_spider', weight: '60', minLevel: '2', maxLevel: '3' },
+
+    // Newbie Yard - Northern Path (Level 2-3)
+    { id: 'spawn_northern_rat', campId: 'newbie_northern_path', monsterId: 'giant_rat', weight: '60', minLevel: '2', maxLevel: '3' },
+    { id: 'spawn_northern_beetle', campId: 'newbie_northern_path', monsterId: 'fire_beetle', weight: '50', minLevel: '2', maxLevel: '3' },
+    { id: 'spawn_northern_snake', campId: 'newbie_northern_path', monsterId: 'snake', weight: '100', minLevel: '2', maxLevel: '3' },
+    { id: 'spawn_northern_spider', campId: 'newbie_northern_path', monsterId: 'young_spider', weight: '70', minLevel: '2', maxLevel: '3' },
+
+    // Dark Forest - Forest Edge (Level 3-4)
+    { id: 'spawn_edge_snake', campId: 'forest_edge', monsterId: 'snake', weight: '100', minLevel: '3', maxLevel: '4' },
+    { id: 'spawn_edge_gnoll', campId: 'forest_edge', monsterId: 'gnoll_pup', weight: '80', minLevel: '3', maxLevel: '4' },
+    { id: 'spawn_edge_beetle', campId: 'forest_edge', monsterId: 'fire_beetle', weight: '40', minLevel: '3', maxLevel: '4' },
+    { id: 'spawn_edge_spider', campId: 'forest_edge', monsterId: 'young_spider', weight: '70', minLevel: '3', maxLevel: '4' },
+
+    // Dark Forest - Shadowed Grove (Level 4-5)
+    { id: 'spawn_grove_gnoll', campId: 'forest_grove', monsterId: 'gnoll_pup', weight: '80', minLevel: '4', maxLevel: '5' },
+    { id: 'spawn_grove_snake', campId: 'forest_grove', monsterId: 'snake', weight: '50', minLevel: '4', maxLevel: '5' },
+    { id: 'spawn_grove_skeleton', campId: 'forest_grove', monsterId: 'decaying_skeleton', weight: '100', minLevel: '4', maxLevel: '5' },
+    { id: 'spawn_grove_wolf', campId: 'forest_grove', monsterId: 'dark_wolf', weight: '70', minLevel: '4', maxLevel: '5' },
+
+    // Dark Forest - Forest Depths (Level 5-6)
+    { id: 'spawn_depths_scout', campId: 'forest_depths', monsterId: 'gnoll_scout', weight: '100', minLevel: '5', maxLevel: '6' },
+    { id: 'spawn_depths_wolf', campId: 'forest_depths', monsterId: 'dark_wolf', weight: '90', minLevel: '5', maxLevel: '6' },
+    { id: 'spawn_depths_skeleton', campId: 'forest_depths', monsterId: 'decaying_skeleton', weight: '70', minLevel: '5', maxLevel: '6' },
+
+    // Dark Forest - Forgotten Ruins (Level 5-6)
+    { id: 'spawn_ruins_skeleton', campId: 'forest_ruins', monsterId: 'decaying_skeleton', weight: '100', minLevel: '5', maxLevel: '6' },
+    { id: 'spawn_ruins_scout', campId: 'forest_ruins', monsterId: 'gnoll_scout', weight: '80', minLevel: '5', maxLevel: '6' },
+    { id: 'spawn_ruins_wolf', campId: 'forest_ruins', monsterId: 'dark_wolf', weight: '60', minLevel: '5', maxLevel: '6' },
+
+    // Dark Forest - Dark Stream (Level 4-5)
+    { id: 'spawn_stream_snake', campId: 'forest_stream', monsterId: 'snake', weight: '100', minLevel: '4', maxLevel: '5' },
+    { id: 'spawn_stream_gnoll', campId: 'forest_stream', monsterId: 'gnoll_pup', weight: '70', minLevel: '4', maxLevel: '5' },
+    { id: 'spawn_stream_skeleton', campId: 'forest_stream', monsterId: 'decaying_skeleton', weight: '80', minLevel: '4', maxLevel: '5' },
+    { id: 'spawn_stream_wolf', campId: 'forest_stream', monsterId: 'dark_wolf', weight: '50', minLevel: '4', maxLevel: '5' },
+
+    // Blackburrow - Burrow Entrance (Level 5-6)
+    { id: 'spawn_entrance_scout', campId: 'burrow_entrance', monsterId: 'gnoll_scout', weight: '100', minLevel: '5', maxLevel: '6' },
+    { id: 'spawn_entrance_pup', campId: 'burrow_entrance', monsterId: 'gnoll_pup', weight: '60', minLevel: '5', maxLevel: '6' },
+    { id: 'spawn_entrance_wolf', campId: 'burrow_entrance', monsterId: 'dark_wolf', weight: '70', minLevel: '5', maxLevel: '6' },
+
+    // Blackburrow - Winding Tunnels (Level 6-7)
+    { id: 'spawn_tunnels_guard', campId: 'burrow_tunnels', monsterId: 'gnoll_guard', weight: '100', minLevel: '6', maxLevel: '7' },
+    { id: 'spawn_tunnels_scout', campId: 'burrow_tunnels', monsterId: 'gnoll_scout', weight: '70', minLevel: '6', maxLevel: '7' },
+    { id: 'spawn_tunnels_skeleton', campId: 'burrow_tunnels', monsterId: 'skeletal_warrior', weight: '80', minLevel: '6', maxLevel: '7' },
+
+    // Blackburrow - Central Den (Level 7-9)
+    { id: 'spawn_den_warrior', campId: 'burrow_den', monsterId: 'gnoll_warrior', weight: '100', minLevel: '7', maxLevel: '9' },
+    { id: 'spawn_den_guard', campId: 'burrow_den', monsterId: 'gnoll_guard', weight: '70', minLevel: '7', maxLevel: '9' },
+    { id: 'spawn_den_skeleton', campId: 'burrow_den', monsterId: 'skeletal_warrior', weight: '90', minLevel: '7', maxLevel: '9' },
+
+    // Blackburrow - Deep Chambers (Level 8-10)
+    { id: 'spawn_chambers_shaman', campId: 'burrow_depths', monsterId: 'gnoll_shaman', weight: '100', minLevel: '8', maxLevel: '10' },
+    { id: 'spawn_chambers_warrior', campId: 'burrow_depths', monsterId: 'gnoll_warrior', weight: '80', minLevel: '8', maxLevel: '10' },
+    { id: 'spawn_chambers_skeleton', campId: 'burrow_depths', monsterId: 'skeletal_warrior', weight: '90', minLevel: '8', maxLevel: '10' },
+
+    // High Keep - Outer Courtyard (Level 8-10)
+    { id: 'spawn_courtyard_thug', campId: 'keep_courtyard', monsterId: 'bandit_thug', weight: '100', minLevel: '8', maxLevel: '10' },
+    { id: 'spawn_courtyard_dog', campId: 'keep_courtyard', monsterId: 'guard_dog', weight: '80', minLevel: '8', maxLevel: '10' },
+    { id: 'spawn_courtyard_guard', campId: 'keep_courtyard', monsterId: 'bandit_guard', weight: '60', minLevel: '8', maxLevel: '10' },
+
+    // High Keep - Ruined Barracks (Level 9-11)
+    { id: 'spawn_barracks_guard', campId: 'keep_barracks', monsterId: 'bandit_guard', weight: '100', minLevel: '9', maxLevel: '11' },
+    { id: 'spawn_barracks_thug', campId: 'keep_barracks', monsterId: 'bandit_thug', weight: '70', minLevel: '9', maxLevel: '11' },
+    { id: 'spawn_barracks_archer', campId: 'keep_barracks', monsterId: 'bandit_archer', weight: '80', minLevel: '9', maxLevel: '11' },
+
+    // High Keep - Old Armory (Level 10-12)
+    { id: 'spawn_armory_veteran', campId: 'keep_armory', monsterId: 'bandit_veteran', weight: '100', minLevel: '10', maxLevel: '12' },
+    { id: 'spawn_armory_archer', campId: 'keep_armory', monsterId: 'bandit_archer', weight: '80', minLevel: '10', maxLevel: '12' },
+    { id: 'spawn_armory_captain', campId: 'keep_armory', monsterId: 'bandit_captain', weight: '60', minLevel: '10', maxLevel: '12' },
+
+    // High Keep - Guard Towers (Level 11-13)
+    { id: 'spawn_towers_elite', campId: 'keep_towers', monsterId: 'elite_bandit', weight: '100', minLevel: '11', maxLevel: '13' },
+    { id: 'spawn_towers_mage', campId: 'keep_towers', monsterId: 'bandit_mage', weight: '90', minLevel: '11', maxLevel: '13' },
+    { id: 'spawn_towers_veteran', campId: 'keep_towers', monsterId: 'bandit_veteran', weight: '70', minLevel: '11', maxLevel: '13' },
+
+    // High Keep - Throne Room (Level 12-15)
+    { id: 'spawn_throne_champion', campId: 'keep_throne', monsterId: 'bandit_champion', weight: '100', minLevel: '12', maxLevel: '15' },
+    { id: 'spawn_throne_elite', campId: 'keep_throne', monsterId: 'elite_bandit', weight: '80', minLevel: '12', maxLevel: '15' },
+    { id: 'spawn_throne_captain', campId: 'keep_throne', monsterId: 'bandit_captain', weight: '60', minLevel: '12', maxLevel: '15' },
+    { id: 'spawn_throne_lord', campId: 'keep_throne', monsterId: 'bandit_lord', weight: '30', minLevel: '12', maxLevel: '15' }
   ],
 
   Skills: [
