@@ -164,6 +164,16 @@ function transformItems(rows) {
   rows.forEach(row => {
     if (!row.id) return;
 
+    // Parse class restrictions (comma-separated, empty = all classes)
+    const allowedClasses = row.classes && row.classes !== ''
+      ? row.classes.split(',').map(c => c.trim())
+      : [];
+
+    // Parse race restrictions (comma-separated, empty = all races)
+    const allowedRaces = row.races && row.races !== ''
+      ? row.races.split(',').map(r => r.trim())
+      : [];
+
     items[row.id] = {
       id: row.id,
       name: row.name,
@@ -181,7 +191,36 @@ function transformItems(rows) {
         foodValue: parseInt(row.foodValue) || 0,
         waterValue: parseInt(row.waterValue) || 0
       },
-      icon: row.icon || ''
+      icon: row.icon || '',
+
+      // Weapon properties
+      weaponType: row.weaponType || '',
+      handedness: row.handedness || '', // MH, OH, 1H, 2H
+
+      // Shield properties
+      shieldType: row.shieldType || '', // buckler, small, medium, large, tower
+
+      // Armor properties
+      armorType: row.armorType || '', // cloth, leather, chain, plate
+
+      // Class and race restrictions
+      allowedClasses: allowedClasses, // Empty array = all classes
+      allowedRaces: allowedRaces, // Empty array = all races
+
+      // Ammo system
+      ammoType: row.ammoType || '', // arrow, bolt (for ammo items)
+      requiredAmmo: row.requiredAmmo || '', // arrow, bolt (for ranged weapons)
+
+      // Stat bonuses
+      bonusStats: {
+        STR: parseInt(row.STR) || 0,
+        STA: parseInt(row.STA) || 0,
+        AGI: parseInt(row.AGI) || 0,
+        DEX: parseInt(row.DEX) || 0,
+        WIS: parseInt(row.WIS) || 0,
+        INT: parseInt(row.INT) || 0,
+        CHA: parseInt(row.CHA) || 0
+      }
     };
   });
   return items;
