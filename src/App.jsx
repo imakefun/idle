@@ -531,7 +531,7 @@ function App() {
 
               {/* HP and Stamina */}
               <div style={{ marginBottom: '0.5rem' }}>
-                <strong>HP:</strong> {gameState.hp}/{gameState.maxHp}
+                <strong>HP:</strong> {Math.floor(gameState.hp)}/{Math.floor(gameState.maxHp)}
                 <div style={{
                   width: '100%',
                   height: '8px',
@@ -541,7 +541,7 @@ function App() {
                   marginTop: '0.25rem'
                 }}>
                   <div style={{
-                    width: `${(gameState.hp / gameState.maxHp) * 100}%`,
+                    width: `${(Math.floor(gameState.hp) / Math.floor(gameState.maxHp)) * 100}%`,
                     height: '100%',
                     background: '#ff0000',
                     transition: 'width 0.3s'
@@ -550,7 +550,7 @@ function App() {
               </div>
 
               <div style={{ marginBottom: '0.5rem' }}>
-                <strong>Stamina:</strong> {Math.floor(gameState.stamina)}/{gameState.maxStamina}
+                <strong>Stamina:</strong> {Math.floor(gameState.stamina)}/{Math.floor(gameState.maxStamina)}
                 <div style={{
                   width: '100%',
                   height: '8px',
@@ -560,7 +560,7 @@ function App() {
                   marginTop: '0.25rem'
                 }}>
                   <div style={{
-                    width: `${(gameState.stamina / gameState.maxStamina) * 100}%`,
+                    width: `${(Math.floor(gameState.stamina) / Math.floor(gameState.maxStamina)) * 100}%`,
                     height: '100%',
                     background: '#ffff00',
                     transition: 'width 0.3s'

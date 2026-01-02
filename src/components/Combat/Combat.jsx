@@ -77,11 +77,11 @@ export default function Combat({
             </p>
             <p className="target-stats">Level {target.level}</p>
             <div className="target-health">
-              <span>HP: {target.currentHp}/{target.maxHp}</span>
+              <span>HP: {Math.floor(target.currentHp)}/{Math.floor(target.maxHp)}</span>
               <div className="hp-bar">
                 <div
                   className="hp-bar-fill"
-                  style={{ width: `${(target.currentHp / target.maxHp) * 100}%` }}
+                  style={{ width: `${(Math.floor(target.currentHp) / Math.floor(target.maxHp)) * 100}%` }}
                 />
               </div>
             </div>
