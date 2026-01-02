@@ -94,8 +94,8 @@ export function createCharacter(characterInfo, gameData) {
     currency: 0, // Start with 0 copper
 
     // Location
-    currentZone: 'newbie_yard',
-    bindPoint: 'newbie_yard',
+    currentZone: 'qeynos',
+    bindPoint: 'qeynos',
 
     // Combat
     target: null,

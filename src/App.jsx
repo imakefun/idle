@@ -6,6 +6,7 @@ import useGameData from './hooks/useGameData'
 import CharacterCreation from './components/Character/CharacterCreation'
 import Inventory from './components/Inventory/Inventory'
 import Equipment from './components/Inventory/Equipment'
+import Zones from './components/Zones/Zones'
 import { createCharacter, consumeItem, equipItem, removeItemFromInventory, addItemToInventory } from './utils/characterHelpers'
 import { calculateXPForLevel, calculateDrainRate, formatCurrency, calculateAC } from './utils/calculations'
 import { clearCache } from './systems/DataSync'
@@ -141,6 +142,15 @@ function App() {
   const handleClearCacheAndRefresh = () => {
     clearCache();
     refreshData();
+  };
+
+  // Handle zone travel
+  const handleZoneChange = (newZoneId) => {
+    setGameState(prev => ({
+      ...prev,
+      currentZone: newZoneId,
+      target: null // Clear target when changing zones
+    }));
   };
 
   // Format time display
@@ -417,6 +427,16 @@ function App() {
                 onUseItem={handleUseItem}
                 onEquipItem={handleEquipItem}
                 onDropItem={handleDropItem}
+              />
+            </div>
+
+            {/* Zone Travel */}
+            <div style={{ marginBottom: '1rem' }}>
+              <Zones
+                gameData={gameData}
+                currentZone={gameState.currentZone}
+                characterLevel={gameState.level}
+                onZoneChange={handleZoneChange}
               />
             </div>
 
