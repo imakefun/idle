@@ -166,11 +166,13 @@ export function calculateSkillUpChance(currentSkill, skillCap) {
 
 /**
  * Get weapon skill for a given weapon type
+ * @param {string} weaponType - The weapon type
+ * @param {Object} skillDefinitions - Optional skill definitions from gameData
  */
-export function getWeaponSkill(weaponType) {
+export function getWeaponSkill(weaponType, skillDefinitions = SKILL_DEFINITIONS) {
   if (!weaponType) return 'handToHand';
 
-  for (const [skillId, skill] of Object.entries(SKILL_DEFINITIONS)) {
+  for (const [skillId, skill] of Object.entries(skillDefinitions)) {
     if (skill.category === 'weapon' && skill.weaponTypes?.includes(weaponType)) {
       return skillId;
     }

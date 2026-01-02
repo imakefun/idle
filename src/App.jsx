@@ -637,7 +637,7 @@ function App() {
             </div>
 
             {/* Skills */}
-            <Skills skills={gameState.skills} />
+            <Skills skills={gameState.skills} skillDefinitions={gameData?.skills} />
 
             {/* Guild Master (only in safe zones) */}
             {gameData?.zones?.[gameState.currentZone]?.isSafe && (

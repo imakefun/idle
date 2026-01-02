@@ -6,7 +6,7 @@
 import './Skills.css';
 import { SKILL_DEFINITIONS } from '../../data/skills';
 
-export default function Skills({ skills = {} }) {
+export default function Skills({ skills = {}, skillDefinitions = SKILL_DEFINITIONS }) {
   // Group skills by category
   const groupedSkills = {
     combat: [],
@@ -15,7 +15,7 @@ export default function Skills({ skills = {} }) {
   };
 
   Object.entries(skills).forEach(([skillId, skillData]) => {
-    const definition = SKILL_DEFINITIONS[skillId];
+    const definition = skillDefinitions[skillId];
     if (definition) {
       groupedSkills[definition.category].push({
         id: skillId,

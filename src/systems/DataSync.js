@@ -10,7 +10,7 @@ const CACHE_KEY = 'norrathIdleGameData_v1';
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 // List of all sheets to fetch
-const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps'];
+const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps', 'Skills'];
 
 /**
  * Load game data with caching and fallback support
@@ -44,6 +44,11 @@ export async function loadGameData() {
       rawData.Camps = fallbackData.Camps || [];
     }
 
+    if (rawData.Skills === null || rawData.Skills === undefined) {
+      console.log('📋 Skills sheet not found, using fallback skills data');
+      rawData.Skills = fallbackData.Skills || [];
+    }
+
     // Transform the data
     const transformedData = transformGameData(rawData);
 
@@ -75,7 +80,8 @@ function transformGameData(rawData) {
     monsters: transformMonsters(rawData.Monsters || []),
     items: transformItems(rawData.Items || []),
     zones: transformZones(rawData.Zones || []),
-    camps: transformCamps(rawData.Camps || [])
+    camps: transformCamps(rawData.Camps || []),
+    skills: transformSkills(rawData.Skills || [])
   };
 }
 
@@ -219,6 +225,37 @@ function transformCamps(rows) {
     };
   });
   return camps;
+}
+
+/**
+ * Transform Skills sheet data
+ */
+function transformSkills(rows) {
+  const skills = {};
+  rows.forEach(row => {
+    if (!row.id) return;
+
+    // Parse weapon types (comma-separated)
+    const weaponTypes = row.weaponTypes && row.weaponTypes !== ''
+      ? row.weaponTypes.split(',').map(t => t.trim())
+      : [];
+
+    skills[row.id] = {
+      id: row.id,
+      name: row.name,
+      type: row.type || 'passive',
+      category: row.category || 'combat',
+      description: row.description || '',
+      staminaCost: parseInt(row.staminaCost) || 0,
+      baseProcChance: parseFloat(row.baseProcChance) || 0,
+      damageBonus: parseInt(row.damageBonus) || 0,
+      damageMultiplier: parseFloat(row.damageMultiplier) || 0,
+      requiresShield: row.requiresShield === 'TRUE' || row.requiresShield === true,
+      requiresPiercingWeapon: row.requiresPiercing === 'TRUE' || row.requiresPiercing === true,
+      weaponTypes: weaponTypes
+    };
+  });
+  return skills;
 }
 
 /**
