@@ -169,7 +169,8 @@ export const fallbackData = {
       ac: '0',
       slot: 'primary',
       foodValue: '0',
-      waterValue: '0'
+      waterValue: '0',
+      icon: '🗡️'
     },
     {
       id: 'worn_short_sword',
@@ -183,7 +184,8 @@ export const fallbackData = {
       ac: '0',
       slot: 'primary',
       foodValue: '0',
-      waterValue: '0'
+      waterValue: '0',
+      icon: '⚔️'
     },
     {
       id: 'cracked_staff',
@@ -197,7 +199,8 @@ export const fallbackData = {
       ac: '0',
       slot: 'primary',
       foodValue: '0',
-      waterValue: '0'
+      waterValue: '0',
+      icon: '🪄'
     },
     {
       id: 'tattered_cloth_robe',
@@ -211,7 +214,8 @@ export const fallbackData = {
       ac: '2',
       slot: 'chest',
       foodValue: '0',
-      waterValue: '0'
+      waterValue: '0',
+      icon: '👘'
     },
     {
       id: 'leather_tunic',
@@ -225,7 +229,8 @@ export const fallbackData = {
       ac: '4',
       slot: 'chest',
       foodValue: '0',
-      waterValue: '0'
+      waterValue: '0',
+      icon: '🛡️'
     },
     {
       id: 'rat_ear',
@@ -239,7 +244,8 @@ export const fallbackData = {
       ac: '0',
       slot: 'none',
       foodValue: '0',
-      waterValue: '0'
+      waterValue: '0',
+      icon: '👂'
     },
     {
       id: 'snake_scales',
@@ -253,7 +259,8 @@ export const fallbackData = {
       ac: '0',
       slot: 'none',
       foodValue: '0',
-      waterValue: '0'
+      waterValue: '0',
+      icon: '🐍'
     },
     {
       id: 'rations',
@@ -267,7 +274,8 @@ export const fallbackData = {
       ac: '0',
       slot: 'none',
       foodValue: '15',
-      waterValue: '0'
+      waterValue: '0',
+      icon: '🍖'
     },
     {
       id: 'water_flask',
@@ -281,7 +289,8 @@ export const fallbackData = {
       ac: '0',
       slot: 'none',
       foodValue: '0',
-      waterValue: '20'
+      waterValue: '20',
+      icon: '💧'
     },
     {
       id: 'beetle_eye',
@@ -295,7 +304,8 @@ export const fallbackData = {
       ac: '0',
       slot: 'none',
       foodValue: '0',
-      waterValue: '0'
+      waterValue: '0',
+      icon: '👁️'
     },
     {
       id: 'bone_chips',
@@ -309,7 +319,8 @@ export const fallbackData = {
       ac: '0',
       slot: 'none',
       foodValue: '0',
-      waterValue: '0'
+      waterValue: '0',
+      icon: '🦴'
     }
   ],
 

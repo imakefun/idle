@@ -28,7 +28,7 @@ export default function ItemCard({ item, onUse, onEquip, onDrop, showActions = t
       onMouseLeave={() => setShowTooltip(false)}
     >
       <div className="item-icon">
-        {getItemIcon(item.type)}
+        {item.icon || getItemIcon(item.type)}
       </div>
       {item.stackable && item.quantity > 1 && (
         <div className="item-quantity">{item.quantity}</div>

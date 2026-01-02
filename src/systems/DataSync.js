@@ -167,7 +167,8 @@ function transformItems(rows) {
       consumable: {
         foodValue: parseInt(row.foodValue) || 0,
         waterValue: parseInt(row.waterValue) || 0
-      }
+      },
+      icon: row.icon || ''
     };
   });
   return items;
