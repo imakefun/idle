@@ -13,7 +13,7 @@ import GuildMaster from './components/Skills/GuildMaster'
 import { createCharacter, consumeItem, equipItem, removeItemFromInventory, addItemToInventory } from './utils/characterHelpers'
 import { calculateXPForLevel, calculateDrainRate, formatCurrency, calculateAC, calculateHPRegen, calculateMaxHP, calculateMaxStamina } from './utils/calculations'
 import { clearCache } from './systems/DataSync'
-import { selectRandomMonster, processCombatRound } from './systems/CombatEngine'
+import { selectRandomMonster, selectMonsterFromSpawnTable, processCombatRound } from './systems/CombatEngine'
 import { updateSkillCaps } from './systems/SkillSystem'
 
 function App() {
@@ -284,14 +284,25 @@ function App() {
   const handleAttack = () => {
     if (!gameData || !gameData.monsters) return;
 
-    // Get all available monsters (for now, all monsters)
-    // TODO: Filter by zone/camp
-    const monsters = Object.values(gameData.monsters);
+    let newTarget = null;
 
-    if (monsters.length === 0) return;
+    // If in a camp, use spawn table selection
+    if (gameState.currentCamp && gameData.spawns) {
+      newTarget = selectMonsterFromSpawnTable(
+        gameState.currentCamp,
+        gameData.spawns,
+        gameData.monsters
+      );
+    }
 
-    // Select random monster and start combat
-    const newTarget = selectRandomMonster(monsters);
+    // Fallback to random selection if no camp or no spawn table match
+    if (!newTarget) {
+      const monsters = Object.values(gameData.monsters);
+      if (monsters.length === 0) return;
+      newTarget = selectRandomMonster(monsters);
+    }
+
+    if (!newTarget) return;
 
     setGameState(prev => ({
       ...prev,

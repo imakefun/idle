@@ -123,6 +123,64 @@ export function getConDescription(playerLevel, monsterLevel) {
 }
 
 /**
+ * Select monster from spawn table for a specific camp
+ * @param {string} campId - Camp ID to get spawns for
+ * @param {Array} spawns - Array of spawn entries
+ * @param {Object} monsters - Monster definitions object
+ * @returns {Object} - Monster with initialized combat stats, or null if no spawns
+ */
+export function selectMonsterFromSpawnTable(campId, spawns, monsters) {
+  if (!campId || !spawns || !monsters) return null;
+
+  // Filter spawns for this camp
+  const campSpawns = spawns.filter(spawn => spawn.campId === campId);
+
+  if (campSpawns.length === 0) {
+    console.warn(`No spawns defined for camp: ${campId}`);
+    return null;
+  }
+
+  // Calculate total weight
+  const totalWeight = campSpawns.reduce((sum, spawn) => sum + spawn.weight, 0);
+
+  // Random weighted selection
+  let random = Math.random() * totalWeight;
+  let selectedMonsterId = null;
+
+  for (const spawn of campSpawns) {
+    random -= spawn.weight;
+    if (random <= 0) {
+      selectedMonsterId = spawn.monsterId;
+      break;
+    }
+  }
+
+  // Fallback to first spawn if something went wrong
+  if (!selectedMonsterId) {
+    selectedMonsterId = campSpawns[0].monsterId;
+  }
+
+  // Get monster definition
+  const monsterDef = monsters[selectedMonsterId];
+  if (!monsterDef) {
+    console.warn(`Monster not found: ${selectedMonsterId}`);
+    return null;
+  }
+
+  // Create combat instance with current HP
+  return {
+    ...monsterDef,
+    maxHp: parseInt(monsterDef.hp),
+    currentHp: parseInt(monsterDef.hp),
+    level: parseInt(monsterDef.level),
+    ac: parseInt(monsterDef.ac),
+    minDmg: parseInt(monsterDef.minDmg),
+    maxDmg: parseInt(monsterDef.maxDmg),
+    xpReward: parseInt(monsterDef.xpReward)
+  };
+}
+
+/**
  * Select random monster from available pool
  * @param {Array} monsters - Array of available monsters
  * @returns {Object} - Monster with initialized combat stats
