@@ -10,7 +10,7 @@ const CACHE_KEY = 'norrathIdleGameData_v1';
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 // List of all sheets to fetch
-const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps', 'Skills'];
+const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps', 'Skills', 'Spawns'];
 
 /**
  * Load game data with caching and fallback support
@@ -49,6 +49,11 @@ export async function loadGameData() {
       rawData.Skills = fallbackData.Skills || [];
     }
 
+    if (rawData.Spawns === null || rawData.Spawns === undefined) {
+      console.log('📋 Spawns sheet not found, using fallback spawns data');
+      rawData.Spawns = fallbackData.Spawns || [];
+    }
+
     // Transform the data
     const transformedData = transformGameData(rawData);
 
@@ -81,7 +86,8 @@ function transformGameData(rawData) {
     items: transformItems(rawData.Items || []),
     zones: transformZones(rawData.Zones || []),
     camps: transformCamps(rawData.Camps || []),
-    skills: transformSkills(rawData.Skills || [])
+    skills: transformSkills(rawData.Skills || []),
+    spawns: transformSpawns(rawData.Spawns || [])
   };
 }
 
@@ -295,6 +301,26 @@ function transformSkills(rows) {
     };
   });
   return skills;
+}
+
+/**
+ * Transform Spawns sheet data
+ */
+function transformSpawns(rows) {
+  const spawns = [];
+  rows.forEach(row => {
+    if (!row.id || !row.campId || !row.monsterId) return; // Skip invalid rows
+
+    spawns.push({
+      id: row.id,
+      campId: row.campId,
+      monsterId: row.monsterId,
+      weight: parseInt(row.weight) || 100,
+      minLevel: parseInt(row.minLevel) || 1,
+      maxLevel: parseInt(row.maxLevel) || 50
+    });
+  });
+  return spawns;
 }
 
 /**

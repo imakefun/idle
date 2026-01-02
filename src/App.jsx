@@ -456,6 +456,7 @@ function App() {
                 <p>• {Object.keys(gameData.zones || {}).length} Zones</p>
                 <p>• {Object.keys(gameData.camps || {}).length} Camps</p>
                 <p>• {Object.keys(gameData.skills || {}).length} Skills</p>
+                <p>• {(gameData.spawns || []).length} Spawns</p>
                 {gameData.items && (
                   <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: 'var(--text-secondary)', borderTop: '1px solid var(--border)', paddingTop: '0.5rem' }}>
                     <p style={{ fontWeight: 'bold', marginBottom: '0.25rem' }}>🔍 Debug - Item Icons:</p>
