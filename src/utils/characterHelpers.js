@@ -4,6 +4,8 @@
  */
 
 import { calculateMaxHP, calculateMaxStamina, calculateAC } from './calculations';
+import { initializeSkills } from '../systems/SkillSystem';
+import { CLASS_STARTING_SKILLS } from '../data/skills';
 
 /**
  * Generate starting inventory based on class
@@ -67,6 +69,10 @@ export function createCharacter(characterInfo, gameData) {
   // Calculate AC
   const ac = calculateAC(equipped, stats.AGI);
 
+  // Initialize skills based on class
+  const startingSkills = CLASS_STARTING_SKILLS[characterClass.id] || [];
+  const skills = initializeSkills(characterClass.id, startingSkills);
+
   // Create full character state
   return {
     name,
@@ -112,7 +118,7 @@ export function createCharacter(characterInfo, gameData) {
     completedQuestsToday: 0,
 
     // Skills
-    skills: {},
+    skills,
 
     // Game meta
     gameStarted: true,

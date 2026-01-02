@@ -8,10 +8,13 @@ import Inventory from './components/Inventory/Inventory'
 import Equipment from './components/Inventory/Equipment'
 import Zones from './components/Zones/Zones'
 import Combat from './components/Combat/Combat'
+import Skills from './components/Skills/Skills'
+import GuildMaster from './components/Skills/GuildMaster'
 import { createCharacter, consumeItem, equipItem, removeItemFromInventory, addItemToInventory } from './utils/characterHelpers'
-import { calculateXPForLevel, calculateDrainRate, formatCurrency, calculateAC, calculateHPRegen } from './utils/calculations'
+import { calculateXPForLevel, calculateDrainRate, formatCurrency, calculateAC, calculateHPRegen, calculateMaxHP, calculateMaxStamina } from './utils/calculations'
 import { clearCache } from './systems/DataSync'
 import { selectRandomMonster, processCombatRound } from './systems/CombatEngine'
+import { updateSkillCaps } from './systems/SkillSystem'
 
 function App() {
   // Load game data from Google Sheets
@@ -89,6 +92,20 @@ function App() {
           // Apply updates
           Object.assign(updates, combatResult.updates);
 
+          // Apply skill-ups
+          if (combatResult.skillUps && combatResult.skillUps.length > 0) {
+            const updatedSkills = { ...prev.skills };
+            combatResult.skillUps.forEach(skillUp => {
+              if (updatedSkills[skillUp.skillId]) {
+                updatedSkills[skillUp.skillId] = {
+                  ...updatedSkills[skillUp.skillId],
+                  current: skillUp.newValue
+                };
+              }
+            });
+            updates.skills = updatedSkills;
+          }
+
           // Update target if still alive
           if (!combatResult.monsterDied && combatResult.monster) {
             updates.target = combatResult.monster;
@@ -112,6 +129,40 @@ function App() {
           }
 
           updates.lastAttackTick = tickCount;
+        }
+      }
+
+      // Check for level-up
+      if (updates.xp !== undefined && prev.xpForNextLevel) {
+        const newXP = updates.xp;
+        if (newXP >= prev.xpForNextLevel) {
+          const newLevel = prev.level + 1;
+          const newXPForNextLevel = calculateXPForLevel(newLevel + 1);
+
+          updates.level = newLevel;
+          updates.xpForNextLevel = newXPForNextLevel;
+
+          // Update skill caps
+          if (prev.skills) {
+            updates.skills = updateSkillCaps(updates.skills || prev.skills, newLevel);
+          }
+
+          // Recalculate max HP and stamina
+          const classData = gameData?.classes?.[prev.class];
+          if (classData) {
+            const newMaxHP = calculateMaxHP(newLevel, classData, prev.stats.STA);
+            const newMaxStamina = calculateMaxStamina(newLevel);
+            updates.maxHp = newMaxHP;
+            updates.maxStamina = newMaxStamina;
+            updates.hp = newMaxHP; // Full heal on level up
+            updates.stamina = newMaxStamina;
+          }
+
+          addCombatLog({
+            type: 'level-up',
+            color: '#ffff00',
+            message: `⭐ Congratulations! You have reached level ${newLevel}!`
+          });
         }
       }
 
@@ -276,6 +327,35 @@ function App() {
       ...prev,
       isResting: !prev.isResting
     }));
+  };
+
+  // Skill training handler
+  const handleTrainSkill = (skill) => {
+    setGameState(prev => {
+      // Deduct currency
+      const newCurrency = prev.currency - skill.cost;
+
+      // Add skill to character
+      const updatedSkills = {
+        ...prev.skills,
+        [skill.skillId]: {
+          current: 1,
+          max: (prev.level + 1) * 5
+        }
+      };
+
+      addCombatLog({
+        type: 'skill-up',
+        color: '#44ff44',
+        message: `You have learned ${skill.skillId}!`
+      });
+
+      return {
+        ...prev,
+        currency: newCurrency,
+        skills: updatedSkills
+      };
+    });
   };
 
   // Format time display
@@ -555,6 +635,20 @@ function App() {
                 onDropItem={handleDropItem}
               />
             </div>
+
+            {/* Skills */}
+            <Skills skills={gameState.skills} />
+
+            {/* Guild Master (only in safe zones) */}
+            {gameData?.zones?.[gameState.currentZone]?.isSafe && (
+              <GuildMaster
+                playerClass={gameState.class}
+                playerLevel={gameState.level}
+                playerCurrency={gameState.currency}
+                playerSkills={gameState.skills}
+                onTrainSkill={handleTrainSkill}
+              />
+            )}
 
             {/* Combat */}
             <Combat
