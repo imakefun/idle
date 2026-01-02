@@ -28,11 +28,16 @@ export function calculateHit(attackerSkill = 0, attackerLevel, defenderLevel) {
  * @returns {number} - Damage dealt
  */
 export function calculateDamage(weaponMin, weaponMax, strength = 0) {
+  // Ensure all values are numbers
+  const min = parseInt(weaponMin) || 1;
+  const max = parseInt(weaponMax) || 3;
+  const str = parseInt(strength) || 0;
+
   // Random weapon damage
-  const weaponDamage = Math.floor(Math.random() * (weaponMax - weaponMin + 1)) + weaponMin;
+  const weaponDamage = Math.floor(Math.random() * (max - min + 1)) + min;
 
   // Strength bonus
-  const strBonus = Math.floor(strength / 10);
+  const strBonus = Math.floor(str / 10);
 
   // Random 1d4
   const randomBonus = Math.floor(Math.random() * 4) + 1;
@@ -48,8 +53,13 @@ export function calculateDamage(weaponMin, weaponMax, strength = 0) {
  * @returns {number} - Mitigated damage
  */
 export function applyACMitigation(damage, ac, attackerLevel) {
-  const mitigation = ac / (ac + 50 + attackerLevel * 2);
-  const mitigatedDamage = Math.floor(damage * (1 - mitigation));
+  // Ensure all values are numbers
+  const baseDamage = parseInt(damage) || 1;
+  const armorClass = parseInt(ac) || 0;
+  const level = parseInt(attackerLevel) || 1;
+
+  const mitigation = armorClass / (armorClass + 50 + level * 2);
+  const mitigatedDamage = Math.floor(baseDamage * (1 - mitigation));
 
   return Math.max(1, mitigatedDamage);
 }
@@ -143,17 +153,28 @@ export function processCombatRound(player, monster, gameData) {
   const logs = [];
   const updates = {};
 
-  // Player attack
+  // Player attack - safely parse weapon damage
   const playerWeapon = player.equipped?.primary;
-  const weaponMin = playerWeapon ? parseInt(playerWeapon.damage) : 1;
-  const weaponMax = playerWeapon ? parseInt(playerWeapon.damage) + 2 : 3;
-  const playerSTR = player.stats?.STR || 75;
+  let weaponMin = 1;
+  let weaponMax = 3;
 
-  const playerHits = calculateHit(0, player.level, monster.level);
+  if (playerWeapon && playerWeapon.damage) {
+    const weaponDamage = parseInt(playerWeapon.damage);
+    if (!isNaN(weaponDamage)) {
+      weaponMin = weaponDamage;
+      weaponMax = weaponDamage + 2;
+    }
+  }
+
+  const playerSTR = parseInt(player.stats?.STR) || 75;
+  const playerLevel = parseInt(player.level) || 1;
+  const playerAC = parseInt(player.ac) || 0;
+
+  const playerHits = calculateHit(0, playerLevel, monster.level);
 
   if (playerHits) {
     const damage = calculateDamage(weaponMin, weaponMax, playerSTR);
-    const finalDamage = applyACMitigation(damage, monster.ac, player.level);
+    const finalDamage = applyACMitigation(damage, monster.ac, playerLevel);
 
     monster.currentHp -= finalDamage;
 
@@ -172,7 +193,7 @@ export function processCombatRound(player, monster, gameData) {
 
   // Check if monster died
   if (monster.currentHp <= 0) {
-    const xpGained = calculateXPReward(monster.xpReward, player.level, monster.level);
+    const xpGained = calculateXPReward(monster.xpReward, playerLevel, monster.level);
 
     logs.push({
       type: 'death',
@@ -202,12 +223,17 @@ export function processCombatRound(player, monster, gameData) {
     return { logs, updates, monsterDied: true };
   }
 
-  // Monster counter-attack
-  const monsterHits = calculateHit(0, monster.level, player.level);
+  // Monster counter-attack - ensure values are numbers
+  const monsterMinDmg = parseInt(monster.minDmg) || 1;
+  const monsterMaxDmg = parseInt(monster.maxDmg) || 3;
+  const monsterLevel = parseInt(monster.level) || 1;
+  const monsterAC = parseInt(monster.ac) || 0;
+
+  const monsterHits = calculateHit(0, monsterLevel, playerLevel);
 
   if (monsterHits) {
-    const damage = calculateDamage(monster.minDmg, monster.maxDmg, 0);
-    const finalDamage = applyACMitigation(damage, player.ac, monster.level);
+    const damage = calculateDamage(monsterMinDmg, monsterMaxDmg, 0);
+    const finalDamage = applyACMitigation(damage, playerAC, monsterLevel);
 
     updates.hp = Math.max(0, player.hp - finalDamage);
 
