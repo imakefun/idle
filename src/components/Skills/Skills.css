@@ -1,0 +1,133 @@
+/**
+ * Skills Component Styles
+ */
+
+.skills-container {
+  padding: 1rem;
+  background: var(--bg-secondary, #2a2a2a);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.skills-header {
+  margin: 0 0 1rem 0;
+  color: var(--text-primary, #fff);
+  font-size: 1.25rem;
+  border-bottom: 2px solid var(--border, #444);
+  padding-bottom: 0.5rem;
+}
+
+.skill-category {
+  margin-bottom: 1.5rem;
+}
+
+.skill-category:last-child {
+  margin-bottom: 0;
+}
+
+.category-header {
+  margin: 0 0 0.75rem 0;
+  color: var(--accent, #00aaff);
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.skill-item {
+  background: var(--bg-tertiary, #3a3a3a);
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--border, #444);
+  transition: border-color 0.2s;
+}
+
+.skill-item:hover {
+  border-color: var(--accent, #00aaff);
+}
+
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.skill-name {
+  font-weight: 600;
+  color: var(--text-primary, #fff);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.active-badge {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: var(--accent, #00aaff);
+  color: #000;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.skill-value {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #ccc);
+  font-family: monospace;
+}
+
+.skill-bar-container {
+  height: 8px;
+  background: var(--bg-primary, #1a1a1a);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00aaff, #0088cc);
+  transition: width 0.5s ease;
+  border-radius: 4px;
+}
+
+.skill-description {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #ccc);
+  font-style: italic;
+}
+
+.no-skills {
+  text-align: center;
+  color: var(--text-secondary, #ccc);
+  font-style: italic;
+  padding: 2rem;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .skills-container {
+    padding: 0.75rem;
+  }
+
+  .skill-item {
+    padding: 0.5rem;
+  }
+
+  .skill-name {
+    font-size: 0.875rem;
+  }
+
+  .skill-value {
+    font-size: 0.75rem;
+  }
+}

@@ -3,6 +3,9 @@
  * Handles all combat calculations and mechanics
  */
 
+import { attemptSkillUp, checkAbilityProc, calculateAbilityDamage, checkAbilityRequirements, calculateDodgeChance } from './SkillSystem';
+import { getWeaponSkill } from '../data/skills';
+
 /**
  * Calculate if an attack hits
  * @param {number} attackerSkill - Attacker's weapon skill
@@ -152,11 +155,13 @@ export function selectRandomMonster(monsters) {
 export function processCombatRound(player, monster, gameData) {
   const logs = [];
   const updates = {};
+  const skillUps = [];
 
   // Player attack - safely parse weapon damage
   const playerWeapon = player.equipped?.primary;
   let weaponMin = 1;
   let weaponMax = 3;
+  let weaponType = null;
 
   if (playerWeapon && playerWeapon.damage) {
     const weaponDamage = parseInt(playerWeapon.damage);
@@ -164,18 +169,60 @@ export function processCombatRound(player, monster, gameData) {
       weaponMin = weaponDamage;
       weaponMax = weaponDamage + 2;
     }
+    weaponType = playerWeapon.weaponType;
   }
 
   const playerSTR = parseInt(player.stats?.STR) || 75;
   const playerLevel = parseInt(player.level) || 1;
   const playerAC = parseInt(player.ac) || 0;
 
-  const playerHits = calculateHit(0, playerLevel, monster.level);
+  // Determine weapon skill
+  const weaponSkillId = getWeaponSkill(weaponType);
+  const weaponSkill = player.skills?.[weaponSkillId]?.current || 0;
+  const offenseSkill = player.skills?.offense?.current || 0;
+  const combinedSkill = Math.floor((weaponSkill + offenseSkill) / 2);
+
+  const playerHits = calculateHit(combinedSkill, playerLevel, monster.level);
 
   if (playerHits) {
-    const damage = calculateDamage(weaponMin, weaponMax, playerSTR);
-    const finalDamage = applyACMitigation(damage, monster.ac, playerLevel);
+    let damage = calculateDamage(weaponMin, weaponMax, playerSTR);
+    let abilityUsed = null;
 
+    // Check for active ability procs
+    const activeAbilities = ['kick', 'bash', 'backstab', 'doubleAttack'];
+    for (const abilityId of activeAbilities) {
+      if (player.skills?.[abilityId] && !abilityUsed) {
+        // Check requirements (shield for bash, piercing weapon for backstab, etc.)
+        if (checkAbilityRequirements(abilityId, player.equipped)) {
+          const abilityResult = checkAbilityProc(abilityId, player.skills[abilityId].current, player.stamina);
+
+          if (abilityResult.success) {
+            abilityUsed = abilityId;
+
+            // Deduct stamina
+            if (abilityResult.staminaCost > 0) {
+              updates.stamina = Math.max(0, player.stamina - abilityResult.staminaCost);
+            }
+
+            // Add ability damage (except doubleAttack which just attacks twice)
+            if (abilityId !== 'doubleAttack') {
+              const abilityDamage = calculateAbilityDamage(abilityId, damage, player.skills[abilityId].current);
+              damage += abilityDamage;
+
+              logs.push({
+                type: 'ability',
+                color: '#ff44ff',
+                message: `You execute ${abilityResult.abilityName}!`
+              });
+            }
+
+            break;
+          }
+        }
+      }
+    }
+
+    const finalDamage = applyACMitigation(damage, monster.ac, playerLevel);
     monster.currentHp -= finalDamage;
 
     logs.push({
@@ -183,6 +230,70 @@ export function processCombatRound(player, monster, gameData) {
       color: '#ff4444',
       message: `You hit ${monster.name} for ${finalDamage} damage!`
     });
+
+    // Skill-up check for weapon skill
+    if (weaponSkillId && player.skills?.[weaponSkillId]) {
+      const skillUpResult = attemptSkillUp(
+        weaponSkillId,
+        player.skills[weaponSkillId].current,
+        player.skills[weaponSkillId].max
+      );
+
+      if (skillUpResult.success) {
+        skillUps.push(skillUpResult);
+        logs.push({
+          type: 'skill-up',
+          color: '#44ff44',
+          message: `Your ${skillUpResult.skillName} skill has increased to ${skillUpResult.newValue}!`
+        });
+      }
+    }
+
+    // Skill-up check for offense
+    if (player.skills?.offense) {
+      const offenseUpResult = attemptSkillUp(
+        'offense',
+        player.skills.offense.current,
+        player.skills.offense.max
+      );
+
+      if (offenseUpResult.success) {
+        skillUps.push(offenseUpResult);
+        logs.push({
+          type: 'skill-up',
+          color: '#44ff44',
+          message: `Your ${offenseUpResult.skillName} skill has increased to ${offenseUpResult.newValue}!`
+        });
+      }
+    }
+
+    // Double Attack - second hit
+    if (abilityUsed === 'doubleAttack') {
+      logs.push({
+        type: 'ability',
+        color: '#ff44ff',
+        message: `You execute a double attack!`
+      });
+
+      const secondHit = calculateHit(combinedSkill, playerLevel, monster.level);
+      if (secondHit) {
+        const secondDamage = calculateDamage(weaponMin, weaponMax, playerSTR);
+        const secondFinalDamage = applyACMitigation(secondDamage, monster.ac, playerLevel);
+        monster.currentHp -= secondFinalDamage;
+
+        logs.push({
+          type: 'damage-dealt',
+          color: '#ff4444',
+          message: `You hit ${monster.name} for ${secondFinalDamage} damage!`
+        });
+      } else {
+        logs.push({
+          type: 'miss',
+          color: '#888888',
+          message: `Your second attack misses!`
+        });
+      }
+    }
   } else {
     logs.push({
       type: 'miss',
@@ -220,16 +331,49 @@ export function processCombatRound(player, monster, gameData) {
     updates.target = null;
     updates.inCombat = false;
 
-    return { logs, updates, monsterDied: true };
+    return { logs, updates, skillUps, monsterDied: true };
+  }
+
+  // Monster counter-attack - check for dodge first
+  const dodgeSkill = player.skills?.dodge?.current || 0;
+  const dodgeChance = calculateDodgeChance(dodgeSkill);
+  const dodgeRoll = Math.random();
+
+  if (dodgeRoll < dodgeChance) {
+    logs.push({
+      type: 'dodge',
+      color: '#44ffff',
+      message: `You dodge ${monster.name}'s attack!`
+    });
+
+    // Skill-up check for dodge
+    if (player.skills?.dodge) {
+      const dodgeUpResult = attemptSkillUp(
+        'dodge',
+        player.skills.dodge.current,
+        player.skills.dodge.max
+      );
+
+      if (dodgeUpResult.success) {
+        skillUps.push(dodgeUpResult);
+        logs.push({
+          type: 'skill-up',
+          color: '#44ff44',
+          message: `Your ${dodgeUpResult.skillName} skill has increased to ${dodgeUpResult.newValue}!`
+        });
+      }
+    }
+
+    return { logs, updates, skillUps, monster, monsterDied: false };
   }
 
   // Monster counter-attack - ensure values are numbers
   const monsterMinDmg = parseInt(monster.minDmg) || 1;
   const monsterMaxDmg = parseInt(monster.maxDmg) || 3;
   const monsterLevel = parseInt(monster.level) || 1;
-  const monsterAC = parseInt(monster.ac) || 0;
 
-  const monsterHits = calculateHit(0, monsterLevel, playerLevel);
+  const defenseSkill = player.skills?.defense?.current || 0;
+  const monsterHits = !calculateHit(defenseSkill, playerLevel, monsterLevel);
 
   if (monsterHits) {
     const damage = calculateDamage(monsterMinDmg, monsterMaxDmg, 0);
@@ -242,6 +386,24 @@ export function processCombatRound(player, monster, gameData) {
       color: '#ff8844',
       message: `${monster.name} hits you for ${finalDamage} damage!`
     });
+
+    // Skill-up check for defense
+    if (player.skills?.defense) {
+      const defenseUpResult = attemptSkillUp(
+        'defense',
+        player.skills.defense.current,
+        player.skills.defense.max
+      );
+
+      if (defenseUpResult.success) {
+        skillUps.push(defenseUpResult);
+        logs.push({
+          type: 'skill-up',
+          color: '#44ff44',
+          message: `Your ${defenseUpResult.skillName} skill has increased to ${defenseUpResult.newValue}!`
+        });
+      }
+    }
 
     // Check if player died
     if (updates.hp <= 0) {
@@ -261,5 +423,5 @@ export function processCombatRound(player, monster, gameData) {
     });
   }
 
-  return { logs, updates, monster, monsterDied: false };
+  return { logs, updates, skillUps, monster, monsterDied: false };
 }
