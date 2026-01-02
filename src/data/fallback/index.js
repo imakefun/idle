@@ -782,168 +782,64 @@ export const fallbackData = {
 
   Spawns: [
     // Newbie Yard - Training Grounds (Level 1-2)
-    {
-      id: 'training_grounds_rat',
-      campId: 'newbie_training_grounds',
-      monsterId: 'giant_rat',
-      weight: '100',
-      minLevel: '1',
-      maxLevel: '2'
-    },
-    {
-      id: 'training_grounds_beetle',
-      campId: 'newbie_training_grounds',
-      monsterId: 'fire_beetle',
-      weight: '50',
-      minLevel: '1',
-      maxLevel: '2'
-    },
+    { id: 'spawn_training_rat', campId: 'newbie_training_grounds', monsterId: 'giant_rat', weight: '100', minLevel: '1', maxLevel: '2' },
+    { id: 'spawn_training_beetle', campId: 'newbie_training_grounds', monsterId: 'fire_beetle', weight: '60', minLevel: '1', maxLevel: '2' },
+    { id: 'spawn_training_snake', campId: 'newbie_training_grounds', monsterId: 'snake', weight: '30', minLevel: '1', maxLevel: '2' },
 
     // Newbie Yard - Practice Yard (Level 1-2)
-    {
-      id: 'practice_yard_rat',
-      campId: 'newbie_practice_yard',
-      monsterId: 'giant_rat',
-      weight: '80',
-      minLevel: '1',
-      maxLevel: '2'
-    },
-    {
-      id: 'practice_yard_beetle',
-      campId: 'newbie_practice_yard',
-      monsterId: 'fire_beetle',
-      weight: '80',
-      minLevel: '1',
-      maxLevel: '2'
-    },
+    { id: 'spawn_practice_rat', campId: 'newbie_practice_yard', monsterId: 'giant_rat', weight: '80', minLevel: '1', maxLevel: '2' },
+    { id: 'spawn_practice_beetle', campId: 'newbie_practice_yard', monsterId: 'fire_beetle', weight: '80', minLevel: '1', maxLevel: '2' },
+    { id: 'spawn_practice_snake', campId: 'newbie_practice_yard', monsterId: 'snake', weight: '40', minLevel: '1', maxLevel: '2' },
 
     // Newbie Yard - Southern Fields (Level 2-3)
-    {
-      id: 'southern_fields_rat',
-      campId: 'newbie_southern_fields',
-      monsterId: 'giant_rat',
-      weight: '60',
-      minLevel: '2',
-      maxLevel: '3'
-    },
-    {
-      id: 'southern_fields_snake',
-      campId: 'newbie_southern_fields',
-      monsterId: 'snake',
-      weight: '100',
-      minLevel: '2',
-      maxLevel: '3'
-    },
-    {
-      id: 'southern_fields_beetle',
-      campId: 'newbie_southern_fields',
-      monsterId: 'fire_beetle',
-      weight: '40',
-      minLevel: '2',
-      maxLevel: '3'
-    },
+    { id: 'spawn_southern_rat', campId: 'newbie_southern_fields', monsterId: 'giant_rat', weight: '50', minLevel: '2', maxLevel: '3' },
+    { id: 'spawn_southern_beetle', campId: 'newbie_southern_fields', monsterId: 'fire_beetle', weight: '70', minLevel: '2', maxLevel: '3' },
+    { id: 'spawn_southern_snake', campId: 'newbie_southern_fields', monsterId: 'snake', weight: '100', minLevel: '2', maxLevel: '3' },
 
     // Newbie Yard - Northern Path (Level 2-3)
-    {
-      id: 'northern_path_rat',
-      campId: 'newbie_northern_path',
-      monsterId: 'giant_rat',
-      weight: '70',
-      minLevel: '2',
-      maxLevel: '3'
-    },
-    {
-      id: 'northern_path_snake',
-      campId: 'newbie_northern_path',
-      monsterId: 'snake',
-      weight: '100',
-      minLevel: '2',
-      maxLevel: '3'
-    },
+    { id: 'spawn_northern_rat', campId: 'newbie_northern_path', monsterId: 'giant_rat', weight: '60', minLevel: '2', maxLevel: '3' },
+    { id: 'spawn_northern_beetle', campId: 'newbie_northern_path', monsterId: 'fire_beetle', weight: '50', minLevel: '2', maxLevel: '3' },
+    { id: 'spawn_northern_snake', campId: 'newbie_northern_path', monsterId: 'snake', weight: '100', minLevel: '2', maxLevel: '3' },
 
     // Dark Forest - Forest Edge (Level 3-4)
-    {
-      id: 'forest_edge_snake',
-      campId: 'forest_edge',
-      monsterId: 'snake',
-      weight: '80',
-      minLevel: '3',
-      maxLevel: '4'
-    },
-    {
-      id: 'forest_edge_gnoll',
-      campId: 'forest_edge',
-      monsterId: 'gnoll_pup',
-      weight: '100',
-      minLevel: '3',
-      maxLevel: '4'
-    },
+    { id: 'spawn_edge_snake', campId: 'forest_edge', monsterId: 'snake', weight: '100', minLevel: '3', maxLevel: '4' },
+    { id: 'spawn_edge_gnoll', campId: 'forest_edge', monsterId: 'gnoll_pup', weight: '80', minLevel: '3', maxLevel: '4' },
+    { id: 'spawn_edge_beetle', campId: 'forest_edge', monsterId: 'fire_beetle', weight: '40', minLevel: '3', maxLevel: '4' },
 
     // Dark Forest - Shadowed Grove (Level 4-5)
-    {
-      id: 'forest_grove_gnoll',
-      campId: 'forest_grove',
-      monsterId: 'gnoll_pup',
-      weight: '100',
-      minLevel: '4',
-      maxLevel: '5'
-    },
+    { id: 'spawn_grove_gnoll', campId: 'forest_grove', monsterId: 'gnoll_pup', weight: '100', minLevel: '4', maxLevel: '5' },
+    { id: 'spawn_grove_snake', campId: 'forest_grove', monsterId: 'snake', weight: '70', minLevel: '4', maxLevel: '5' },
+    { id: 'spawn_grove_skeleton', campId: 'forest_grove', monsterId: 'decaying_skeleton', weight: '30', minLevel: '4', maxLevel: '5' },
 
-    // Dark Forest - Deep Woods (Level 5-6)
-    {
-      id: 'deep_woods_gnoll',
-      campId: 'forest_deep',
-      monsterId: 'gnoll_pup',
-      weight: '100',
-      minLevel: '5',
-      maxLevel: '6'
-    },
+    // Dark Forest - Forest Depths (Level 5-6)
+    { id: 'spawn_depths_gnoll', campId: 'forest_depths', monsterId: 'gnoll_pup', weight: '100', minLevel: '5', maxLevel: '6' },
+    { id: 'spawn_depths_skeleton', campId: 'forest_depths', monsterId: 'decaying_skeleton', weight: '80', minLevel: '5', maxLevel: '6' },
+    { id: 'spawn_depths_snake', campId: 'forest_depths', monsterId: 'snake', weight: '50', minLevel: '5', maxLevel: '6' },
 
-    // Blackburrow - Entrance Tunnels (Level 5-6)
-    {
-      id: 'burrow_entrance_gnoll',
-      campId: 'burrow_entrance',
-      monsterId: 'gnoll_pup',
-      weight: '100',
-      minLevel: '5',
-      maxLevel: '6'
-    },
+    // Dark Forest - Forgotten Ruins (Level 5-6)
+    { id: 'spawn_ruins_skeleton', campId: 'forest_ruins', monsterId: 'decaying_skeleton', weight: '100', minLevel: '5', maxLevel: '6' },
+    { id: 'spawn_ruins_gnoll', campId: 'forest_ruins', monsterId: 'gnoll_pup', weight: '60', minLevel: '5', maxLevel: '6' },
 
-    // Blackburrow - Main Halls (Level 6-8)
-    {
-      id: 'burrow_halls_gnoll',
-      campId: 'burrow_halls',
-      monsterId: 'gnoll_pup',
-      weight: '80',
-      minLevel: '6',
-      maxLevel: '8'
-    },
-    {
-      id: 'burrow_halls_skeleton',
-      campId: 'burrow_halls',
-      monsterId: 'decaying_skeleton',
-      weight: '50',
-      minLevel: '6',
-      maxLevel: '8'
-    },
+    // Dark Forest - Dark Stream (Level 4-5)
+    { id: 'spawn_stream_snake', campId: 'forest_stream', monsterId: 'snake', weight: '100', minLevel: '4', maxLevel: '5' },
+    { id: 'spawn_stream_gnoll', campId: 'forest_stream', monsterId: 'gnoll_pup', weight: '70', minLevel: '4', maxLevel: '5' },
+    { id: 'spawn_stream_beetle', campId: 'forest_stream', monsterId: 'fire_beetle', weight: '50', minLevel: '4', maxLevel: '5' },
 
-    // Blackburrow - Lower Den (Level 8-10)
-    {
-      id: 'burrow_den_gnoll',
-      campId: 'burrow_den',
-      monsterId: 'gnoll_pup',
-      weight: '60',
-      minLevel: '8',
-      maxLevel: '10'
-    },
-    {
-      id: 'burrow_den_skeleton',
-      campId: 'burrow_den',
-      monsterId: 'decaying_skeleton',
-      weight: '100',
-      minLevel: '8',
-      maxLevel: '10'
-    }
+    // Blackburrow - Burrow Entrance (Level 5-6)
+    { id: 'spawn_entrance_gnoll', campId: 'burrow_entrance', monsterId: 'gnoll_pup', weight: '100', minLevel: '5', maxLevel: '6' },
+    { id: 'spawn_entrance_snake', campId: 'burrow_entrance', monsterId: 'snake', weight: '40', minLevel: '5', maxLevel: '6' },
+
+    // Blackburrow - Winding Tunnels (Level 6-7)
+    { id: 'spawn_tunnels_gnoll', campId: 'burrow_tunnels', monsterId: 'gnoll_pup', weight: '100', minLevel: '6', maxLevel: '7' },
+    { id: 'spawn_tunnels_skeleton', campId: 'burrow_tunnels', monsterId: 'decaying_skeleton', weight: '50', minLevel: '6', maxLevel: '7' },
+
+    // Blackburrow - Central Den (Level 7-9)
+    { id: 'spawn_den_gnoll', campId: 'burrow_den', monsterId: 'gnoll_pup', weight: '100', minLevel: '7', maxLevel: '9' },
+    { id: 'spawn_den_skeleton', campId: 'burrow_den', monsterId: 'decaying_skeleton', weight: '70', minLevel: '7', maxLevel: '9' },
+
+    // Blackburrow - Deep Chambers (Level 8-10)
+    { id: 'spawn_depths_gnoll_strong', campId: 'burrow_depths', monsterId: 'gnoll_pup', weight: '80', minLevel: '8', maxLevel: '10' },
+    { id: 'spawn_depths_skeleton_strong', campId: 'burrow_depths', monsterId: 'decaying_skeleton', weight: '100', minLevel: '8', maxLevel: '10' }
   ],
 
   Skills: [

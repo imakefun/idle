@@ -35,15 +35,25 @@ The `minLevel` and `maxLevel` fields allow spawns to only appear when the camp's
 
 ## Example Data
 
+Each camp should have multiple spawn entries for monster variety. The same `campId` appears in multiple rows with different `monsterId` values:
+
 ```
 id	campId	monsterId	weight	minLevel	maxLevel
-newbie_yard_rat_spawn	newbie_yard_rats	giant_rat	100	1	3
-newbie_yard_snake_spawn	newbie_yard_rats	snake	50	2	3
-newbie_yard_beetle_spawn	newbie_yard_beetles	fire_beetle	100	1	3
-dark_forest_gnoll_spawn	dark_forest_gnolls	gnoll_pup	100	3	6
-dark_forest_snake_spawn	dark_forest_gnolls	snake	30	3	6
-blackburrow_skeleton_spawn	blackburrow_depths	decaying_skeleton	100	5	10
+spawn_training_rat	newbie_training_grounds	giant_rat	100	1	2
+spawn_training_beetle	newbie_training_grounds	fire_beetle	60	1	2
+spawn_training_snake	newbie_training_grounds	snake	30	1	2
+spawn_practice_rat	newbie_practice_yard	giant_rat	80	1	2
+spawn_practice_beetle	newbie_practice_yard	fire_beetle	80	1	2
+spawn_practice_snake	newbie_practice_yard	snake	40	1	2
+spawn_edge_snake	forest_edge	snake	100	3	4
+spawn_edge_gnoll	forest_edge	gnoll_pup	80	3	4
+spawn_edge_beetle	forest_edge	fire_beetle	40	3	4
 ```
+
+In this example:
+- `newbie_training_grounds` has 3 different monsters (rat most common, beetle medium, snake rare)
+- `newbie_practice_yard` has 3 different monsters with more balanced weights
+- `forest_edge` has 3 different monsters (snake most common, gnoll medium, beetle rare)
 
 ## Usage in Game
 
@@ -66,12 +76,21 @@ The spawn system works as follows:
 
 ```
 id	campId	monsterId	weight	minLevel	maxLevel
-newbie_yard_rat_spawn	newbie_yard_rats	giant_rat	100	1	3
-newbie_yard_snake_spawn	newbie_yard_rats	snake	50	2	3
-newbie_yard_beetle_spawn	newbie_yard_beetles	fire_beetle	100	1	3
-dark_forest_gnoll_spawn	dark_forest_gnolls	gnoll_pup	100	3	6
-dark_forest_snake_spawn	dark_forest_gnolls	snake	30	3	6
-blackburrow_skeleton_spawn	blackburrow_depths	decaying_skeleton	100	5	10
+spawn_training_rat	newbie_training_grounds	giant_rat	100	1	2
+spawn_training_beetle	newbie_training_grounds	fire_beetle	60	1	2
+spawn_training_snake	newbie_training_grounds	snake	30	1	2
+spawn_practice_rat	newbie_practice_yard	giant_rat	80	1	2
+spawn_practice_beetle	newbie_practice_yard	fire_beetle	80	1	2
+spawn_practice_snake	newbie_practice_yard	snake	40	1	2
+spawn_southern_rat	newbie_southern_fields	giant_rat	50	2	3
+spawn_southern_beetle	newbie_southern_fields	fire_beetle	70	2	3
+spawn_southern_snake	newbie_southern_fields	snake	100	2	3
+spawn_edge_snake	forest_edge	snake	100	3	4
+spawn_edge_gnoll	forest_edge	gnoll_pup	80	3	4
+spawn_edge_beetle	forest_edge	fire_beetle	40	3	4
+spawn_grove_gnoll	forest_grove	gnoll_pup	100	4	5
+spawn_grove_snake	forest_grove	snake	70	4	5
+spawn_grove_skeleton	forest_grove	decaying_skeleton	30	4	5
 ```
 
 ## Benefits of Spawn System
