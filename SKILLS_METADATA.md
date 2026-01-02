@@ -28,10 +28,15 @@ id	name	type	category	description	staminaCost	baseProcChance	damageBonus	damageM
 offense	Offense	passive	combat	Improves your chance to hit enemies	0	0	0	0	FALSE	FALSE
 defense	Defense	passive	combat	Improves your chance to avoid being hit	0	0	0	0	FALSE	FALSE
 dodge	Dodge	passive	combat	Chance to completely avoid an attack	0	0	0	0	FALSE	FALSE
-slashing	Slashing	passive	weapon	Skill with slashing weapons	0	0	0	0	FALSE	FALSE	longsword,dagger,axe
-piercing	Piercing	passive	weapon	Skill with piercing weapons	0	0	0	0	FALSE	FALSE	dagger,spear,rapier
-blunt	Blunt	passive	weapon	Skill with blunt weapons	0	0	0	0	FALSE	FALSE	mace,staff,hammer
+slashing1H	1H Slashing	passive	weapon	Skill with one-handed slashing weapons	0	0	0	0	FALSE	FALSE	sword,dagger,axe
+slashing2H	2H Slashing	passive	weapon	Skill with two-handed slashing weapons	0	0	0	0	FALSE	FALSE	greatsword,greataxe
+piercing1H	1H Piercing	passive	weapon	Skill with one-handed piercing weapons	0	0	0	0	FALSE	FALSE	dagger,rapier
+piercing2H	2H Piercing	passive	weapon	Skill with two-handed piercing weapons (polearms)	0	0	0	0	FALSE	FALSE	spear,pike,halberd
+blunt1H	1H Blunt	passive	weapon	Skill with one-handed blunt weapons	0	0	0	0	FALSE	FALSE	mace,club
+blunt2H	2H Blunt	passive	weapon	Skill with two-handed blunt weapons (staffs)	0	0	0	0	FALSE	FALSE	staff,maul,warhammer
 handToHand	Hand to Hand	passive	weapon	Skill with unarmed combat (Monk specialty)	0	0	0	0	FALSE	FALSE	fists
+archery	Archery	passive	weapon	Skill with bows and ranged weapons	0	0	0	0	FALSE	FALSE	bow,longbow,crossbow
+throwing	Throwing	passive	weapon	Skill with thrown weapons	0	0	0	0	FALSE	FALSE	throwingdagger,throwingaxe
 kick	Kick	active	ability	Powerful kick attack with bonus damage	10	0.25	5	0	FALSE	FALSE
 bash	Bash	active	ability	Shield bash with bonus damage (requires shield)	15	0.20	8	0	TRUE	FALSE
 backstab	Backstab	active	ability	Devastating attack from behind (Rogue only)	20	0.15	0	2.5	FALSE	TRUE

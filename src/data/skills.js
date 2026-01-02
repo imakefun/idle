@@ -115,10 +115,10 @@ export const SKILL_DEFINITIONS = {
 
 // Class starting skills (skills available at level 1)
 export const CLASS_STARTING_SKILLS = {
-  warrior: ['offense', 'defense', 'slashing', 'blunt', 'kick'],
-  monk: ['offense', 'defense', 'dodge', 'handToHand', 'kick'],
-  rogue: ['offense', 'dodge', 'slashing', 'piercing', 'kick'],
-  cleric: ['offense', 'defense', 'blunt']
+  warrior: ['offense', 'defense', 'slashing1H', 'slashing2H', 'blunt1H', 'kick'],
+  monk: ['offense', 'defense', 'dodge', 'handToHand', 'blunt1H', 'blunt2H', 'kick'],
+  rogue: ['offense', 'dodge', 'slashing1H', 'piercing1H', 'kick'],
+  cleric: ['offense', 'defense', 'blunt1H', 'blunt2H']
 };
 
 // Trainable skills (can be learned from Guild Master)
@@ -126,20 +126,23 @@ export const TRAINABLE_SKILLS = {
   warrior: [
     { skillId: 'bash', level: 5, cost: 100 },
     { skillId: 'doubleAttack', level: 10, cost: 500 },
-    { skillId: 'piercing', level: 3, cost: 50 }
+    { skillId: 'piercing1H', level: 3, cost: 50 },
+    { skillId: 'archery', level: 5, cost: 100 }
   ],
   monk: [
     { skillId: 'doubleAttack', level: 8, cost: 400 },
-    { skillId: 'blunt', level: 5, cost: 100 }
+    { skillId: 'throwing', level: 5, cost: 100 }
   ],
   rogue: [
     { skillId: 'backstab', level: 10, cost: 750 },
     { skillId: 'doubleAttack', level: 12, cost: 500 },
-    { skillId: 'dodge', level: 3, cost: 75 }
+    { skillId: 'dodge', level: 3, cost: 75 },
+    { skillId: 'archery', level: 6, cost: 150 },
+    { skillId: 'throwing', level: 4, cost: 75 }
   ],
   cleric: [
     { skillId: 'bash', level: 8, cost: 200 },
-    { skillId: 'slashing', level: 5, cost: 100 }
+    { skillId: 'slashing1H', level: 5, cost: 100 }
   ]
 };
 

@@ -526,159 +526,32 @@ export const fallbackData = {
   ],
 
   Skills: [
-    {
-      id: 'offense',
-      name: 'Offense',
-      type: 'passive',
-      category: 'combat',
-      description: 'Improves your chance to hit enemies',
-      staminaCost: '0',
-      baseProcChance: '0',
-      damageBonus: '0',
-      damageMultiplier: '0',
-      requiresShield: 'FALSE',
-      requiresPiercing: 'FALSE',
-      weaponTypes: ''
-    },
-    {
-      id: 'defense',
-      name: 'Defense',
-      type: 'passive',
-      category: 'combat',
-      description: 'Improves your chance to avoid being hit',
-      staminaCost: '0',
-      baseProcChance: '0',
-      damageBonus: '0',
-      damageMultiplier: '0',
-      requiresShield: 'FALSE',
-      requiresPiercing: 'FALSE',
-      weaponTypes: ''
-    },
-    {
-      id: 'dodge',
-      name: 'Dodge',
-      type: 'passive',
-      category: 'combat',
-      description: 'Chance to completely avoid an attack',
-      staminaCost: '0',
-      baseProcChance: '0',
-      damageBonus: '0',
-      damageMultiplier: '0',
-      requiresShield: 'FALSE',
-      requiresPiercing: 'FALSE',
-      weaponTypes: ''
-    },
-    {
-      id: 'slashing',
-      name: 'Slashing',
-      type: 'passive',
-      category: 'weapon',
-      description: 'Skill with slashing weapons',
-      staminaCost: '0',
-      baseProcChance: '0',
-      damageBonus: '0',
-      damageMultiplier: '0',
-      requiresShield: 'FALSE',
-      requiresPiercing: 'FALSE',
-      weaponTypes: 'longsword,dagger,axe'
-    },
-    {
-      id: 'piercing',
-      name: 'Piercing',
-      type: 'passive',
-      category: 'weapon',
-      description: 'Skill with piercing weapons',
-      staminaCost: '0',
-      baseProcChance: '0',
-      damageBonus: '0',
-      damageMultiplier: '0',
-      requiresShield: 'FALSE',
-      requiresPiercing: 'FALSE',
-      weaponTypes: 'dagger,spear,rapier'
-    },
-    {
-      id: 'blunt',
-      name: 'Blunt',
-      type: 'passive',
-      category: 'weapon',
-      description: 'Skill with blunt weapons',
-      staminaCost: '0',
-      baseProcChance: '0',
-      damageBonus: '0',
-      damageMultiplier: '0',
-      requiresShield: 'FALSE',
-      requiresPiercing: 'FALSE',
-      weaponTypes: 'mace,staff,hammer'
-    },
-    {
-      id: 'handToHand',
-      name: 'Hand to Hand',
-      type: 'passive',
-      category: 'weapon',
-      description: 'Skill with unarmed combat (Monk specialty)',
-      staminaCost: '0',
-      baseProcChance: '0',
-      damageBonus: '0',
-      damageMultiplier: '0',
-      requiresShield: 'FALSE',
-      requiresPiercing: 'FALSE',
-      weaponTypes: 'fists'
-    },
-    {
-      id: 'kick',
-      name: 'Kick',
-      type: 'active',
-      category: 'ability',
-      description: 'Powerful kick attack with bonus damage',
-      staminaCost: '10',
-      baseProcChance: '0.25',
-      damageBonus: '5',
-      damageMultiplier: '0',
-      requiresShield: 'FALSE',
-      requiresPiercing: 'FALSE',
-      weaponTypes: ''
-    },
-    {
-      id: 'bash',
-      name: 'Bash',
-      type: 'active',
-      category: 'ability',
-      description: 'Shield bash with bonus damage (requires shield)',
-      staminaCost: '15',
-      baseProcChance: '0.20',
-      damageBonus: '8',
-      damageMultiplier: '0',
-      requiresShield: 'TRUE',
-      requiresPiercing: 'FALSE',
-      weaponTypes: ''
-    },
-    {
-      id: 'backstab',
-      name: 'Backstab',
-      type: 'active',
-      category: 'ability',
-      description: 'Devastating attack from behind (Rogue only)',
-      staminaCost: '20',
-      baseProcChance: '0.15',
-      damageBonus: '0',
-      damageMultiplier: '2.5',
-      requiresShield: 'FALSE',
-      requiresPiercing: 'TRUE',
-      weaponTypes: ''
-    },
-    {
-      id: 'doubleAttack',
-      name: 'Double Attack',
-      type: 'active',
-      category: 'ability',
-      description: 'Chance to attack twice in one round',
-      staminaCost: '0',
-      baseProcChance: '0.10',
-      damageBonus: '0',
-      damageMultiplier: '0',
-      requiresShield: 'FALSE',
-      requiresPiercing: 'FALSE',
-      weaponTypes: ''
-    }
+    // Combat Skills
+    { id: 'offense', name: 'Offense', type: 'passive', category: 'combat', description: 'Improves your chance to hit enemies', staminaCost: '0', baseProcChance: '0', damageBonus: '0', damageMultiplier: '0', requiresShield: 'FALSE', requiresPiercing: 'FALSE', weaponTypes: '' },
+    { id: 'defense', name: 'Defense', type: 'passive', category: 'combat', description: 'Improves your chance to avoid being hit', staminaCost: '0', baseProcChance: '0', damageBonus: '0', damageMultiplier: '0', requiresShield: 'FALSE', requiresPiercing: 'FALSE', weaponTypes: '' },
+    { id: 'dodge', name: 'Dodge', type: 'passive', category: 'combat', description: 'Chance to completely avoid an attack', staminaCost: '0', baseProcChance: '0', damageBonus: '0', damageMultiplier: '0', requiresShield: 'FALSE', requiresPiercing: 'FALSE', weaponTypes: '' },
+
+    // Weapon Skills - Slashing
+    { id: 'slashing1H', name: '1H Slashing', type: 'passive', category: 'weapon', description: 'Skill with one-handed slashing weapons', staminaCost: '0', baseProcChance: '0', damageBonus: '0', damageMultiplier: '0', requiresShield: 'FALSE', requiresPiercing: 'FALSE', weaponTypes: 'sword,dagger,axe' },
+    { id: 'slashing2H', name: '2H Slashing', type: 'passive', category: 'weapon', description: 'Skill with two-handed slashing weapons', staminaCost: '0', baseProcChance: '0', damageBonus: '0', damageMultiplier: '0', requiresShield: 'FALSE', requiresPiercing: 'FALSE', weaponTypes: 'greatsword,greataxe' },
+
+    // Weapon Skills - Piercing
+    { id: 'piercing1H', name: '1H Piercing', type: 'passive', category: 'weapon', description: 'Skill with one-handed piercing weapons', staminaCost: '0', baseProcChance: '0', damageBonus: '0', damageMultiplier: '0', requiresShield: 'FALSE', requiresPiercing: 'FALSE', weaponTypes: 'dagger,rapier' },
+    { id: 'piercing2H', name: '2H Piercing', type: 'passive', category: 'weapon', description: 'Skill with two-handed piercing weapons (polearms)', staminaCost: '0', baseProcChance: '0', damageBonus: '0', damageMultiplier: '0', requiresShield: 'FALSE', requiresPiercing: 'FALSE', weaponTypes: 'spear,pike,halberd' },
+
+    // Weapon Skills - Blunt
+    { id: 'blunt1H', name: '1H Blunt', type: 'passive', category: 'weapon', description: 'Skill with one-handed blunt weapons', staminaCost: '0', baseProcChance: '0', damageBonus: '0', damageMultiplier: '0', requiresShield: 'FALSE', requiresPiercing: 'FALSE', weaponTypes: 'mace,club' },
+    { id: 'blunt2H', name: '2H Blunt', type: 'passive', category: 'weapon', description: 'Skill with two-handed blunt weapons (staffs)', staminaCost: '0', baseProcChance: '0', damageBonus: '0', damageMultiplier: '0', requiresShield: 'FALSE', requiresPiercing: 'FALSE', weaponTypes: 'staff,maul,warhammer' },
+
+    // Other Weapon Skills
+    { id: 'handToHand', name: 'Hand to Hand', type: 'passive', category: 'weapon', description: 'Skill with unarmed combat (Monk specialty)', staminaCost: '0', baseProcChance: '0', damageBonus: '0', damageMultiplier: '0', requiresShield: 'FALSE', requiresPiercing: 'FALSE', weaponTypes: 'fists' },
+    { id: 'archery', name: 'Archery', type: 'passive', category: 'weapon', description: 'Skill with bows and ranged weapons', staminaCost: '0', baseProcChance: '0', damageBonus: '0', damageMultiplier: '0', requiresShield: 'FALSE', requiresPiercing: 'FALSE', weaponTypes: 'bow,longbow,crossbow' },
+    { id: 'throwing', name: 'Throwing', type: 'passive', category: 'weapon', description: 'Skill with thrown weapons', staminaCost: '0', baseProcChance: '0', damageBonus: '0', damageMultiplier: '0', requiresShield: 'FALSE', requiresPiercing: 'FALSE', weaponTypes: 'throwingdagger,throwingaxe' },
+
+    // Active Abilities
+    { id: 'kick', name: 'Kick', type: 'active', category: 'ability', description: 'Powerful kick attack with bonus damage', staminaCost: '10', baseProcChance: '0.25', damageBonus: '5', damageMultiplier: '0', requiresShield: 'FALSE', requiresPiercing: 'FALSE', weaponTypes: '' },
+    { id: 'bash', name: 'Bash', type: 'active', category: 'ability', description: 'Shield bash with bonus damage (requires shield)', staminaCost: '15', baseProcChance: '0.20', damageBonus: '8', damageMultiplier: '0', requiresShield: 'TRUE', requiresPiercing: 'FALSE', weaponTypes: '' },
+    { id: 'backstab', name: 'Backstab', type: 'active', category: 'ability', description: 'Devastating attack from behind (Rogue only)', staminaCost: '20', baseProcChance: '0.15', damageBonus: '0', damageMultiplier: '2.5', requiresShield: 'FALSE', requiresPiercing: 'TRUE', weaponTypes: '' },
+    { id: 'doubleAttack', name: 'Double Attack', type: 'active', category: 'ability', description: 'Chance to attack twice in one round', staminaCost: '0', baseProcChance: '0.10', damageBonus: '0', damageMultiplier: '0', requiresShield: 'FALSE', requiresPiercing: 'FALSE', weaponTypes: '' }
   ]
 };
