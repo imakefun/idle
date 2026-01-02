@@ -6,34 +6,152 @@
 }
 
 .equipment-header {
-  margin: 0 0 0.75rem 0;
+  margin: 0 0 1rem 0;
   color: var(--text-primary);
   font-size: 1.1rem;
 }
 
-.equipment-slots {
+.equipment-groups {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
+}
+
+.equipment-group {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem;
+}
+
+.group-label {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.equipment-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.5rem;
 }
 
 .equipment-slot {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .slot-label {
-  min-width: 80px;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
-  text-align: right;
+  font-weight: 500;
+}
+
+.empty-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border: 2px dashed var(--border);
+  border-radius: 6px;
+  min-height: 60px;
+  opacity: 0.6;
+  transition: all 0.2s ease;
+}
+
+.empty-slot:hover {
+  opacity: 0.8;
+  border-color: var(--text-secondary);
+}
+
+.empty-icon {
+  font-size: 1.5rem;
+  opacity: 0.3;
+  margin-bottom: 0.25rem;
+}
+
+.empty-text {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Group-specific layouts */
+.equipment-group.weapons .equipment-slots {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.equipment-group.head .equipment-slots {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.equipment-group.upper .equipment-slots {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.equipment-group.rings .equipment-slots {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.equipment-group.body .equipment-slots {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.equipment-group.lower .equipment-slots {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Tablet adjustments */
+@media (max-width: 1024px) {
+  .equipment-group.weapons .equipment-slots,
+  .equipment-group.upper .equipment-slots,
+  .equipment-group.body .equipment-slots {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* Mobile adjustments */
-@media (max-width: 768px) {
+@media (max-width: 640px) {
+  .equipment-container {
+    padding: 0.75rem;
+  }
+
+  .equipment-groups {
+    gap: 0.75rem;
+  }
+
+  .equipment-group {
+    padding: 0.5rem;
+  }
+
+  .equipment-slots {
+    grid-template-columns: 1fr;
+  }
+
+  .equipment-group.weapons .equipment-slots,
+  .equipment-group.head .equipment-slots,
+  .equipment-group.upper .equipment-slots,
+  .equipment-group.rings .equipment-slots,
+  .equipment-group.body .equipment-slots,
+  .equipment-group.lower .equipment-slots {
+    grid-template-columns: 1fr;
+  }
+
   .slot-label {
-    min-width: 60px;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
+  }
+
+  .empty-slot {
+    padding: 0.75rem;
+    min-height: 50px;
   }
 }
