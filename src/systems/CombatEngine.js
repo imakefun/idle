@@ -409,7 +409,8 @@ export function processCombatRound(player, monster, gameData) {
     // Generate loot
     const lootTables = gameData?.lootTables || {};
     const items = gameData?.items || {};
-    const generatedLoot = generateLoot(monster.id, lootTables, items);
+    const lootTableId = monster.lootTableId || monster.id; // Fallback to monster.id for backwards compatibility
+    const generatedLoot = generateLoot(lootTableId, lootTables, items);
 
     // Add currency to player
     if (generatedLoot.currency > 0) {

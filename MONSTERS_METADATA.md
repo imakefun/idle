@@ -21,6 +21,7 @@ Defines all monsters that can be encountered in the game, including their stats,
 | G | ac | Integer | Armor class (higher = harder to hit) | `5` |
 | H | xpReward | Integer | Experience points awarded on kill | `10` |
 | I | isRare | Boolean | TRUE if rare/boss monster | `FALSE` |
+| J | lootTableId | String | ID of loot table to roll on death | `loot_rat` |
 
 ## Data Structure
 

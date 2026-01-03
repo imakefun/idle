@@ -358,45 +358,28 @@ function transformSettings(rows) {
 
 /**
  * Transform LootTables sheet data
+ * New structure: id, group, item, min, max, step, weight
  */
 function transformLootTables(rows) {
   const lootTables = {};
 
   rows.forEach(row => {
-    if (!row.monsterId) return; // Skip invalid rows
+    if (!row.id) return; // Skip invalid rows
 
-    // Initialize loot table for this monster if not exists
-    if (!lootTables[row.monsterId]) {
-      lootTables[row.monsterId] = {
-        currency: {
-          min: parseInt(row.currencyMin) || 0,
-          max: parseInt(row.currencyMax) || 0
-        },
-        items: []
-      };
+    // Initialize loot table array if not exists
+    if (!lootTables[row.id]) {
+      lootTables[row.id] = [];
     }
 
-    // Add item to loot table if itemId exists
-    if (row.itemId) {
-      lootTables[row.monsterId].items.push({
-        itemId: row.itemId,
-        chance: parseFloat(row.dropChance) || 0,
-        quantity: {
-          min: parseInt(row.minQty) || 1,
-          max: parseInt(row.maxQty) || 1
-        }
-      });
-    }
-
-    // Update currency if this row has higher values
-    const currencyMin = parseInt(row.currencyMin) || 0;
-    const currencyMax = parseInt(row.currencyMax) || 0;
-    if (currencyMin > lootTables[row.monsterId].currency.min) {
-      lootTables[row.monsterId].currency.min = currencyMin;
-    }
-    if (currencyMax > lootTables[row.monsterId].currency.max) {
-      lootTables[row.monsterId].currency.max = currencyMax;
-    }
+    // Add entry to loot table
+    lootTables[row.id].push({
+      group: parseInt(row.group) || 1,
+      item: row.item || '',
+      min: parseInt(row.min) || 0,
+      max: parseInt(row.max) || 0,
+      step: parseInt(row.step) || 1,
+      weight: parseFloat(row.weight) || 0
+    });
   });
 
   return lootTables;

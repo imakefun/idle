@@ -1,61 +1,148 @@
 /**
  * Loot System
- * Handles loot generation and distribution from defeated monsters
+ * Handles loot generation from flexible, reusable loot tables
  */
 
+const CURRENCY_VALUES = {
+  copper: 1,
+  silver: 10,
+  gold: 100,
+  platinum: 1000
+};
+
 /**
- * Generate loot from a defeated monster
- * @param {string} monsterId - ID of the defeated monster
- * @param {Object} lootTables - Loot table data from gameData
+ * Generate loot from a loot table
+ * @param {string} lootTableId - ID of the loot table to roll
+ * @param {Object} lootTables - All loot table data from gameData
  * @param {Object} items - Item definitions from gameData
+ * @param {number} depth - Recursion depth (prevents infinite loops)
  * @returns {Object} - Generated loot { currency, items: [{item, quantity}] }
  */
-export function generateLoot(monsterId, lootTables, items) {
+export function generateLoot(lootTableId, lootTables, items, depth = 0) {
   const loot = {
     currency: 0,
     items: []
   };
 
-  // Get loot table for this monster
-  const lootTable = lootTables?.[monsterId];
+  // Prevent infinite recursion
+  if (depth > 10) {
+    console.warn(`Loot table recursion depth exceeded for: ${lootTableId}`);
+    return loot;
+  }
+
+  // Get loot table definition
+  const lootTable = lootTables?.[lootTableId];
   if (!lootTable) {
     // No loot table defined, return empty loot
     return loot;
   }
 
-  // Roll for currency
-  if (lootTable.currency) {
-    const min = lootTable.currency.min || 0;
-    const max = lootTable.currency.max || 0;
-    if (max > 0) {
-      loot.currency = Math.floor(Math.random() * (max - min + 1)) + min;
+  // Group entries by group number
+  const groups = {};
+  lootTable.forEach(entry => {
+    const groupNum = entry.group || 1;
+    if (!groups[groupNum]) {
+      groups[groupNum] = [];
     }
-  }
+    groups[groupNum].push(entry);
+  });
 
-  // Roll for each item in the loot table
-  if (lootTable.items && Array.isArray(lootTable.items)) {
-    lootTable.items.forEach(lootEntry => {
-      // Roll for drop chance
-      const roll = Math.random() * 100;
-      if (roll < lootEntry.chance) {
-        // Item dropped! Determine quantity
-        const minQty = lootEntry.quantity.min || 1;
-        const maxQty = lootEntry.quantity.max || 1;
-        const quantity = Math.floor(Math.random() * (maxQty - minQty + 1)) + minQty;
+  // Process each group (one selection per group)
+  Object.keys(groups).forEach(groupNum => {
+    const groupEntries = groups[groupNum];
+    const selectedEntry = selectFromGroup(groupEntries);
 
-        // Get item definition
-        const itemDef = items[lootEntry.itemId];
+    if (selectedEntry && selectedEntry.item && selectedEntry.item !== 'nothing') {
+      // Determine quantity
+      const quantity = calculateQuantity(
+        selectedEntry.min || 1,
+        selectedEntry.max || 1,
+        selectedEntry.step || 1
+      );
+
+      // Check if this is a currency type
+      if (CURRENCY_VALUES[selectedEntry.item]) {
+        const copperValue = CURRENCY_VALUES[selectedEntry.item] * quantity;
+        loot.currency += copperValue;
+      }
+      // Check if this is another loot table (recursive)
+      else if (lootTables[selectedEntry.item]) {
+        // Roll the referenced loot table multiple times (quantity = number of rolls)
+        for (let i = 0; i < quantity; i++) {
+          const recursiveLoot = generateLoot(selectedEntry.item, lootTables, items, depth + 1);
+          loot.currency += recursiveLoot.currency;
+          loot.items.push(...recursiveLoot.items);
+        }
+      }
+      // This is an item
+      else {
+        const itemDef = items[selectedEntry.item];
         if (itemDef) {
           loot.items.push({
             item: itemDef,
             quantity
           });
+        } else {
+          console.warn(`Item not found in loot table: ${selectedEntry.item}`);
         }
       }
-    });
-  }
+    }
+  });
 
   return loot;
+}
+
+/**
+ * Select one entry from a group using weighted random selection
+ * @param {Array} groupEntries - Array of loot table entries in this group
+ * @returns {Object} - Selected entry, or null if nothing selected
+ */
+function selectFromGroup(groupEntries) {
+  if (!groupEntries || groupEntries.length === 0) {
+    return null;
+  }
+
+  // Calculate total weight
+  const totalWeight = groupEntries.reduce((sum, entry) => sum + (entry.weight || 0), 0);
+
+  if (totalWeight === 0) {
+    return null;
+  }
+
+  // Random weighted selection
+  let random = Math.random() * totalWeight;
+
+  for (const entry of groupEntries) {
+    random -= (entry.weight || 0);
+    if (random <= 0) {
+      return entry;
+    }
+  }
+
+  // Fallback to last entry (should not happen)
+  return groupEntries[groupEntries.length - 1];
+}
+
+/**
+ * Calculate quantity with min/max/step constraints
+ * @param {number} min - Minimum quantity
+ * @param {number} max - Maximum quantity
+ * @param {number} step - Step/rounding multiple
+ * @returns {number} - Calculated quantity
+ */
+function calculateQuantity(min, max, step) {
+  if (min === max) {
+    return min;
+  }
+
+  // Calculate number of possible steps
+  const range = max - min;
+  const numSteps = Math.floor(range / step);
+
+  // Random step selection
+  const randomStep = Math.floor(Math.random() * (numSteps + 1));
+
+  return min + (randomStep * step);
 }
 
 /**
@@ -105,7 +192,6 @@ export function addLootToInventory(inventory, lootItems) {
         };
 
         remainingQty -= amountToAdd;
-        result.added.push({ item, quantity: amountToAdd });
       } else {
         // No more empty slots - overflow
         result.overflow.push({ item, quantity: remainingQty });
@@ -113,9 +199,9 @@ export function addLootToInventory(inventory, lootItems) {
       }
     }
 
-    // If we added some (not all overflow), record what was added
-    if (remainingQty === 0 && quantity > 0) {
-      result.added.push({ item, quantity });
+    // Record what was successfully added
+    if (quantity > remainingQty) {
+      result.added.push({ item, quantity: quantity - remainingQty });
     }
   });
 

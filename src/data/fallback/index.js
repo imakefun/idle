@@ -112,7 +112,8 @@ export const fallbackData = {
       maxDmg: '3',
       ac: '5',
       xpReward: '10',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_rat'
     },
     {
       id: 'snake',
@@ -123,7 +124,8 @@ export const fallbackData = {
       maxDmg: '5',
       ac: '8',
       xpReward: '15',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_snake'
     },
     {
       id: 'gnoll_pup',
@@ -134,7 +136,8 @@ export const fallbackData = {
       maxDmg: '7',
       ac: '12',
       xpReward: '25',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_gnoll_pup'
     },
     {
       id: 'fire_beetle',
@@ -145,7 +148,8 @@ export const fallbackData = {
       maxDmg: '4',
       ac: '10',
       xpReward: '12',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_beetle'
     },
     {
       id: 'decaying_skeleton',
@@ -156,7 +160,8 @@ export const fallbackData = {
       maxDmg: '9',
       ac: '15',
       xpReward: '35',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_skeleton'
     },
     {
       id: 'young_spider',
@@ -167,7 +172,8 @@ export const fallbackData = {
       maxDmg: '6',
       ac: '10',
       xpReward: '22',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_spider'
     },
     {
       id: 'gnoll_scout',
@@ -178,7 +184,8 @@ export const fallbackData = {
       maxDmg: '11',
       ac: '18',
       xpReward: '50',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_gnoll_scout'
     },
     {
       id: 'dark_wolf',
@@ -189,7 +196,8 @@ export const fallbackData = {
       maxDmg: '10',
       ac: '16',
       xpReward: '45',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_wolf'
     },
     {
       id: 'gnoll_guard',
@@ -200,7 +208,8 @@ export const fallbackData = {
       maxDmg: '13',
       ac: '20',
       xpReward: '60',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_gnoll_guard'
     },
     {
       id: 'skeletal_warrior',
@@ -211,7 +220,8 @@ export const fallbackData = {
       maxDmg: '15',
       ac: '22',
       xpReward: '75',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_skeletal_warrior'
     },
     {
       id: 'gnoll_warrior',
@@ -222,7 +232,8 @@ export const fallbackData = {
       maxDmg: '16',
       ac: '24',
       xpReward: '80',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_gnoll_warrior'
     },
     {
       id: 'gnoll_shaman',
@@ -233,7 +244,8 @@ export const fallbackData = {
       maxDmg: '17',
       ac: '26',
       xpReward: '90',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_gnoll_shaman'
     },
     {
       id: 'bandit_thug',
@@ -244,7 +256,8 @@ export const fallbackData = {
       maxDmg: '16',
       ac: '25',
       xpReward: '85',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_bandit_thug'
     },
     {
       id: 'guard_dog',
@@ -255,7 +268,8 @@ export const fallbackData = {
       maxDmg: '14',
       ac: '22',
       xpReward: '70',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_dog'
     },
     {
       id: 'bandit_guard',
@@ -266,7 +280,8 @@ export const fallbackData = {
       maxDmg: '18',
       ac: '28',
       xpReward: '100',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_bandit_guard'
     },
     {
       id: 'bandit_archer',
@@ -277,7 +292,8 @@ export const fallbackData = {
       maxDmg: '19',
       ac: '26',
       xpReward: '105',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_bandit_archer'
     },
     {
       id: 'bandit_veteran',
@@ -288,7 +304,8 @@ export const fallbackData = {
       maxDmg: '21',
       ac: '30',
       xpReward: '120',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_bandit_veteran'
     },
     {
       id: 'bandit_mage',
@@ -299,7 +316,8 @@ export const fallbackData = {
       maxDmg: '22',
       ac: '28',
       xpReward: '125',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_bandit_mage'
     },
     {
       id: 'bandit_captain',
@@ -310,7 +328,8 @@ export const fallbackData = {
       maxDmg: '23',
       ac: '32',
       xpReward: '140',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_bandit_captain'
     },
     {
       id: 'elite_bandit',
@@ -321,7 +340,8 @@ export const fallbackData = {
       maxDmg: '25',
       ac: '34',
       xpReward: '160',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_elite_bandit'
     },
     {
       id: 'bandit_champion',
@@ -332,7 +352,8 @@ export const fallbackData = {
       maxDmg: '27',
       ac: '36',
       xpReward: '180',
-      isRare: 'FALSE'
+      isRare: 'FALSE',
+      lootTableId: 'loot_bandit_champion'
     },
     {
       id: 'bandit_lord',
@@ -343,7 +364,8 @@ export const fallbackData = {
       maxDmg: '30',
       ac: '40',
       xpReward: '250',
-      isRare: 'TRUE'
+      isRare: 'TRUE',
+      lootTableId: 'loot_bandit_lord'
     }
   ],
 
@@ -1391,80 +1413,124 @@ export const fallbackData = {
   ],
 
   LootTables: [
-    // Giant Rat (level 1)
-    { monsterId: 'giant_rat', itemId: 'rat_ear', dropChance: '30', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '3' },
-    { monsterId: 'giant_rat', itemId: 'rusty_dagger', dropChance: '2', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' },
+    // Loot table for Giant Rat (level 1)
+    { id: 'loot_rat', group: 1, item: 'copper', min: 0, max: 3, step: 1, weight: 100 },
+    { id: 'loot_rat', group: 2, item: 'rat_ear', min: 1, max: 1, step: 1, weight: 30 },
+    { id: 'loot_rat', group: 2, item: 'rusty_dagger', min: 1, max: 1, step: 1, weight: 2 },
+    { id: 'loot_rat', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 68 },
 
-    // Snake (level 2)
-    { monsterId: 'snake', itemId: 'snake_fang', dropChance: '25', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '4' },
+    // Loot table for Snake (level 2)
+    { id: 'loot_snake', group: 1, item: 'copper', min: 0, max: 4, step: 1, weight: 100 },
+    { id: 'loot_snake', group: 2, item: 'snake_fang', min: 1, max: 1, step: 1, weight: 25 },
+    { id: 'loot_snake', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 75 },
 
-    // Fire Beetle (level 2)
-    { monsterId: 'fire_beetle', itemId: 'beetle_carapace', dropChance: '20', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '4' },
+    // Loot table for Fire Beetle (level 2)
+    { id: 'loot_beetle', group: 1, item: 'copper', min: 0, max: 4, step: 1, weight: 100 },
+    { id: 'loot_beetle', group: 2, item: 'beetle_carapace', min: 1, max: 1, step: 1, weight: 20 },
+    { id: 'loot_beetle', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 80 },
 
-    // Gnoll Pup (level 3)
-    { monsterId: 'gnoll_pup', itemId: 'gnoll_fang', dropChance: '20', minQty: '1', maxQty: '1', currencyMin: '1', currencyMax: '5' },
-    { monsterId: 'gnoll_pup', itemId: 'tattered_pelt', dropChance: '10', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' },
+    // Loot table for Gnoll Pup (level 3)
+    { id: 'loot_gnoll_pup', group: 1, item: 'copper', min: 1, max: 5, step: 1, weight: 100 },
+    { id: 'loot_gnoll_pup', group: 2, item: 'gnoll_fang', min: 1, max: 1, step: 1, weight: 20 },
+    { id: 'loot_gnoll_pup', group: 2, item: 'tattered_pelt', min: 1, max: 1, step: 1, weight: 10 },
+    { id: 'loot_gnoll_pup', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 70 },
 
-    // Decaying Skeleton (level 4)
-    { monsterId: 'decaying_skeleton', itemId: 'bone_chips', dropChance: '40', minQty: '1', maxQty: '2', currencyMin: '1', currencyMax: '6' },
-    { monsterId: 'decaying_skeleton', itemId: 'rusty_dagger', dropChance: '3', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' },
+    // Loot table for Decaying Skeleton (level 4)
+    { id: 'loot_skeleton', group: 1, item: 'copper', min: 1, max: 6, step: 1, weight: 100 },
+    { id: 'loot_skeleton', group: 2, item: 'bone_chips', min: 1, max: 2, step: 1, weight: 40 },
+    { id: 'loot_skeleton', group: 2, item: 'rusty_dagger', min: 1, max: 1, step: 1, weight: 3 },
+    { id: 'loot_skeleton', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 57 },
 
-    // Young Spider (level 3)
-    { monsterId: 'young_spider', itemId: 'spider_silk', dropChance: '30', minQty: '1', maxQty: '1', currencyMin: '1', currencyMax: '5' },
+    // Loot table for Young Spider (level 3)
+    { id: 'loot_spider', group: 1, item: 'copper', min: 1, max: 5, step: 1, weight: 100 },
+    { id: 'loot_spider', group: 2, item: 'spider_silk', min: 1, max: 1, step: 1, weight: 30 },
+    { id: 'loot_spider', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 70 },
 
-    // Gnoll Scout (level 5)
-    { monsterId: 'gnoll_scout', itemId: 'gnoll_fang', dropChance: '25', minQty: '1', maxQty: '1', currencyMin: '2', currencyMax: '8' },
-    { monsterId: 'gnoll_scout', itemId: 'tattered_pelt', dropChance: '15', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' },
+    // Loot table for Gnoll Scout (level 5)
+    { id: 'loot_gnoll_scout', group: 1, item: 'copper', min: 2, max: 8, step: 1, weight: 100 },
+    { id: 'loot_gnoll_scout', group: 2, item: 'gnoll_fang', min: 1, max: 1, step: 1, weight: 25 },
+    { id: 'loot_gnoll_scout', group: 2, item: 'tattered_pelt', min: 1, max: 1, step: 1, weight: 15 },
+    { id: 'loot_gnoll_scout', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 60 },
 
-    // Dark Wolf (level 5)
-    { monsterId: 'dark_wolf', itemId: 'wolf_pelt', dropChance: '35', minQty: '1', maxQty: '1', currencyMin: '2', currencyMax: '8' },
-    { monsterId: 'dark_wolf', itemId: 'wolf_fang', dropChance: '20', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' },
+    // Loot table for Dark Wolf (level 5)
+    { id: 'loot_wolf', group: 1, item: 'copper', min: 2, max: 8, step: 1, weight: 100 },
+    { id: 'loot_wolf', group: 2, item: 'wolf_pelt', min: 1, max: 1, step: 1, weight: 35 },
+    { id: 'loot_wolf', group: 2, item: 'wolf_fang', min: 1, max: 1, step: 1, weight: 20 },
+    { id: 'loot_wolf', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 45 },
 
-    // Gnoll Guard (level 6)
-    { monsterId: 'gnoll_guard', itemId: 'gnoll_fang', dropChance: '30', minQty: '1', maxQty: '2', currencyMin: '3', currencyMax: '10' },
+    // Loot table for Gnoll Guard (level 6)
+    { id: 'loot_gnoll_guard', group: 1, item: 'copper', min: 3, max: 10, step: 1, weight: 100 },
+    { id: 'loot_gnoll_guard', group: 2, item: 'gnoll_fang', min: 1, max: 2, step: 1, weight: 30 },
+    { id: 'loot_gnoll_guard', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 70 },
 
-    // Skeletal Warrior (level 7)
-    { monsterId: 'skeletal_warrior', itemId: 'bone_chips', dropChance: '45', minQty: '2', maxQty: '3', currencyMin: '3', currencyMax: '12' },
+    // Loot table for Skeletal Warrior (level 7)
+    { id: 'loot_skeletal_warrior', group: 1, item: 'copper', min: 3, max: 12, step: 1, weight: 100 },
+    { id: 'loot_skeletal_warrior', group: 2, item: 'bone_chips', min: 2, max: 3, step: 1, weight: 45 },
+    { id: 'loot_skeletal_warrior', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 55 },
 
-    // Gnoll Warrior (level 7)
-    { monsterId: 'gnoll_warrior', itemId: 'gnoll_fang', dropChance: '35', minQty: '1', maxQty: '2', currencyMin: '4', currencyMax: '15' },
+    // Loot table for Gnoll Warrior (level 7)
+    { id: 'loot_gnoll_warrior', group: 1, item: 'copper', min: 4, max: 15, step: 1, weight: 100 },
+    { id: 'loot_gnoll_warrior', group: 2, item: 'gnoll_fang', min: 1, max: 2, step: 1, weight: 35 },
+    { id: 'loot_gnoll_warrior', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 65 },
 
-    // Gnoll Shaman (level 8)
-    { monsterId: 'gnoll_shaman', itemId: 'gnoll_fang', dropChance: '25', minQty: '1', maxQty: '1', currencyMin: '5', currencyMax: '18' },
+    // Loot table for Gnoll Shaman (level 8)
+    { id: 'loot_gnoll_shaman', group: 1, item: 'copper', min: 5, max: 18, step: 1, weight: 100 },
+    { id: 'loot_gnoll_shaman', group: 2, item: 'gnoll_fang', min: 1, max: 1, step: 1, weight: 25 },
+    { id: 'loot_gnoll_shaman', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 75 },
 
-    // Bandit Thug (level 8)
-    { monsterId: 'bandit_thug', itemId: 'copper_ring', dropChance: '15', minQty: '1', maxQty: '1', currencyMin: '4', currencyMax: '16' },
+    // Loot table for Bandit Thug (level 8)
+    { id: 'loot_bandit_thug', group: 1, item: 'copper', min: 4, max: 16, step: 1, weight: 100 },
+    { id: 'loot_bandit_thug', group: 2, item: 'copper_ring', min: 1, max: 1, step: 1, weight: 15 },
+    { id: 'loot_bandit_thug', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 85 },
 
-    // Guard Dog (level 8)
-    { monsterId: 'guard_dog', itemId: 'dog_collar', dropChance: '20', minQty: '1', maxQty: '1', currencyMin: '3', currencyMax: '12' },
-    { monsterId: 'guard_dog', itemId: 'rawhide_strip', dropChance: '25', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' },
+    // Loot table for Guard Dog (level 8)
+    { id: 'loot_dog', group: 1, item: 'copper', min: 3, max: 12, step: 1, weight: 100 },
+    { id: 'loot_dog', group: 2, item: 'dog_collar', min: 1, max: 1, step: 1, weight: 20 },
+    { id: 'loot_dog', group: 2, item: 'rawhide_strip', min: 1, max: 1, step: 1, weight: 25 },
+    { id: 'loot_dog', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 55 },
 
-    // Bandit Guard (level 9)
-    { monsterId: 'bandit_guard', itemId: 'bronze_dagger', dropChance: '5', minQty: '1', maxQty: '1', currencyMin: '6', currencyMax: '20' },
-    { monsterId: 'bandit_guard', itemId: 'rations', dropChance: '30', minQty: '1', maxQty: '2', currencyMin: '0', currencyMax: '0' },
+    // Loot table for Bandit Guard (level 9)
+    { id: 'loot_bandit_guard', group: 1, item: 'copper', min: 6, max: 20, step: 1, weight: 100 },
+    { id: 'loot_bandit_guard', group: 2, item: 'bronze_dagger', min: 1, max: 1, step: 1, weight: 5 },
+    { id: 'loot_bandit_guard', group: 2, item: 'rations', min: 1, max: 2, step: 1, weight: 30 },
+    { id: 'loot_bandit_guard', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 65 },
 
-    // Bandit Archer (level 10)
-    { monsterId: 'bandit_archer', itemId: 'arrows', dropChance: '40', minQty: '5', maxQty: '10', currencyMin: '7', currencyMax: '25' },
+    // Loot table for Bandit Archer (level 10)
+    { id: 'loot_bandit_archer', group: 1, item: 'copper', min: 7, max: 25, step: 1, weight: 100 },
+    { id: 'loot_bandit_archer', group: 2, item: 'arrows', min: 5, max: 10, step: 1, weight: 40 },
+    { id: 'loot_bandit_archer', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 60 },
 
-    // Bandit Veteran (level 11)
-    { monsterId: 'bandit_veteran', itemId: 'silver_ring', dropChance: '6', minQty: '1', maxQty: '1', currencyMin: '10', currencyMax: '30' },
+    // Loot table for Bandit Veteran (level 11)
+    { id: 'loot_bandit_veteran', group: 1, item: 'copper', min: 10, max: 30, step: 5, weight: 100 },
+    { id: 'loot_bandit_veteran', group: 2, item: 'silver_ring', min: 1, max: 1, step: 1, weight: 6 },
+    { id: 'loot_bandit_veteran', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 94 },
 
-    // Bandit Mage (level 11)
-    { monsterId: 'bandit_mage', itemId: 'spell_scroll', dropChance: '8', minQty: '1', maxQty: '1', currencyMin: '10', currencyMax: '35' },
+    // Loot table for Bandit Mage (level 11)
+    { id: 'loot_bandit_mage', group: 1, item: 'copper', min: 10, max: 35, step: 5, weight: 100 },
+    { id: 'loot_bandit_mage', group: 2, item: 'spell_scroll', min: 1, max: 1, step: 1, weight: 8 },
+    { id: 'loot_bandit_mage', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 92 },
 
-    // Bandit Captain (level 12)
-    { monsterId: 'bandit_captain', itemId: 'captain_insignia', dropChance: '12', minQty: '1', maxQty: '1', currencyMin: '15', currencyMax: '40' },
+    // Loot table for Bandit Captain (level 12)
+    { id: 'loot_bandit_captain', group: 1, item: 'copper', min: 15, max: 40, step: 5, weight: 100 },
+    { id: 'loot_bandit_captain', group: 2, item: 'captain_insignia', min: 1, max: 1, step: 1, weight: 12 },
+    { id: 'loot_bandit_captain', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 88 },
 
-    // Elite Bandit (level 13)
-    { monsterId: 'elite_bandit', itemId: 'gold_ring', dropChance: '8', minQty: '1', maxQty: '1', currencyMin: '20', currencyMax: '50' },
+    // Loot table for Elite Bandit (level 13)
+    { id: 'loot_elite_bandit', group: 1, item: 'copper', min: 20, max: 50, step: 10, weight: 100 },
+    { id: 'loot_elite_bandit', group: 2, item: 'gold_ring', min: 1, max: 1, step: 1, weight: 8 },
+    { id: 'loot_elite_bandit', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 92 },
 
-    // Bandit Champion (level 14)
-    { monsterId: 'bandit_champion', itemId: 'gem_ruby', dropChance: '5', minQty: '1', maxQty: '1', currencyMin: '30', currencyMax: '60' },
+    // Loot table for Bandit Champion (level 14)
+    { id: 'loot_bandit_champion', group: 1, item: 'copper', min: 30, max: 60, step: 10, weight: 100 },
+    { id: 'loot_bandit_champion', group: 2, item: 'gem_ruby', min: 1, max: 1, step: 1, weight: 5 },
+    { id: 'loot_bandit_champion', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 95 },
 
-    // Bandit Lord (level 15 - rare boss)
-    { monsterId: 'bandit_lord', itemId: 'lords_greatsword', dropChance: '15', minQty: '1', maxQty: '1', currencyMin: '50', currencyMax: '100' },
-    { monsterId: 'bandit_lord', itemId: 'lords_crown', dropChance: '10', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' },
-    { monsterId: 'bandit_lord', itemId: 'gem_diamond', dropChance: '20', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' }
+    // Loot table for Bandit Lord (level 15 - rare boss)
+    { id: 'loot_bandit_lord', group: 1, item: 'copper', min: 50, max: 100, step: 10, weight: 100 },
+    { id: 'loot_bandit_lord', group: 2, item: 'lords_greatsword', min: 1, max: 1, step: 1, weight: 15 },
+    { id: 'loot_bandit_lord', group: 2, item: 'lords_crown', min: 1, max: 1, step: 1, weight: 10 },
+    { id: 'loot_bandit_lord', group: 2, item: 'gem_diamond', min: 1, max: 1, step: 1, weight: 20 },
+    { id: 'loot_bandit_lord', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 55 }
   ],
 
   Merchants: [
