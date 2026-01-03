@@ -10,7 +10,7 @@ const CACHE_KEY = 'norrathIdleGameData_v1';
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 // List of all sheets to fetch
-const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps', 'Skills', 'Spawns', 'Settings', 'LootTables', 'Merchants'];
+const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps', 'Skills', 'Spawns', 'Settings', 'LootTables', 'Merchants', 'MerchantInventory'];
 
 /**
  * Load game data with caching and fallback support
@@ -69,6 +69,11 @@ export async function loadGameData() {
       rawData.Merchants = fallbackData.Merchants || [];
     }
 
+    if (rawData.MerchantInventory === null || rawData.MerchantInventory === undefined) {
+      console.log('📋 MerchantInventory sheet not found, using fallback merchant inventory data');
+      rawData.MerchantInventory = fallbackData.MerchantInventory || [];
+    }
+
     // Transform the data
     const transformedData = transformGameData(rawData);
 
@@ -105,7 +110,8 @@ function transformGameData(rawData) {
     spawns: transformSpawns(rawData.Spawns || []),
     settings: transformSettings(rawData.Settings || []),
     lootTables: transformLootTables(rawData.LootTables || []),
-    merchants: transformMerchants(rawData.Merchants || [])
+    merchants: transformMerchants(rawData.Merchants || []),
+    merchantInventory: transformMerchantInventory(rawData.MerchantInventory || [], rawData.Items || [])
   };
 }
 
@@ -403,6 +409,41 @@ function transformMerchants(rows) {
     };
   });
   return merchants;
+}
+
+/**
+ * Transform MerchantInventory sheet data
+ */
+function transformMerchantInventory(rows, itemRows) {
+  const merchantInventory = {};
+  const items = transformItems(itemRows); // Transform items to get full definitions
+
+  rows.forEach(row => {
+    if (!row.merchantId || !row.itemId) return; // Skip invalid rows
+
+    // Initialize merchant inventory array if not exists
+    if (!merchantInventory[row.merchantId]) {
+      merchantInventory[row.merchantId] = [];
+    }
+
+    // Get item definition
+    const itemDef = items[row.itemId];
+    if (!itemDef) {
+      console.warn(`Item not found for merchant inventory: ${row.itemId}`);
+      return;
+    }
+
+    // Add inventory entry
+    merchantInventory[row.merchantId].push({
+      item: itemDef,
+      stock: parseInt(row.stock) || -1,
+      restockTime: parseInt(row.restockTime) || 0,
+      restockAmount: parseInt(row.restockAmount) || 0,
+      lastRestock: Date.now() // Initialize with current time
+    });
+  });
+
+  return merchantInventory;
 }
 
 /**

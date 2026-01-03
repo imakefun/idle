@@ -1558,5 +1558,38 @@ export const fallbackData = {
       buyRate: '60',
       sellRate: '125'
     }
+  ],
+
+  MerchantInventory: [
+    // General Merchant - Basic supplies and starter weapons
+    { merchantId: 'merchant_general', itemId: 'bread', stock: -1, restockTime: 0, restockAmount: 0 },
+    { merchantId: 'merchant_general', itemId: 'water', stock: -1, restockTime: 0, restockAmount: 0 },
+    { merchantId: 'merchant_general', itemId: 'rations', stock: -1, restockTime: 0, restockAmount: 0 },
+    { merchantId: 'merchant_general', itemId: 'bandages', stock: 20, restockTime: 30, restockAmount: 10 },
+    { merchantId: 'merchant_general', itemId: 'rusty_dagger', stock: 5, restockTime: 60, restockAmount: 2 },
+    { merchantId: 'merchant_general', itemId: 'rusty_shortsword', stock: 3, restockTime: 60, restockAmount: 1 },
+    { merchantId: 'merchant_general', itemId: 'cracked_staff', stock: 3, restockTime: 60, restockAmount: 1 },
+    { merchantId: 'merchant_general', itemId: 'wooden_bow', stock: 2, restockTime: 90, restockAmount: 1 },
+    { merchantId: 'merchant_general', itemId: 'arrows', stock: 100, restockTime: 30, restockAmount: 50 },
+
+    // Armor Merchant - Weapons and armor
+    { merchantId: 'merchant_armor', itemId: 'bronze_dagger', stock: 5, restockTime: 120, restockAmount: 2 },
+    { merchantId: 'merchant_armor', itemId: 'bronze_sword', stock: 3, restockTime: 120, restockAmount: 1 },
+    { merchantId: 'merchant_armor', itemId: 'short_sword', stock: 2, restockTime: 180, restockAmount: 1 },
+    { merchantId: 'merchant_armor', itemId: 'long_sword', stock: 1, restockTime: 240, restockAmount: 1 },
+    { merchantId: 'merchant_armor', itemId: 'leather_tunic', stock: 8, restockTime: 90, restockAmount: 3 },
+    { merchantId: 'merchant_armor', itemId: 'leather_gloves', stock: 10, restockTime: 60, restockAmount: 4 },
+    { merchantId: 'merchant_armor', itemId: 'leather_cap', stock: 10, restockTime: 60, restockAmount: 4 },
+    { merchantId: 'merchant_armor', itemId: 'studded_leather', stock: 4, restockTime: 120, restockAmount: 2 },
+    { merchantId: 'merchant_armor', itemId: 'chainmail_tunic', stock: 2, restockTime: 240, restockAmount: 1 },
+    { merchantId: 'merchant_armor', itemId: 'small_shield', stock: 6, restockTime: 90, restockAmount: 3 },
+
+    // Food Merchant - Consumables
+    { merchantId: 'merchant_food', itemId: 'bread', stock: -1, restockTime: 0, restockAmount: 0 },
+    { merchantId: 'merchant_food', itemId: 'water', stock: -1, restockTime: 0, restockAmount: 0 },
+    { merchantId: 'merchant_food', itemId: 'rations', stock: -1, restockTime: 0, restockAmount: 0 },
+    { merchantId: 'merchant_food', itemId: 'ale', stock: -1, restockTime: 0, restockAmount: 0 },
+    { merchantId: 'merchant_food', itemId: 'health_potion', stock: 15, restockTime: 45, restockAmount: 8 },
+    { merchantId: 'merchant_food', itemId: 'stamina_potion', stock: 15, restockTime: 45, restockAmount: 8 }
   ]
 };
