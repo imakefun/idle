@@ -145,28 +145,78 @@ export function calculateDrainRate(level) {
  * @param {boolean} isResting - Whether character is resting
  * @param {number} food - Food percentage (0-100)
  * @param {number} water - Water percentage (0-100)
+ * @param {Object} settings - Game settings object
  * @returns {number} - HP regenerated per tick
  */
-export function calculateHPRegen(maxHp, stamina, inCombat, isResting, food, water) {
+export function calculateHPRegen(maxHp, stamina, inCombat, isResting, food, water, settings = {}) {
   // Base regen scales with max HP and stamina
-  const baseRegen = (maxHp * 0.001) + (stamina * 0.01);
+  const baseHP = settings.hpRegenBaseHP || 0.001;
+  const baseSTA = settings.hpRegenBaseSTA || 0.01;
+  const baseRegen = (maxHp * baseHP) + (stamina * baseSTA);
 
   // In combat: very slow regen
   if (inCombat) {
-    return Math.max(0.1, baseRegen * 0.1);
+    const combatMult = settings.hpRegenCombatMultiplier || 0.1;
+    return Math.max(0.1, baseRegen * combatMult);
   }
 
   // Out of combat: normal regen
   let multiplier = 1.0;
 
   // Resting bonus (if food and water > 30%)
-  if (isResting && food > 30 && water > 30) {
-    multiplier = 3.0; // 3x regen when resting
+  const restThreshold = settings.hpRegenRestThreshold || 30;
+  const restMult = settings.hpRegenRestMultiplier || 3.0;
+  if (isResting && food > restThreshold && water > restThreshold) {
+    multiplier = restMult;
   }
 
   // Starvation/dehydration penalty
+  const starvePenalty = settings.hpRegenStarvePenalty || 0.1;
   if (food < 1 || water < 1) {
-    multiplier *= 0.1; // 90% penalty when starving/dehydrated
+    multiplier *= starvePenalty;
+  }
+
+  return Math.max(0.1, baseRegen * multiplier);
+}
+
+/**
+ * Calculate Stamina regeneration per tick
+ * Regenerates faster than HP, especially out of combat
+ * @param {number} maxStamina - Character's max stamina
+ * @param {number} level - Character's level
+ * @param {boolean} inCombat - Whether character is in combat
+ * @param {boolean} isResting - Whether character is resting
+ * @param {number} food - Food percentage (0-100)
+ * @param {number} water - Water percentage (0-100)
+ * @param {Object} settings - Game settings object
+ * @returns {number} - Stamina regenerated per tick
+ */
+export function calculateStaminaRegen(maxStamina, level, inCombat, isResting, food, water, settings = {}) {
+  // Base regen scales with max stamina and level
+  const baseStamina = settings.staminaRegenBase || 0.5;
+  const levelBonus = settings.staminaRegenLevelBonus || 0.05;
+  const baseRegen = baseStamina + (level * levelBonus);
+
+  // In combat: slower regen (but not as penalized as HP)
+  if (inCombat) {
+    const combatMult = settings.staminaRegenCombatMultiplier || 0.3;
+    return Math.max(0.1, baseRegen * combatMult);
+  }
+
+  // Out of combat: fast regen
+  let multiplier = 1.0;
+
+  // Resting bonus (if food and water > 30%)
+  const restThreshold = settings.staminaRegenRestThreshold || 30;
+  const restMult = settings.staminaRegenRestMultiplier || 2.0;
+  if (isResting && food > restThreshold && water > restThreshold) {
+    multiplier = restMult;
+  }
+
+  // Starvation/dehydration penalty
+  const starvePenalty = settings.staminaRegenStarvePenalty || 0.2;
+  if (food < 1 || water < 1) {
+    multiplier *= starvePenalty;
   }
 
   return Math.max(0.1, baseRegen * multiplier);
