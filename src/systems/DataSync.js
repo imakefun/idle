@@ -10,7 +10,7 @@ const CACHE_KEY = 'norrathIdleGameData_v1';
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 // List of all sheets to fetch
-const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps', 'Skills', 'Spawns'];
+const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps', 'Skills', 'Spawns', 'Settings'];
 
 /**
  * Load game data with caching and fallback support
@@ -54,6 +54,11 @@ export async function loadGameData() {
       rawData.Spawns = fallbackData.Spawns || [];
     }
 
+    if (rawData.Settings === null || rawData.Settings === undefined) {
+      console.log('📋 Settings sheet not found, using fallback settings data');
+      rawData.Settings = fallbackData.Settings || [];
+    }
+
     // Transform the data
     const transformedData = transformGameData(rawData);
 
@@ -87,7 +92,8 @@ function transformGameData(rawData) {
     zones: transformZones(rawData.Zones || []),
     camps: transformCamps(rawData.Camps || []),
     skills: transformSkills(rawData.Skills || []),
-    spawns: transformSpawns(rawData.Spawns || [])
+    spawns: transformSpawns(rawData.Spawns || []),
+    settings: transformSettings(rawData.Settings || [])
   };
 }
 
@@ -321,6 +327,21 @@ function transformSpawns(rows) {
     });
   });
   return spawns;
+}
+
+/**
+ * Transform Settings sheet data
+ */
+function transformSettings(rows) {
+  const settings = {};
+  rows.forEach(row => {
+    if (!row.settingId) return; // Skip invalid rows
+
+    // Parse the value as a number (supports both integers and floats)
+    const value = parseFloat(row.value);
+    settings[row.settingId] = isNaN(value) ? row.value : value;
+  });
+  return settings;
 }
 
 /**

@@ -12,13 +12,13 @@ import {
 /**
  * Initialize skills for a new character
  */
-export function initializeSkills(className, startingSkills) {
+export function initializeSkills(className, startingSkills, settings = {}) {
   const skills = {};
 
   startingSkills.forEach(skillId => {
     skills[skillId] = {
       current: 1,
-      max: calculateSkillCap(1) // Level 1 cap
+      max: calculateSkillCap(1, settings) // Level 1 cap
     };
   });
 
@@ -28,8 +28,8 @@ export function initializeSkills(className, startingSkills) {
 /**
  * Update skill caps when player levels up
  */
-export function updateSkillCaps(skills, newLevel) {
-  const newCap = calculateSkillCap(newLevel);
+export function updateSkillCaps(skills, newLevel, settings = {}) {
+  const newCap = calculateSkillCap(newLevel, settings);
   const updated = { ...skills };
 
   Object.keys(updated).forEach(skillId => {
@@ -46,7 +46,7 @@ export function updateSkillCaps(skills, newLevel) {
  * Attempt to skill up
  * Returns { success: boolean, newValue: number, skillId: string, skillName: string }
  */
-export function attemptSkillUp(skillId, currentSkill, skillCap, skillDefinitions = SKILL_DEFINITIONS) {
+export function attemptSkillUp(skillId, currentSkill, skillCap, skillDefinitions = SKILL_DEFINITIONS, settings = {}) {
   const skill = skillDefinitions[skillId];
   if (!skill) return { success: false };
 
@@ -56,7 +56,7 @@ export function attemptSkillUp(skillId, currentSkill, skillCap, skillDefinitions
   }
 
   // Calculate chance based on current skill level
-  const chance = calculateSkillUpChance(currentSkill, skillCap);
+  const chance = calculateSkillUpChance(currentSkill, skillCap, settings);
   const roll = Math.random();
 
   if (roll < chance) {
@@ -75,7 +75,7 @@ export function attemptSkillUp(skillId, currentSkill, skillCap, skillDefinitions
  * Check if an active ability should proc
  * Returns { success: boolean, abilityId: string, abilityName: string }
  */
-export function checkAbilityProc(abilityId, skillLevel, stamina, skillDefinitions = SKILL_DEFINITIONS) {
+export function checkAbilityProc(abilityId, skillLevel, stamina, skillDefinitions = SKILL_DEFINITIONS, settings = {}) {
   const ability = skillDefinitions[abilityId];
   if (!ability || ability.type !== 'active') {
     return { success: false };
@@ -87,7 +87,9 @@ export function checkAbilityProc(abilityId, skillLevel, stamina, skillDefinition
   }
 
   // Base proc chance increases with skill level
-  const skillBonus = Math.min(skillLevel / 100, 0.20); // Max +20% from skill
+  const skillBonusDivisor = settings.abilitySkillBonusDivisor || 100;
+  const maxSkillBonus = settings.abilityMaxSkillBonus || 0.20;
+  const skillBonus = Math.min(skillLevel / skillBonusDivisor, maxSkillBonus);
   const procChance = ability.baseProcChance + skillBonus;
   const roll = Math.random();
 
@@ -106,13 +108,14 @@ export function checkAbilityProc(abilityId, skillLevel, stamina, skillDefinition
 /**
  * Calculate bonus damage from an ability
  */
-export function calculateAbilityDamage(abilityId, weaponDamage, skillLevel, skillDefinitions = SKILL_DEFINITIONS) {
+export function calculateAbilityDamage(abilityId, weaponDamage, skillLevel, skillDefinitions = SKILL_DEFINITIONS, settings = {}) {
   const ability = skillDefinitions[abilityId];
   if (!ability) return 0;
 
   // Kick and Bash use flat bonus
   if (ability.damageBonus) {
-    const skillBonus = Math.floor(skillLevel / 10);
+    const skillDivisor = settings.abilityDamageSkillDivisor || 10;
+    const skillBonus = Math.floor(skillLevel / skillDivisor);
     return ability.damageBonus + skillBonus;
   }
 
@@ -173,10 +176,12 @@ export function getActiveAbilities(skills, skillDefinitions = SKILL_DEFINITIONS)
 /**
  * Calculate dodge chance based on dodge skill
  */
-export function calculateDodgeChance(dodgeSkill = 0) {
-  // Base 5% + skill bonus
-  const baseChance = 0.05;
-  const skillBonus = Math.min(dodgeSkill / 500, 0.20); // Max +20% at skill 100
+export function calculateDodgeChance(dodgeSkill = 0, settings = {}) {
+  // Base chance + skill bonus
+  const baseChance = settings.dodgeBaseChance || 0.05;
+  const skillDivisor = settings.dodgeSkillDivisor || 500;
+  const maxSkillBonus = settings.dodgeMaxSkillBonus || 0.20;
+  const skillBonus = Math.min(dodgeSkill / skillDivisor, maxSkillBonus);
   return baseChance + skillBonus;
 }
 

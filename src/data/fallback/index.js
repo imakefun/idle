@@ -1093,5 +1093,58 @@ export const fallbackData = {
     { id: 'bash', name: 'Bash', type: 'active', category: 'ability', description: 'Shield bash with bonus damage (requires shield)', staminaCost: '15', baseProcChance: '0.20', damageBonus: '8', damageMultiplier: '0', requiresShield: 'TRUE', requiresPiercing: 'FALSE', weaponTypes: '' },
     { id: 'backstab', name: 'Backstab', type: 'active', category: 'ability', description: 'Devastating attack from behind (Rogue only)', staminaCost: '20', baseProcChance: '0.15', damageBonus: '0', damageMultiplier: '2.5', requiresShield: 'FALSE', requiresPiercing: 'TRUE', weaponTypes: '' },
     { id: 'doubleAttack', name: 'Double Attack', type: 'active', category: 'ability', description: 'Chance to attack twice in one round', staminaCost: '0', baseProcChance: '0.10', damageBonus: '0', damageMultiplier: '0', requiresShield: 'FALSE', requiresPiercing: 'FALSE', weaponTypes: '' }
+  ],
+
+  Settings: [
+    // Combat - Hit Calculation
+    { category: 'combat', settingId: 'hitBaseChance', value: '50', description: 'Base chance to hit before modifiers (%)' },
+    { category: 'combat', settingId: 'hitSkillBonusMultiplier', value: '2', description: 'Multiplier for skill bonus in hit calculation' },
+    { category: 'combat', settingId: 'hitLevelPenaltyMultiplier', value: '5', description: 'Multiplier for level difference penalty' },
+    { category: 'combat', settingId: 'hitDefenderSkillMultiplier', value: '5', description: 'Multiplier for defender level vs skill' },
+    { category: 'combat', settingId: 'hitMinChance', value: '5', description: 'Minimum hit chance (%)' },
+    { category: 'combat', settingId: 'hitMaxChance', value: '95', description: 'Maximum hit chance (%)' },
+
+    // Combat - Damage Calculation
+    { category: 'combat', settingId: 'damageStrengthDivisor', value: '10', description: 'Divisor for strength bonus to damage' },
+    { category: 'combat', settingId: 'damageRandomBonusMin', value: '1', description: 'Minimum random bonus damage' },
+    { category: 'combat', settingId: 'damageRandomBonusMax', value: '4', description: 'Maximum random bonus damage' },
+
+    // Combat - AC Mitigation
+    { category: 'combat', settingId: 'acBaseConstant', value: '50', description: 'Base constant in AC mitigation formula' },
+    { category: 'combat', settingId: 'acLevelMultiplier', value: '2', description: 'Level multiplier in AC mitigation formula' },
+
+    // Combat - XP and Con
+    { category: 'combat', settingId: 'xpGreenConThreshold', value: '5', description: 'Level difference for green con (trivial)' },
+    { category: 'combat', settingId: 'xpReducedThreshold', value: '3', description: 'Level difference for reduced XP' },
+    { category: 'combat', settingId: 'xpReducedMultiplier', value: '0.25', description: 'XP multiplier for reduced rewards' },
+    { category: 'combat', settingId: 'conGreenThreshold', value: '5', description: 'Level difference for green con color' },
+    { category: 'combat', settingId: 'conLightBlueThreshold', value: '3', description: 'Level difference for light blue con' },
+    { category: 'combat', settingId: 'conWhiteThreshold', value: '-2', description: 'Level difference for white con' },
+    { category: 'combat', settingId: 'conYellowThreshold', value: '-4', description: 'Level difference for yellow con' },
+
+    // Skill - Caps
+    { category: 'skill', settingId: 'skillCapLevelMultiplier', value: '5', description: 'Multiplier for skill cap = (level+1) * value' },
+    { category: 'skill', settingId: 'skillCapLevelBonus', value: '1', description: 'Bonus added to level in skill cap formula' },
+
+    // Skill - Skill Up Chances
+    { category: 'skill', settingId: 'skillUp95PctChance', value: '0.01', description: 'Skill up chance at 95%+ of cap (1%)' },
+    { category: 'skill', settingId: 'skillUp80PctChance', value: '0.05', description: 'Skill up chance at 80-95% of cap (5%)' },
+    { category: 'skill', settingId: 'skillUp60PctChance', value: '0.15', description: 'Skill up chance at 60-80% of cap (15%)' },
+    { category: 'skill', settingId: 'skillUp40PctChance', value: '0.30', description: 'Skill up chance at 40-60% of cap (30%)' },
+    { category: 'skill', settingId: 'skillUpBasicChance', value: '0.50', description: 'Skill up chance below 40% of cap (50%)' },
+    { category: 'skill', settingId: 'skillUp95PctThreshold', value: '0.95', description: 'Threshold for 95% of cap' },
+    { category: 'skill', settingId: 'skillUp80PctThreshold', value: '0.80', description: 'Threshold for 80% of cap' },
+    { category: 'skill', settingId: 'skillUp60PctThreshold', value: '0.60', description: 'Threshold for 60% of cap' },
+    { category: 'skill', settingId: 'skillUp40PctThreshold', value: '0.40', description: 'Threshold for 40% of cap' },
+
+    // Skill - Abilities
+    { category: 'skill', settingId: 'abilitySkillBonusDivisor', value: '100', description: 'Divisor for ability proc skill bonus' },
+    { category: 'skill', settingId: 'abilityMaxSkillBonus', value: '0.20', description: 'Maximum skill bonus to ability proc (20%)' },
+    { category: 'skill', settingId: 'abilityDamageSkillDivisor', value: '10', description: 'Divisor for ability damage skill bonus' },
+
+    // Skill - Dodge
+    { category: 'skill', settingId: 'dodgeBaseChance', value: '0.05', description: 'Base dodge chance (5%)' },
+    { category: 'skill', settingId: 'dodgeSkillDivisor', value: '500', description: 'Divisor for dodge skill bonus' },
+    { category: 'skill', settingId: 'dodgeMaxSkillBonus', value: '0.20', description: 'Maximum skill bonus to dodge (20%)' }
   ]
 };
