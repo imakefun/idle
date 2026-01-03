@@ -1413,124 +1413,187 @@ export const fallbackData = {
   ],
 
   LootTables: [
-    // Loot table for Giant Rat (level 1)
+    // Giant Rat (level 1)
     { id: 'loot_rat', group: 1, item: 'copper', min: 0, max: 3, step: 1, weight: 100 },
     { id: 'loot_rat', group: 2, item: 'rat_ear', min: 1, max: 1, step: 1, weight: 30 },
-    { id: 'loot_rat', group: 2, item: 'rusty_dagger', min: 1, max: 1, step: 1, weight: 2 },
-    { id: 'loot_rat', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 68 },
+    { id: 'loot_rat', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 70 },
 
-    // Loot table for Snake (level 2)
-    { id: 'loot_snake', group: 1, item: 'copper', min: 0, max: 4, step: 1, weight: 100 },
-    { id: 'loot_snake', group: 2, item: 'snake_fang', min: 1, max: 1, step: 1, weight: 25 },
-    { id: 'loot_snake', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 75 },
+    // Snake (level 2)
+    { id: 'loot_snake', group: 1, item: 'copper', min: 1, max: 5, step: 1, weight: 100 },
+    { id: 'loot_snake', group: 2, item: 'snake_scales', min: 1, max: 2, step: 1, weight: 40 },
+    { id: 'loot_snake', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 60 },
+    { id: 'loot_snake', group: 3, item: 'venom_sac', min: 1, max: 1, step: 1, weight: 10 },
+    { id: 'loot_snake', group: 3, item: 'nothing', min: 0, max: 0, step: 1, weight: 90 },
 
-    // Loot table for Fire Beetle (level 2)
-    { id: 'loot_beetle', group: 1, item: 'copper', min: 0, max: 4, step: 1, weight: 100 },
-    { id: 'loot_beetle', group: 2, item: 'beetle_carapace', min: 1, max: 1, step: 1, weight: 20 },
-    { id: 'loot_beetle', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 80 },
+    // Gnoll Pup (level 3)
+    { id: 'loot_gnoll_pup', group: 1, item: 'copper', min: 2, max: 8, step: 1, weight: 100 },
+    { id: 'loot_gnoll_pup', group: 2, item: 'gnoll_tooth', min: 1, max: 1, step: 1, weight: 50 },
+    { id: 'loot_gnoll_pup', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 50 },
+    { id: 'loot_gnoll_pup', group: 3, item: 'tattered_pelt', min: 1, max: 1, step: 1, weight: 20 },
+    { id: 'loot_gnoll_pup', group: 3, item: 'nothing', min: 0, max: 0, step: 1, weight: 80 },
 
-    // Loot table for Gnoll Pup (level 3)
-    { id: 'loot_gnoll_pup', group: 1, item: 'copper', min: 1, max: 5, step: 1, weight: 100 },
-    { id: 'loot_gnoll_pup', group: 2, item: 'gnoll_fang', min: 1, max: 1, step: 1, weight: 20 },
-    { id: 'loot_gnoll_pup', group: 2, item: 'tattered_pelt', min: 1, max: 1, step: 1, weight: 10 },
-    { id: 'loot_gnoll_pup', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 70 },
+    // Fire Beetle (level 2)
+    { id: 'loot_beetle', group: 1, item: 'copper', min: 1, max: 4, step: 1, weight: 100 },
+    { id: 'loot_beetle', group: 2, item: 'beetle_shell', min: 1, max: 1, step: 1, weight: 35 },
+    { id: 'loot_beetle', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 65 },
 
-    // Loot table for Decaying Skeleton (level 4)
-    { id: 'loot_skeleton', group: 1, item: 'copper', min: 1, max: 6, step: 1, weight: 100 },
-    { id: 'loot_skeleton', group: 2, item: 'bone_chips', min: 1, max: 2, step: 1, weight: 40 },
-    { id: 'loot_skeleton', group: 2, item: 'rusty_dagger', min: 1, max: 1, step: 1, weight: 3 },
-    { id: 'loot_skeleton', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 57 },
+    // Young Spider (level 3)
+    { id: 'loot_spider', group: 1, item: 'copper', min: 2, max: 6, step: 1, weight: 100 },
+    { id: 'loot_spider', group: 2, item: 'spider_silk', min: 1, max: 2, step: 1, weight: 45 },
+    { id: 'loot_spider', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 55 },
+    { id: 'loot_spider', group: 3, item: 'venom_sac', min: 1, max: 1, step: 1, weight: 15 },
+    { id: 'loot_spider', group: 3, item: 'nothing', min: 0, max: 0, step: 1, weight: 85 },
 
-    // Loot table for Young Spider (level 3)
-    { id: 'loot_spider', group: 1, item: 'copper', min: 1, max: 5, step: 1, weight: 100 },
-    { id: 'loot_spider', group: 2, item: 'spider_silk', min: 1, max: 1, step: 1, weight: 30 },
-    { id: 'loot_spider', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 70 },
+    // Decaying Skeleton (level 4)
+    { id: 'loot_skeleton', group: 1, item: 'copper', min: 5, max: 12, step: 1, weight: 100 },
+    { id: 'loot_skeleton', group: 2, item: 'bone_chips', min: 1, max: 3, step: 1, weight: 60 },
+    { id: 'loot_skeleton', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 40 },
+    { id: 'loot_skeleton', group: 3, item: 'rusty_dagger', min: 1, max: 1, step: 1, weight: 10 },
+    { id: 'loot_skeleton', group: 3, item: 'nothing', min: 0, max: 0, step: 1, weight: 90 },
 
-    // Loot table for Gnoll Scout (level 5)
-    { id: 'loot_gnoll_scout', group: 1, item: 'copper', min: 2, max: 8, step: 1, weight: 100 },
-    { id: 'loot_gnoll_scout', group: 2, item: 'gnoll_fang', min: 1, max: 1, step: 1, weight: 25 },
-    { id: 'loot_gnoll_scout', group: 2, item: 'tattered_pelt', min: 1, max: 1, step: 1, weight: 15 },
-    { id: 'loot_gnoll_scout', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 60 },
+    // Gnoll Scout (level 5)
+    { id: 'loot_gnoll_scout', group: 1, item: 'copper', min: 8, max: 15, step: 1, weight: 100 },
+    { id: 'loot_gnoll_scout', group: 2, item: 'gnoll_fur', min: 1, max: 2, step: 1, weight: 50 },
+    { id: 'loot_gnoll_scout', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 50 },
+    { id: 'loot_gnoll_scout', group: 3, item: 'rusty_dagger', min: 1, max: 1, step: 1, weight: 15 },
+    { id: 'loot_gnoll_scout', group: 3, item: 'rusty_shortsword', min: 1, max: 1, step: 1, weight: 10 },
+    { id: 'loot_gnoll_scout', group: 3, item: 'nothing', min: 0, max: 0, step: 1, weight: 75 },
 
-    // Loot table for Dark Wolf (level 5)
-    { id: 'loot_wolf', group: 1, item: 'copper', min: 2, max: 8, step: 1, weight: 100 },
-    { id: 'loot_wolf', group: 2, item: 'wolf_pelt', min: 1, max: 1, step: 1, weight: 35 },
-    { id: 'loot_wolf', group: 2, item: 'wolf_fang', min: 1, max: 1, step: 1, weight: 20 },
-    { id: 'loot_wolf', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 45 },
+    // Dark Wolf (level 5)
+    { id: 'loot_wolf', group: 1, item: 'copper', min: 8, max: 14, step: 1, weight: 100 },
+    { id: 'loot_wolf', group: 2, item: 'wolf_pelt', min: 1, max: 1, step: 1, weight: 60 },
+    { id: 'loot_wolf', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 40 },
+    { id: 'loot_wolf', group: 3, item: 'wolf_tooth', min: 1, max: 2, step: 1, weight: 40 },
+    { id: 'loot_wolf', group: 3, item: 'nothing', min: 0, max: 0, step: 1, weight: 60 },
 
-    // Loot table for Gnoll Guard (level 6)
-    { id: 'loot_gnoll_guard', group: 1, item: 'copper', min: 3, max: 10, step: 1, weight: 100 },
-    { id: 'loot_gnoll_guard', group: 2, item: 'gnoll_fang', min: 1, max: 2, step: 1, weight: 30 },
-    { id: 'loot_gnoll_guard', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 70 },
+    // Gnoll Guard (level 6)
+    { id: 'loot_gnoll_guard', group: 1, item: 'copper', min: 10, max: 20, step: 1, weight: 100 },
+    { id: 'loot_gnoll_guard', group: 2, item: 'gnoll_fur', min: 1, max: 2, step: 1, weight: 60 },
+    { id: 'loot_gnoll_guard', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 40 },
+    { id: 'loot_gnoll_guard', group: 3, item: 'bronze_dagger', min: 1, max: 1, step: 1, weight: 15 },
+    { id: 'loot_gnoll_guard', group: 3, item: 'rusty_shortsword', min: 1, max: 1, step: 1, weight: 10 },
+    { id: 'loot_gnoll_guard', group: 3, item: 'nothing', min: 0, max: 0, step: 1, weight: 75 },
 
-    // Loot table for Skeletal Warrior (level 7)
-    { id: 'loot_skeletal_warrior', group: 1, item: 'copper', min: 3, max: 12, step: 1, weight: 100 },
-    { id: 'loot_skeletal_warrior', group: 2, item: 'bone_chips', min: 2, max: 3, step: 1, weight: 45 },
-    { id: 'loot_skeletal_warrior', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 55 },
+    // Skeletal Warrior (level 7)
+    { id: 'loot_skeleton_warrior', group: 1, item: 'copper', min: 12, max: 25, step: 1, weight: 100 },
+    { id: 'loot_skeleton_warrior', group: 2, item: 'bone_chips', min: 2, max: 4, step: 1, weight: 70 },
+    { id: 'loot_skeleton_warrior', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 30 },
+    { id: 'loot_skeleton_warrior', group: 3, item: 'bronze_dagger', min: 1, max: 1, step: 1, weight: 20 },
+    { id: 'loot_skeleton_warrior', group: 3, item: 'rusty_shortsword', min: 1, max: 1, step: 1, weight: 15 },
+    { id: 'loot_skeleton_warrior', group: 3, item: 'nothing', min: 0, max: 0, step: 1, weight: 65 },
 
-    // Loot table for Gnoll Warrior (level 7)
-    { id: 'loot_gnoll_warrior', group: 1, item: 'copper', min: 4, max: 15, step: 1, weight: 100 },
-    { id: 'loot_gnoll_warrior', group: 2, item: 'gnoll_fang', min: 1, max: 2, step: 1, weight: 35 },
-    { id: 'loot_gnoll_warrior', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 65 },
+    // Gnoll Warrior (level 7)
+    { id: 'loot_gnoll_warrior', group: 1, item: 'copper', min: 15, max: 30, step: 1, weight: 100 },
+    { id: 'loot_gnoll_warrior', group: 2, item: 'gnoll_fur', min: 2, max: 3, step: 1, weight: 70 },
+    { id: 'loot_gnoll_warrior', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 30 },
+    { id: 'loot_gnoll_warrior', group: 3, item: 'bronze_dagger', min: 1, max: 1, step: 1, weight: 20 },
+    { id: 'loot_gnoll_warrior', group: 3, item: 'iron_shortsword', min: 1, max: 1, step: 1, weight: 10 },
+    { id: 'loot_gnoll_warrior', group: 3, item: 'leather_tunic', min: 1, max: 1, step: 1, weight: 15 },
+    { id: 'loot_gnoll_warrior', group: 3, item: 'nothing', min: 0, max: 0, step: 1, weight: 55 },
 
-    // Loot table for Gnoll Shaman (level 8)
-    { id: 'loot_gnoll_shaman', group: 1, item: 'copper', min: 5, max: 18, step: 1, weight: 100 },
-    { id: 'loot_gnoll_shaman', group: 2, item: 'gnoll_fang', min: 1, max: 1, step: 1, weight: 25 },
-    { id: 'loot_gnoll_shaman', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 75 },
+    // Gnoll Shaman (level 8)
+    { id: 'loot_gnoll_shaman', group: 1, item: 'copper', min: 18, max: 35, step: 1, weight: 100 },
+    { id: 'loot_gnoll_shaman', group: 2, item: 'gnoll_fur', min: 2, max: 3, step: 1, weight: 60 },
+    { id: 'loot_gnoll_shaman', group: 2, item: 'spell_components', min: 1, max: 2, step: 1, weight: 40 },
+    { id: 'loot_gnoll_shaman', group: 3, item: 'health_potion', min: 1, max: 2, step: 1, weight: 30 },
+    { id: 'loot_gnoll_shaman', group: 3, item: 'stamina_potion', min: 1, max: 2, step: 1, weight: 20 },
+    { id: 'loot_gnoll_shaman', group: 3, item: 'nothing', min: 0, max: 0, step: 1, weight: 50 },
 
-    // Loot table for Bandit Thug (level 8)
-    { id: 'loot_bandit_thug', group: 1, item: 'copper', min: 4, max: 16, step: 1, weight: 100 },
-    { id: 'loot_bandit_thug', group: 2, item: 'copper_ring', min: 1, max: 1, step: 1, weight: 15 },
-    { id: 'loot_bandit_thug', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 85 },
+    // Bandit Thug (level 8)
+    { id: 'loot_bandit_thug', group: 1, item: 'copper', min: 15, max: 30, step: 1, weight: 100 },
+    { id: 'loot_bandit_thug', group: 2, item: 'bronze_dagger', min: 1, max: 1, step: 1, weight: 25 },
+    { id: 'loot_bandit_thug', group: 2, item: 'rusty_shortsword', min: 1, max: 1, step: 1, weight: 15 },
+    { id: 'loot_bandit_thug', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 60 },
+    { id: 'loot_bandit_thug', group: 3, item: 'health_potion', min: 1, max: 1, step: 1, weight: 20 },
+    { id: 'loot_bandit_thug', group: 3, item: 'nothing', min: 0, max: 0, step: 1, weight: 80 },
 
-    // Loot table for Guard Dog (level 8)
-    { id: 'loot_dog', group: 1, item: 'copper', min: 3, max: 12, step: 1, weight: 100 },
-    { id: 'loot_dog', group: 2, item: 'dog_collar', min: 1, max: 1, step: 1, weight: 20 },
-    { id: 'loot_dog', group: 2, item: 'rawhide_strip', min: 1, max: 1, step: 1, weight: 25 },
-    { id: 'loot_dog', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 55 },
+    // Guard Dog (level 8)
+    { id: 'loot_guard_dog', group: 1, item: 'copper', min: 10, max: 20, step: 1, weight: 100 },
+    { id: 'loot_guard_dog', group: 2, item: 'dog_pelt', min: 1, max: 1, step: 1, weight: 50 },
+    { id: 'loot_guard_dog', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 50 },
+    { id: 'loot_guard_dog', group: 3, item: 'wolf_tooth', min: 1, max: 2, step: 1, weight: 30 },
+    { id: 'loot_guard_dog', group: 3, item: 'nothing', min: 0, max: 0, step: 1, weight: 70 },
 
-    // Loot table for Bandit Guard (level 9)
-    { id: 'loot_bandit_guard', group: 1, item: 'copper', min: 6, max: 20, step: 1, weight: 100 },
-    { id: 'loot_bandit_guard', group: 2, item: 'bronze_dagger', min: 1, max: 1, step: 1, weight: 5 },
-    { id: 'loot_bandit_guard', group: 2, item: 'rations', min: 1, max: 2, step: 1, weight: 30 },
-    { id: 'loot_bandit_guard', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 65 },
+    // Bandit Guard (level 9)
+    { id: 'loot_bandit_guard', group: 1, item: 'copper', min: 20, max: 40, step: 5, weight: 100 },
+    { id: 'loot_bandit_guard', group: 2, item: 'iron_shortsword', min: 1, max: 1, step: 1, weight: 20 },
+    { id: 'loot_bandit_guard', group: 2, item: 'bronze_dagger', min: 1, max: 1, step: 1, weight: 25 },
+    { id: 'loot_bandit_guard', group: 2, item: 'leather_tunic', min: 1, max: 1, step: 1, weight: 20 },
+    { id: 'loot_bandit_guard', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 35 },
+    { id: 'loot_bandit_guard', group: 3, item: 'health_potion', min: 1, max: 2, step: 1, weight: 35 },
+    { id: 'loot_bandit_guard', group: 3, item: 'stamina_potion', min: 1, max: 1, step: 1, weight: 25 },
+    { id: 'loot_bandit_guard', group: 3, item: 'nothing', min: 0, max: 0, step: 1, weight: 40 },
 
-    // Loot table for Bandit Archer (level 10)
-    { id: 'loot_bandit_archer', group: 1, item: 'copper', min: 7, max: 25, step: 1, weight: 100 },
-    { id: 'loot_bandit_archer', group: 2, item: 'arrows', min: 5, max: 10, step: 1, weight: 40 },
-    { id: 'loot_bandit_archer', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 60 },
+    // Bandit Archer (level 10)
+    { id: 'loot_bandit_archer', group: 1, item: 'copper', min: 22, max: 45, step: 1, weight: 100 },
+    { id: 'loot_bandit_archer', group: 2, item: 'arrows', min: 5, max: 15, step: 5, weight: 60 },
+    { id: 'loot_bandit_archer', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 40 },
+    { id: 'loot_bandit_archer', group: 3, item: 'shortbow', min: 1, max: 1, step: 1, weight: 15 },
+    { id: 'loot_bandit_archer', group: 3, item: 'leather_tunic', min: 1, max: 1, step: 1, weight: 20 },
+    { id: 'loot_bandit_archer', group: 3, item: 'nothing', min: 0, max: 0, step: 1, weight: 65 },
+    { id: 'loot_bandit_archer', group: 4, item: 'health_potion', min: 1, max: 2, step: 1, weight: 30 },
+    { id: 'loot_bandit_archer', group: 4, item: 'nothing', min: 0, max: 0, step: 1, weight: 70 },
 
-    // Loot table for Bandit Veteran (level 11)
-    { id: 'loot_bandit_veteran', group: 1, item: 'copper', min: 10, max: 30, step: 5, weight: 100 },
-    { id: 'loot_bandit_veteran', group: 2, item: 'silver_ring', min: 1, max: 1, step: 1, weight: 6 },
-    { id: 'loot_bandit_veteran', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 94 },
+    // Bandit Veteran (level 11)
+    { id: 'loot_bandit_veteran', group: 1, item: 'copper', min: 30, max: 60, step: 5, weight: 100 },
+    { id: 'loot_bandit_veteran', group: 2, item: 'iron_shortsword', min: 1, max: 1, step: 1, weight: 25 },
+    { id: 'loot_bandit_veteran', group: 2, item: 'steel_dagger', min: 1, max: 1, step: 1, weight: 15 },
+    { id: 'loot_bandit_veteran', group: 2, item: 'chainmail_tunic', min: 1, max: 1, step: 1, weight: 20 },
+    { id: 'loot_bandit_veteran', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 40 },
+    { id: 'loot_bandit_veteran', group: 3, item: 'health_potion', min: 1, max: 3, step: 1, weight: 50 },
+    { id: 'loot_bandit_veteran', group: 3, item: 'stamina_potion', min: 1, max: 2, step: 1, weight: 40 },
+    { id: 'loot_bandit_veteran', group: 3, item: 'nothing', min: 0, max: 0, step: 1, weight: 10 },
 
-    // Loot table for Bandit Mage (level 11)
-    { id: 'loot_bandit_mage', group: 1, item: 'copper', min: 10, max: 35, step: 5, weight: 100 },
-    { id: 'loot_bandit_mage', group: 2, item: 'spell_scroll', min: 1, max: 1, step: 1, weight: 8 },
-    { id: 'loot_bandit_mage', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 92 },
+    // Bandit Mage (level 11)
+    { id: 'loot_bandit_mage', group: 1, item: 'copper', min: 35, max: 65, step: 5, weight: 100 },
+    { id: 'loot_bandit_mage', group: 2, item: 'spell_components', min: 2, max: 4, step: 1, weight: 70 },
+    { id: 'loot_bandit_mage', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 30 },
+    { id: 'loot_bandit_mage', group: 3, item: 'mana_potion', min: 1, max: 3, step: 1, weight: 50 },
+    { id: 'loot_bandit_mage', group: 3, item: 'health_potion', min: 1, max: 2, step: 1, weight: 40 },
+    { id: 'loot_bandit_mage', group: 3, item: 'nothing', min: 0, max: 0, step: 1, weight: 10 },
+    { id: 'loot_bandit_mage', group: 4, item: 'magic_ring', min: 1, max: 1, step: 1, weight: 10 },
+    { id: 'loot_bandit_mage', group: 4, item: 'nothing', min: 0, max: 0, step: 1, weight: 90 },
 
-    // Loot table for Bandit Captain (level 12)
-    { id: 'loot_bandit_captain', group: 1, item: 'copper', min: 15, max: 40, step: 5, weight: 100 },
-    { id: 'loot_bandit_captain', group: 2, item: 'captain_insignia', min: 1, max: 1, step: 1, weight: 12 },
-    { id: 'loot_bandit_captain', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 88 },
+    // Bandit Captain (level 12)
+    { id: 'loot_bandit_captain', group: 1, item: 'copper', min: 40, max: 80, step: 5, weight: 100 },
+    { id: 'loot_bandit_captain', group: 2, item: 'steel_dagger', min: 1, max: 1, step: 1, weight: 25 },
+    { id: 'loot_bandit_captain', group: 2, item: 'iron_longsword', min: 1, max: 1, step: 1, weight: 20 },
+    { id: 'loot_bandit_captain', group: 2, item: 'chainmail_tunic', min: 1, max: 1, step: 1, weight: 25 },
+    { id: 'loot_bandit_captain', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 30 },
+    { id: 'loot_bandit_captain', group: 3, item: 'health_potion', min: 2, max: 3, step: 1, weight: 60 },
+    { id: 'loot_bandit_captain', group: 3, item: 'stamina_potion', min: 1, max: 3, step: 1, weight: 50 },
+    { id: 'loot_bandit_captain', group: 3, item: 'nothing', min: 0, max: 0, step: 1, weight: 10 },
 
-    // Loot table for Elite Bandit (level 13)
-    { id: 'loot_elite_bandit', group: 1, item: 'copper', min: 20, max: 50, step: 10, weight: 100 },
-    { id: 'loot_elite_bandit', group: 2, item: 'gold_ring', min: 1, max: 1, step: 1, weight: 8 },
-    { id: 'loot_elite_bandit', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 92 },
+    // Elite Bandit (level 13)
+    { id: 'loot_elite_bandit', group: 1, item: 'copper', min: 50, max: 100, step: 10, weight: 100 },
+    { id: 'loot_elite_bandit', group: 2, item: 'steel_dagger', min: 1, max: 1, step: 1, weight: 30 },
+    { id: 'loot_elite_bandit', group: 2, item: 'iron_longsword', min: 1, max: 1, step: 1, weight: 25 },
+    { id: 'loot_elite_bandit', group: 2, item: 'chainmail_tunic', min: 1, max: 1, step: 1, weight: 30 },
+    { id: 'loot_elite_bandit', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 15 },
+    { id: 'loot_elite_bandit', group: 3, item: 'health_potion', min: 2, max: 4, step: 1, weight: 70 },
+    { id: 'loot_elite_bandit', group: 3, item: 'stamina_potion', min: 2, max: 3, step: 1, weight: 60 },
+    { id: 'loot_elite_bandit', group: 3, item: 'mana_potion', min: 1, max: 2, step: 1, weight: 30 },
 
-    // Loot table for Bandit Champion (level 14)
-    { id: 'loot_bandit_champion', group: 1, item: 'copper', min: 30, max: 60, step: 10, weight: 100 },
-    { id: 'loot_bandit_champion', group: 2, item: 'gem_ruby', min: 1, max: 1, step: 1, weight: 5 },
-    { id: 'loot_bandit_champion', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 95 },
+    // Bandit Champion (level 14)
+    { id: 'loot_bandit_champion', group: 1, item: 'copper', min: 60, max: 120, step: 10, weight: 100 },
+    { id: 'loot_bandit_champion', group: 2, item: 'steel_longsword', min: 1, max: 1, step: 1, weight: 20 },
+    { id: 'loot_bandit_champion', group: 2, item: 'iron_longsword', min: 1, max: 1, step: 1, weight: 30 },
+    { id: 'loot_bandit_champion', group: 2, item: 'platemail_tunic', min: 1, max: 1, step: 1, weight: 15 },
+    { id: 'loot_bandit_champion', group: 2, item: 'chainmail_tunic', min: 1, max: 1, step: 1, weight: 25 },
+    { id: 'loot_bandit_champion', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 10 },
+    { id: 'loot_bandit_champion', group: 3, item: 'health_potion', min: 3, max: 5, step: 1, weight: 80 },
+    { id: 'loot_bandit_champion', group: 3, item: 'stamina_potion', min: 2, max: 4, step: 1, weight: 70 },
+    { id: 'loot_bandit_champion', group: 3, item: 'mana_potion', min: 1, max: 3, step: 1, weight: 50 },
 
-    // Loot table for Bandit Lord (level 15 - rare boss)
-    { id: 'loot_bandit_lord', group: 1, item: 'copper', min: 50, max: 100, step: 10, weight: 100 },
-    { id: 'loot_bandit_lord', group: 2, item: 'lords_greatsword', min: 1, max: 1, step: 1, weight: 15 },
-    { id: 'loot_bandit_lord', group: 2, item: 'lords_crown', min: 1, max: 1, step: 1, weight: 10 },
-    { id: 'loot_bandit_lord', group: 2, item: 'gem_diamond', min: 1, max: 1, step: 1, weight: 20 },
-    { id: 'loot_bandit_lord', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 55 }
+    // Bandit Lord (level 15 - BOSS)
+    { id: 'loot_bandit_lord', group: 1, item: 'copper', min: 100, max: 200, step: 10, weight: 100 },
+    { id: 'loot_bandit_lord', group: 2, item: 'steel_longsword', min: 1, max: 1, step: 1, weight: 40 },
+    { id: 'loot_bandit_lord', group: 2, item: 'enchanted_dagger', min: 1, max: 1, step: 1, weight: 20 },
+    { id: 'loot_bandit_lord', group: 2, item: 'platemail_tunic', min: 1, max: 1, step: 1, weight: 30 },
+    { id: 'loot_bandit_lord', group: 2, item: 'magic_ring', min: 1, max: 1, step: 1, weight: 10 },
+    { id: 'loot_bandit_lord', group: 3, item: 'health_potion', min: 5, max: 8, step: 1, weight: 100 },
+    { id: 'loot_bandit_lord', group: 4, item: 'stamina_potion', min: 3, max: 5, step: 1, weight: 100 },
+    { id: 'loot_bandit_lord', group: 5, item: 'mana_potion', min: 2, max: 4, step: 1, weight: 100 }
   ],
 
   Merchants: [
