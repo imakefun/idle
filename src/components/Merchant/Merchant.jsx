@@ -33,8 +33,23 @@ export default function Merchant({ gameData, currentZone, playerCurrency, player
     setTimeout(() => setMessage(''), 3000);
   };
 
-  const handleBuyItem = (inventoryItem) => {
-    const result = onBuyItem(inventoryItem.item, 1, merchant);
+  const handleBuyItem = (inventoryItem, quantity = 1) => {
+    const result = onBuyItem(inventoryItem.item, quantity, merchant);
+    setMessage(result.message);
+
+    // Clear message after 3 seconds
+    setTimeout(() => setMessage(''), 3000);
+  };
+
+  const handleSellAll = (slotIndex) => {
+    const item = playerInventory[slotIndex];
+    if (!item) {
+      setMessage('No item in that slot.');
+      return;
+    }
+
+    const quantity = item.quantity || 1;
+    const result = onSellItem(slotIndex, quantity, merchant);
     setMessage(result.message);
 
     // Clear message after 3 seconds
@@ -109,6 +124,15 @@ export default function Merchant({ gameData, currentZone, playerCurrency, player
               const canAfford = playerCurrency >= buyPrice;
               const inStock = inventoryItem.stock === -1 || inventoryItem.stock > 0;
 
+              const isStackable = inventoryItem.item.stackable;
+              const maxStack = inventoryItem.item.maxStack || 20;
+              const buyPrice5 = buyPrice * 5;
+              const buyPrice20 = buyPrice * 20;
+              const canAfford5 = playerCurrency >= buyPrice5;
+              const canAfford20 = playerCurrency >= buyPrice20;
+              const hasStock5 = inventoryItem.stock === -1 || inventoryItem.stock >= 5;
+              const hasStock20 = inventoryItem.stock === -1 || inventoryItem.stock >= 20;
+
               return (
                 <div key={index} className="merchant-buy-item">
                   <div className="item-info">
@@ -125,13 +149,33 @@ export default function Merchant({ gameData, currentZone, playerCurrency, player
                       )}
                     </div>
                   </div>
-                  <button
-                    className="buy-button"
-                    onClick={() => handleBuyItem(inventoryItem)}
-                    disabled={!canAfford || !inStock}
-                  >
-                    Buy 1
-                  </button>
+                  <div className="buy-buttons">
+                    <button
+                      className="buy-button"
+                      onClick={() => handleBuyItem(inventoryItem, 1)}
+                      disabled={!canAfford || !inStock}
+                    >
+                      Buy 1
+                    </button>
+                    {isStackable && maxStack >= 5 && (
+                      <button
+                        className="buy-button"
+                        onClick={() => handleBuyItem(inventoryItem, 5)}
+                        disabled={!canAfford5 || !hasStock5}
+                      >
+                        Buy 5
+                      </button>
+                    )}
+                    {isStackable && maxStack >= 20 && (
+                      <button
+                        className="buy-button"
+                        onClick={() => handleBuyItem(inventoryItem, 20)}
+                        disabled={!canAfford20 || !hasStock20}
+                      >
+                        Buy 20
+                      </button>
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -165,13 +209,24 @@ export default function Merchant({ gameData, currentZone, playerCurrency, player
                       </div>
                     </div>
                   </div>
-                  <button
-                    className="sell-button"
-                    onClick={() => handleSellItem(index)}
-                    disabled={sellPrice === 0}
-                  >
-                    Sell 1
-                  </button>
+                  <div className="sell-buttons">
+                    <button
+                      className="sell-button"
+                      onClick={() => handleSellItem(index)}
+                      disabled={sellPrice === 0}
+                    >
+                      Sell 1
+                    </button>
+                    {quantity > 1 && (
+                      <button
+                        className="sell-button sell-all-button"
+                        onClick={() => handleSellAll(index)}
+                        disabled={sellPrice === 0}
+                      >
+                        Sell All ({quantity})
+                      </button>
+                    )}
+                  </div>
                 </div>
               );
             })}

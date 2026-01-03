@@ -67,8 +67,8 @@ export function sellItemToMerchant(player, inventorySlotIndex, quantity, merchan
 
   // Remove items from inventory
   if (quantityToSell >= itemQuantity) {
-    // Selling entire stack
-    inventory[inventorySlotIndex] = null;
+    // Selling entire stack - remove from array
+    inventory.splice(inventorySlotIndex, 1);
   } else {
     // Selling partial stack
     inventory[inventorySlotIndex] = {
@@ -99,6 +99,7 @@ export function sellItemToMerchant(player, inventorySlotIndex, quantity, merchan
  * @returns {Object} - Result { success, message, updates }
  */
 export function buyItemFromMerchant(player, item, quantity, merchant) {
+  const MAX_INVENTORY_SLOTS = 10;
   const inventory = [...player.inventory];
 
   if (quantity <= 0) {
@@ -140,23 +141,21 @@ export function buyItemFromMerchant(player, item, quantity, merchant) {
     }
   }
 
-  // Add to empty slots if there's still quantity remaining
+  // Add new stacks to inventory if there's still quantity remaining
   while (remainingQty > 0) {
-    const emptySlotIndex = inventory.findIndex(slot => slot === null || slot === undefined);
-
-    if (emptySlotIndex !== -1) {
-      // Found an empty slot
+    // Check if inventory has room (variable-length array)
+    if (inventory.length < MAX_INVENTORY_SLOTS) {
       const maxStack = item.stackable ? (item.maxStack || 20) : 1;
       const amountToAdd = Math.min(maxStack, remainingQty);
 
-      inventory[emptySlotIndex] = {
+      inventory.push({
         ...item,
         quantity: amountToAdd
-      };
+      });
 
       remainingQty -= amountToAdd;
     } else {
-      // No more empty slots - inventory full
+      // Inventory full
       return {
         success: false,
         message: `Your inventory is full. You can only buy ${quantity - remainingQty} items.`
