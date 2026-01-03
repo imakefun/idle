@@ -76,9 +76,33 @@ stamina_potion	Stamina Potion	consumable		⚡	TRUE	20	4	0	0	0									0	0			0	0	
 mana_potion	Mana Potion	consumable		🔮	TRUE	20	6	0	0	0									0	0			0	0	0	0	0	0	0
 rations	Rations	consumable		🍖	TRUE	20	3	0	0	0									25	0			0	0	0	0	0	0	0
 water_flask	Water Flask	consumable		💧	TRUE	20	2	0	0	0									0	25			0	0	0	0	0	0	0
+bread	Bread	consumable		🍞	TRUE	20	1	0	0	0									15	0			0	0	0	0	0	0	0
+water	Water	consumable		💧	TRUE	20	1	0	0	0									0	15			0	0	0	0	0	0	0
+ale	Ale	consumable		🍺	TRUE	20	2	0	0	0									5	10			0	0	0	0	0	0	0
+bandages	Bandages	consumable		🩹	TRUE	20	3	0	0	0									25	0			0	0	0	0	0	0	0
 arrows	Arrows	ammo	ammo	🏹	TRUE	100	0.2	0	0	0								arrow		0	0	0	0	0	0	0
 wooden_arrow	Wooden Arrow	ammo	ammo	🏹	TRUE	100	0.1	0	0	0								arrow		0	0	0	0	0	0	0
 iron_arrow	Iron Arrow	ammo	ammo	🏹	TRUE	100	0.5	0	0	0								arrow		0	0	0	0	0	0	0
+```
+
+## Example Data (Merchant Weapons)
+
+```
+id	name	type	slot	icon	stackable	maxStack	value	damage	delay	ac	weaponType	handedness	shieldType	armorType	classes	races	foodValue	waterValue	ammoType	requiredAmmo	STR	STA	AGI	DEX	WIS	INT	CHA
+wooden_bow	Wooden Bow	weapon	range	🏹	FALSE	1	10	5	30	0	bow	2H						arrow	0	0	0	1	0	0	0
+bronze_sword	Bronze Sword	weapon	primary	⚔️	FALSE	1	12	6	22	0	sword	1H								0	0	0	1	0	0	0
+short_sword	Short Sword	weapon	primary	⚔️	FALSE	1	15	7	22	0	sword	1H								1	0	0	0	0	0	0
+long_sword	Long Sword	weapon	primary	⚔️	FALSE	1	25	9	24	0	sword	1H								1	0	0	0	0	0	0
+```
+
+## Example Data (Merchant Armor)
+
+```
+id	name	type	slot	icon	stackable	maxStack	value	damage	delay	ac	weaponType	handedness	shieldType	armorType	classes	races	foodValue	waterValue	ammoType	requiredAmmo	STR	STA	AGI	DEX	WIS	INT	CHA
+leather_gloves	Leather Gloves	armor	hands	🧤	FALSE	1	5	0	0	2			cloth	leather					0	0	0	1	0	0	0
+leather_cap	Leather Cap	armor	head	🎩	FALSE	1	8	0	0	2			cloth	leather					0	0	0	0	0	0	0
+studded_leather	Studded Leather	armor	chest	🛡️	FALSE	1	25	0	0	8			cloth	leather					0	1	0	0	0	0	0
+small_shield	Small Shield	shield	secondary	🛡️	FALSE	1	20	0	0	6		1H	small					0	1	0	0	0	0	0
 ```
 
 ## Example Data (Accessories)

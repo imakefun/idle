@@ -407,10 +407,21 @@ export function processCombatRound(player, monster, gameData) {
     }
 
     // Generate loot
+    console.log('=== LOOT GENERATION DEBUG ===');
+    console.log('gameData:', gameData);
     const lootTables = gameData?.lootTables || {};
     const items = gameData?.items || {};
+    console.log('lootTables type:', typeof lootTables);
+    console.log('lootTables keys:', Object.keys(lootTables));
+    console.log('items type:', typeof items);
+    console.log('items keys count:', Object.keys(items).length);
     const lootTableId = monster.lootTableId || monster.id; // Fallback to monster.id for backwards compatibility
+    console.log('monster.lootTableId:', monster.lootTableId);
+    console.log('monster.id:', monster.id);
+    console.log('Using lootTableId:', lootTableId);
+    console.log('Calling generateLoot...');
     const generatedLoot = generateLoot(lootTableId, lootTables, items);
+    console.log('generateLoot returned:', generatedLoot);
 
     // Add currency to player
     if (generatedLoot.currency > 0) {
