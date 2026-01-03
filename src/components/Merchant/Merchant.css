@@ -316,6 +316,37 @@
   opacity: 0.5;
 }
 
+.buy-buttons {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.buy-buttons .buy-button {
+  font-size: 0.85rem;
+  padding: 0.4rem 0.8rem;
+}
+
+.sell-buttons {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.sell-buttons .sell-button {
+  font-size: 0.85rem;
+  padding: 0.4rem 0.8rem;
+}
+
+.sell-all-button {
+  background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+  border-color: #ca6f1e;
+}
+
+.sell-all-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #d35400 0%, #ca6f1e 100%);
+}
+
 .merchant-buy-grid::-webkit-scrollbar {
   width: 8px;
 }
