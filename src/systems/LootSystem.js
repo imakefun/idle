@@ -33,9 +33,15 @@ export function generateLoot(lootTableId, lootTables, items, depth = 0) {
   // Get loot table definition
   const lootTable = lootTables?.[lootTableId];
   if (!lootTable) {
+    // Debug logging
+    console.warn(`No loot table found for: ${lootTableId}`);
+    console.log('Available loot tables:', Object.keys(lootTables || {}));
+    console.log('All lootTables data:', lootTables);
     // No loot table defined, return empty loot
     return loot;
   }
+
+  console.log(`Rolling loot for ${lootTableId}, ${lootTable.length} entries`);
 
   // Group entries by group number
   const groups = {};
@@ -47,10 +53,14 @@ export function generateLoot(lootTableId, lootTables, items, depth = 0) {
     groups[groupNum].push(entry);
   });
 
+  console.log(`${Object.keys(groups).length} groups found`);
+
   // Process each group (one selection per group)
   Object.keys(groups).forEach(groupNum => {
     const groupEntries = groups[groupNum];
     const selectedEntry = selectFromGroup(groupEntries);
+
+    console.log(`Group ${groupNum}: selected`, selectedEntry);
 
     if (selectedEntry && selectedEntry.item && selectedEntry.item !== 'nothing') {
       // Determine quantity
@@ -59,6 +69,8 @@ export function generateLoot(lootTableId, lootTables, items, depth = 0) {
         selectedEntry.max || 1,
         selectedEntry.step || 1
       );
+
+      console.log(`  -> ${selectedEntry.item} x${quantity}`);
 
       // Check if this is a currency type
       if (CURRENCY_VALUES[selectedEntry.item]) {
@@ -84,10 +96,13 @@ export function generateLoot(lootTableId, lootTables, items, depth = 0) {
           });
         } else {
           console.warn(`Item not found in loot table: ${selectedEntry.item}`);
+          console.log('Available items:', Object.keys(items || {}));
         }
       }
     }
   });
+
+  console.log('Final loot:', loot);
 
   return loot;
 }
