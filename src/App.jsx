@@ -786,7 +786,7 @@ function App() {
                     <h4 style={{ marginBottom: '0.5rem', color: '#ff6b6b' }}>🗑️ Reset Character</h4>
                     <button
                       className="btn btn-danger"
-                      onClick={handleResetCharacter}
+                      onClick={handleDeleteSave}
                       style={{
                         width: '100%',
                         background: '#ff6b6b',
