@@ -2454,7 +2454,11 @@ export const fallbackData = {
     { category: 'regen', settingId: 'staminaRegenCombatMultiplier', value: '0.3', description: 'Stamina regen multiplier during combat (30%)' },
     { category: 'regen', settingId: 'staminaRegenRestMultiplier', value: '2.0', description: 'Stamina regen multiplier when resting (2x)' },
     { category: 'regen', settingId: 'staminaRegenRestThreshold', value: '30', description: 'Minimum food/water % needed for rest bonus' },
-    { category: 'regen', settingId: 'staminaRegenStarvePenalty', value: '0.2', description: 'Stamina regen multiplier when starving (20%)' }
+    { category: 'regen', settingId: 'staminaRegenStarvePenalty', value: '0.2', description: 'Stamina regen multiplier when starving (20%)' },
+
+    // Auto-Consumption
+    { category: 'consume', settingId: 'autoConsumeFoodThreshold', value: '50', description: 'Food level % threshold for auto-consumption' },
+    { category: 'consume', settingId: 'autoConsumeWaterThreshold', value: '50', description: 'Water level % threshold for auto-consumption' }
   ],
 
   LootTables: [

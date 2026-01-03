@@ -70,7 +70,8 @@ function App() {
 
       // Auto-consume food if needed
       const currentFood = updates.food !== undefined ? updates.food : prev.food;
-      if (currentFood < 50 && prev.inventory && prev.inventory.length > 0) {
+      const foodThreshold = gameData?.settings?.autoConsumeFoodThreshold || 50;
+      if (currentFood < foodThreshold && prev.inventory && prev.inventory.length > 0) {
         const foodItem = prev.inventory.find(item =>
           item && item.type === 'consumable' && (item.foodValue || item.consumable?.foodValue || 0) > 0
         );
@@ -102,7 +103,8 @@ function App() {
 
       // Auto-consume water if needed
       const currentWater = updates.water !== undefined ? updates.water : prev.water;
-      if (currentWater < 50 && prev.inventory && prev.inventory.length > 0) {
+      const waterThreshold = gameData?.settings?.autoConsumeWaterThreshold || 50;
+      if (currentWater < waterThreshold && prev.inventory && prev.inventory.length > 0) {
         const waterItem = prev.inventory.find(item =>
           item && item.type === 'consumable' && (item.waterValue || item.consumable?.waterValue || 0) > 0
         );

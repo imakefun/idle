@@ -55,6 +55,8 @@ regen	staminaRegenCombatMultiplier	0.3	Stamina regen multiplier during combat (3
 regen	staminaRegenRestMultiplier	2.0	Stamina regen multiplier when resting (2x)
 regen	staminaRegenRestThreshold	30	Minimum food/water % needed for rest bonus
 regen	staminaRegenStarvePenalty	0.2	Stamina regen multiplier when starving (20%)
+consume	autoConsumeFoodThreshold	50	Food level % threshold for auto-consumption
+consume	autoConsumeWaterThreshold	50	Water level % threshold for auto-consumption
 ```
 
 ## Data Structure
