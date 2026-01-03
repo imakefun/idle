@@ -101,14 +101,19 @@
 - [ ] 8.4 Quest Turn-In
 - [ ] 8.5 Quest Management
 
-### 🟡 Phase 9: Economy & Loot (Week 9) - PARTIALLY COMPLETED
-- [ ] 9.1 Loot Tables (need to implement loot drop system)
-- [ ] 9.2 Loot Distribution (need to implement)
-- [ ] 9.3 Merchant System (need to implement buy/sell interface)
+### ✅ Phase 9: Economy & Loot (Week 9) - COMPLETED
+- ✅ 9.1 Loot Tables (Implemented with Google Sheets integration)
+- ✅ 9.2 Loot Distribution (Items and currency drop from monsters)
+- ✅ 9.3 Merchant System (Buy/sell interface with multiple merchants)
 
-**Current Status:**
-- Monster data exists but loot tables not yet implemented
-- Currency system exists but no merchant NPCs
+**Implemented:**
+- Loot table system with configurable drops (currency + items)
+- Loot generation on monster death with weighted random drops
+- Inventory integration with stacking and overflow handling
+- 3 Merchant NPCs in Qeynos (General, Armor, Food merchants)
+- Sell interface allowing players to sell inventory items
+- Dynamic buy/sell pricing based on merchant type
+- Currency transactions with proper formatting
 
 ### ❌ Phase 10: Tradeskills (Week 10) - NOT STARTED
 - [ ] 10.1 Recipe Data
@@ -193,21 +198,29 @@
 - ✅ CAMPS_METADATA.md
 - ✅ SKILLS_METADATA.md
 - ✅ SPAWNS_METADATA.md
-- ✅ **SETTINGS_METADATA.md** (NEW)
+- ✅ SETTINGS_METADATA.md
+- ✅ **LOOT_TABLES_METADATA.md** (NEW)
+- ✅ **MERCHANTS_METADATA.md** (NEW)
 
 ## Next Steps
 
-### Immediate Priority: Phase 9 - Economy & Loot
-1. Implement loot table system
-2. Add loot drops on monster death
-3. Create Merchant NPC with buy/sell interface
-4. Implement merchant inventory
-5. Add pricing/value system
+### Completed in This Session
+- ✅ Phase 9: Economy & Loot (Complete)
+  - Loot tables and drops from monsters
+  - Merchant NPCs with buy/sell functionality
+
+### Next Priority: Phase 8 - Quest System
+1. Create quest data structure
+2. Implement quest generation system
+3. Add Captain Tillin NPC in town
+4. Create quest tracking UI
+5. Implement quest turn-in mechanics
+6. Add quest rewards (XP, items, currency)
 
 ### Future Priorities
-1. **Phase 8: Quest System** - Captain Tillin NPC, quest generation, quest tracking
-2. **Phase 10: Tradeskills** - Crafting system, recipes, containers
-3. **Phase 11: Complete NPC System** - More NPCs, dialogue, interactions
+1. **Phase 10: Tradeskills** - Crafting system, recipes, containers
+2. **Phase 11: Complete NPC System** - More NPCs, dialogue, interactions
+3. **Phase 12: Polish & Balance** - UI improvements, mobile optimization, game balance
 
 ## Technical Debt
 - [ ] Add TypeScript (optional)
@@ -226,4 +239,4 @@
 
 ---
 
-**Status:** Ready for Phase 9 (Economy & Loot) implementation
+**Status:** Phase 9 (Economy & Loot) COMPLETE! Ready for Phase 8 (Quest System) implementation
