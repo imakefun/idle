@@ -1465,5 +1465,32 @@ export const fallbackData = {
     { monsterId: 'bandit_lord', itemId: 'lords_greatsword', dropChance: '15', minQty: '1', maxQty: '1', currencyMin: '50', currencyMax: '100' },
     { monsterId: 'bandit_lord', itemId: 'lords_crown', dropChance: '10', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' },
     { monsterId: 'bandit_lord', itemId: 'gem_diamond', dropChance: '20', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' }
+  ],
+
+  Merchants: [
+    {
+      id: 'merchant_general',
+      name: 'General Merchant',
+      zoneId: 'qeynos',
+      description: 'A general goods merchant who buys and sells various items',
+      buyRate: '50',
+      sellRate: '150'
+    },
+    {
+      id: 'merchant_armor',
+      name: 'Armor Merchant',
+      zoneId: 'qeynos',
+      description: 'A merchant specializing in weapons and armor',
+      buyRate: '40',
+      sellRate: '175'
+    },
+    {
+      id: 'merchant_food',
+      name: 'Food Merchant',
+      zoneId: 'qeynos',
+      description: 'A merchant selling food and drink',
+      buyRate: '60',
+      sellRate: '125'
+    }
   ]
 };

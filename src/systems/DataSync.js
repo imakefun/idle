@@ -10,7 +10,7 @@ const CACHE_KEY = 'norrathIdleGameData_v1';
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 // List of all sheets to fetch
-const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps', 'Skills', 'Spawns', 'Settings', 'LootTables'];
+const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps', 'Skills', 'Spawns', 'Settings', 'LootTables', 'Merchants'];
 
 /**
  * Load game data with caching and fallback support
@@ -64,6 +64,11 @@ export async function loadGameData() {
       rawData.LootTables = fallbackData.LootTables || [];
     }
 
+    if (rawData.Merchants === null || rawData.Merchants === undefined) {
+      console.log('📋 Merchants sheet not found, using fallback merchants data');
+      rawData.Merchants = fallbackData.Merchants || [];
+    }
+
     // Transform the data
     const transformedData = transformGameData(rawData);
 
@@ -99,7 +104,8 @@ function transformGameData(rawData) {
     skills: transformSkills(rawData.Skills || []),
     spawns: transformSpawns(rawData.Spawns || []),
     settings: transformSettings(rawData.Settings || []),
-    lootTables: transformLootTables(rawData.LootTables || [])
+    lootTables: transformLootTables(rawData.LootTables || []),
+    merchants: transformMerchants(rawData.Merchants || [])
   };
 }
 
@@ -394,6 +400,26 @@ function transformLootTables(rows) {
   });
 
   return lootTables;
+}
+
+/**
+ * Transform Merchants sheet data
+ */
+function transformMerchants(rows) {
+  const merchants = {};
+  rows.forEach(row => {
+    if (!row.id) return; // Skip invalid rows
+
+    merchants[row.id] = {
+      id: row.id,
+      name: row.name,
+      zoneId: row.zoneId || '',
+      description: row.description || '',
+      buyRate: parseFloat(row.buyRate) || 50,
+      sellRate: parseFloat(row.sellRate) || 150
+    };
+  });
+  return merchants;
 }
 
 /**
