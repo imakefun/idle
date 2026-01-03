@@ -2438,7 +2438,27 @@ export const fallbackData = {
     // Skill - Dodge
     { category: 'skill', settingId: 'dodgeBaseChance', value: '0.05', description: 'Base dodge chance (5%)' },
     { category: 'skill', settingId: 'dodgeSkillDivisor', value: '500', description: 'Divisor for dodge skill bonus' },
-    { category: 'skill', settingId: 'dodgeMaxSkillBonus', value: '0.20', description: 'Maximum skill bonus to dodge (20%)' }
+    { category: 'skill', settingId: 'dodgeMaxSkillBonus', value: '0.20', description: 'Maximum skill bonus to dodge (20%)' },
+
+    // Regeneration - HP
+    { category: 'regen', settingId: 'hpRegenBaseHP', value: '0.001', description: 'HP regen base multiplier for max HP' },
+    { category: 'regen', settingId: 'hpRegenBaseSTA', value: '0.01', description: 'HP regen base multiplier for stamina stat' },
+    { category: 'regen', settingId: 'hpRegenCombatMultiplier', value: '0.1', description: 'HP regen multiplier during combat (10%)' },
+    { category: 'regen', settingId: 'hpRegenRestMultiplier', value: '3.0', description: 'HP regen multiplier when resting (3x)' },
+    { category: 'regen', settingId: 'hpRegenRestThreshold', value: '30', description: 'Minimum food/water % needed for rest bonus' },
+    { category: 'regen', settingId: 'hpRegenStarvePenalty', value: '0.1', description: 'HP regen multiplier when starving (10%)' },
+
+    // Regeneration - Stamina
+    { category: 'regen', settingId: 'staminaRegenBase', value: '0.5', description: 'Stamina base regeneration per tick' },
+    { category: 'regen', settingId: 'staminaRegenLevelBonus', value: '0.05', description: 'Stamina regen bonus per level' },
+    { category: 'regen', settingId: 'staminaRegenCombatMultiplier', value: '0.3', description: 'Stamina regen multiplier during combat (30%)' },
+    { category: 'regen', settingId: 'staminaRegenRestMultiplier', value: '2.0', description: 'Stamina regen multiplier when resting (2x)' },
+    { category: 'regen', settingId: 'staminaRegenRestThreshold', value: '30', description: 'Minimum food/water % needed for rest bonus' },
+    { category: 'regen', settingId: 'staminaRegenStarvePenalty', value: '0.2', description: 'Stamina regen multiplier when starving (20%)' },
+
+    // Auto-Consumption
+    { category: 'consume', settingId: 'autoConsumeFoodThreshold', value: '50', description: 'Food level % threshold for auto-consumption' },
+    { category: 'consume', settingId: 'autoConsumeWaterThreshold', value: '50', description: 'Water level % threshold for auto-consumption' }
   ],
 
   LootTables: [

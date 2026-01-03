@@ -43,6 +43,20 @@ skill	abilityDamageSkillDivisor	10	Divisor for ability damage skill bonus
 skill	dodgeBaseChance	0.05	Base dodge chance (5%)
 skill	dodgeSkillDivisor	500	Divisor for dodge skill bonus
 skill	dodgeMaxSkillBonus	0.20	Maximum skill bonus to dodge (20%)
+regen	hpRegenBaseHP	0.001	HP regen base multiplier for max HP
+regen	hpRegenBaseSTA	0.01	HP regen base multiplier for stamina stat
+regen	hpRegenCombatMultiplier	0.1	HP regen multiplier during combat (10%)
+regen	hpRegenRestMultiplier	3.0	HP regen multiplier when resting (3x)
+regen	hpRegenRestThreshold	30	Minimum food/water % needed for rest bonus
+regen	hpRegenStarvePenalty	0.1	HP regen multiplier when starving (10%)
+regen	staminaRegenBase	0.5	Stamina base regeneration per tick
+regen	staminaRegenLevelBonus	0.05	Stamina regen bonus per level
+regen	staminaRegenCombatMultiplier	0.3	Stamina regen multiplier during combat (30%)
+regen	staminaRegenRestMultiplier	2.0	Stamina regen multiplier when resting (2x)
+regen	staminaRegenRestThreshold	30	Minimum food/water % needed for rest bonus
+regen	staminaRegenStarvePenalty	0.2	Stamina regen multiplier when starving (20%)
+consume	autoConsumeFoodThreshold	50	Food level % threshold for auto-consumption
+consume	autoConsumeWaterThreshold	50	Water level % threshold for auto-consumption
 ```
 
 ## Data Structure
