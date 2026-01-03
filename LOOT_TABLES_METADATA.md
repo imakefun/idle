@@ -59,13 +59,15 @@ Defines reusable loot tables that can be attached to any system (monsters, quest
 
 ## Example Data
 
+Copy and paste these tables directly into your Google Sheet.
+
 ### Simple Monster Loot (Giant Rat)
 
 ```
-id,group,item,min,max,step,weight
-loot_rat,1,copper,0,3,1,100
-loot_rat,2,rat_ear,1,1,1,30
-loot_rat,2,nothing,0,0,1,70
+id	group	item	min	max	step	weight
+loot_rat	1	copper	0	3	1	100
+loot_rat	2	rat_ear	1	1	1	30
+loot_rat	2	nothing	0	0	1	70
 ```
 
 **Explanation:**
@@ -75,15 +77,15 @@ loot_rat,2,nothing,0,0,1,70
 ### Complex Loot with Multiple Groups
 
 ```
-id,group,item,min,max,step,weight
-loot_bandit_boss,1,copper,50,100,10,100
-loot_bandit_boss,2,rusty_dagger,1,1,1,20
-loot_bandit_boss,2,bronze_dagger,1,1,1,10
-loot_bandit_boss,2,silver_dagger,1,1,1,5
-loot_bandit_boss,2,nothing,0,0,1,65
-loot_bandit_boss,3,health_potion,1,3,1,40
-loot_bandit_boss,3,stamina_potion,1,3,1,40
-loot_bandit_boss,3,nothing,0,0,1,20
+id	group	item	min	max	step	weight
+loot_bandit_boss	1	copper	50	100	10	100
+loot_bandit_boss	2	rusty_dagger	1	1	1	20
+loot_bandit_boss	2	bronze_dagger	1	1	1	10
+loot_bandit_boss	2	silver_dagger	1	1	1	5
+loot_bandit_boss	2	nothing	0	0	1	65
+loot_bandit_boss	3	health_potion	1	3	1	40
+loot_bandit_boss	3	stamina_potion	1	3	1	40
+loot_bandit_boss	3	nothing	0	0	1	20
 ```
 
 **Explanation:**
@@ -101,16 +103,15 @@ loot_bandit_boss,3,nothing,0,0,1,20
 ### Recursive Loot Table Example
 
 ```
-id,group,item,min,max,step,weight
-loot_common_junk,1,rat_ear,1,2,1,25
-loot_common_junk,1,bone_chips,1,3,1,25
-loot_common_junk,1,tattered_pelt,1,1,1,25
-loot_common_junk,1,nothing,0,0,1,25
-
-loot_chest_wooden,1,copper,5,20,5,100
-loot_chest_wooden,2,loot_common_junk,2,4,1,100
-loot_chest_wooden,3,health_potion,1,1,1,50
-loot_chest_wooden,3,nothing,0,0,1,50
+id	group	item	min	max	step	weight
+loot_common_junk	1	rat_ear	1	2	1	25
+loot_common_junk	1	bone_chips	1	3	1	25
+loot_common_junk	1	tattered_pelt	1	1	1	25
+loot_common_junk	1	nothing	0	0	1	25
+loot_chest_wooden	1	copper	5	20	5	100
+loot_chest_wooden	2	loot_common_junk	2	4	1	100
+loot_chest_wooden	3	health_potion	1	1	1	50
+loot_chest_wooden	3	nothing	0	0	1	50
 ```
 
 **Explanation:**
@@ -123,10 +124,10 @@ loot_chest_wooden,3,nothing,0,0,1,50
 ### Quest Reward Example
 
 ```
-id,group,item,min,max,step,weight
-quest_reward_rat_exterminator,1,copper,25,25,1,100
-quest_reward_rat_exterminator,2,rusty_shortsword,1,1,1,100
-quest_reward_rat_exterminator,3,health_potion,2,2,1,100
+id	group	item	min	max	step	weight
+quest_reward_rat_exterminator	1	copper	25	25	1	100
+quest_reward_rat_exterminator	2	rusty_shortsword	1	1	1	100
+quest_reward_rat_exterminator	3	health_potion	2	2	1	100
 ```
 
 **Explanation:**
@@ -142,8 +143,8 @@ Monsters reference loot tables via a `lootTableId` field in the Monsters sheet.
 
 Example in Monsters sheet:
 ```
-id,name,level,hp,ac,minDmg,maxDmg,xpReward,icon,lootTableId
-giant_rat,Giant Rat,1,30,5,1,3,10,🐀,loot_rat
+id	name	level	hp	ac	minDmg	maxDmg	xpReward	lootTableId
+giant_rat	a giant rat	1	30	5	1	3	10	loot_rat
 ```
 
 ### Quests

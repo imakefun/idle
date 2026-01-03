@@ -33,16 +33,18 @@ Items with a specific stock number will decrease when purchased. When stock reac
 
 ## Example Data
 
+Copy and paste these tables directly into your Google Sheet.
+
 ### General Merchant (Basic Supplies)
 
 ```
-merchantId,itemId,stock,restockTime,restockAmount
-merchant_general,bread,-1,0,0
-merchant_general,water,-1,0,0
-merchant_general,rations,-1,0,0
-merchant_general,bandages,20,30,10
-merchant_general,rusty_dagger,5,60,2
-merchant_general,rusty_shortsword,3,60,1
+merchantId	itemId	stock	restockTime	restockAmount
+merchant_general	bread	-1	0	0
+merchant_general	water	-1	0	0
+merchant_general	rations	-1	0	0
+merchant_general	bandages	20	30	10
+merchant_general	rusty_dagger	5	60	2
+merchant_general	rusty_shortsword	3	60	1
 ```
 
 **Explanation:**
@@ -53,14 +55,14 @@ merchant_general,rusty_shortsword,3,60,1
 ### Armor Merchant (Equipment)
 
 ```
-merchantId,itemId,stock,restockTime,restockAmount
-merchant_armor,bronze_dagger,5,120,2
-merchant_armor,bronze_sword,3,120,1
-merchant_armor,short_sword,2,180,1
-merchant_armor,leather_tunic,8,90,3
-merchant_armor,leather_gloves,10,60,4
-merchant_armor,studded_leather,4,120,2
-merchant_armor,chainmail_tunic,2,240,1
+merchantId	itemId	stock	restockTime	restockAmount
+merchant_armor	bronze_dagger	5	120	2
+merchant_armor	bronze_sword	3	120	1
+merchant_armor	short_sword	2	180	1
+merchant_armor	leather_tunic	8	90	3
+merchant_armor	leather_gloves	10	60	4
+merchant_armor	studded_leather	4	120	2
+merchant_armor	chainmail_tunic	2	240	1
 ```
 
 **Explanation:**
@@ -71,13 +73,13 @@ merchant_armor,chainmail_tunic,2,240,1
 ### Food Merchant (Consumables)
 
 ```
-merchantId,itemId,stock,restockTime,restockAmount
-merchant_food,bread,-1,0,0
-merchant_food,water,-1,0,0
-merchant_food,rations,-1,0,0
-merchant_food,ale,-1,0,0
-merchant_food,health_potion,15,45,8
-merchant_food,stamina_potion,15,45,8
+merchantId	itemId	stock	restockTime	restockAmount
+merchant_food	bread	-1	0	0
+merchant_food	water	-1	0	0
+merchant_food	rations	-1	0	0
+merchant_food	ale	-1	0	0
+merchant_food	health_potion	15	45	8
+merchant_food	stamina_potion	15	45	8
 ```
 
 **Explanation:**

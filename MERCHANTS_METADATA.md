@@ -30,10 +30,10 @@ Defines merchant NPCs that buy and sell items in safe zones. Merchants have inve
 ### Starting Merchants
 
 ```
-id,name,zoneId,description,buyRate,sellRate
-merchant_general,General Merchant,qeynos,A general goods merchant who buys and sells various items,50,150
-merchant_armor,Armor Merchant,qeynos,A merchant specializing in weapons and armor,40,175
-merchant_food,Food Merchant,qeynos,A merchant selling food and drink,60,125
+id	name	zoneId	description	buyRate	sellRate
+merchant_general	General Merchant	qeynos	A general goods merchant who buys and sells various items	50	150
+merchant_armor	Armor Merchant	qeynos	A merchant specializing in weapons and armor	40	175
+merchant_food	Food Merchant	qeynos	A merchant selling food and drink	60	125
 ```
 
 ## Integration
@@ -46,11 +46,11 @@ Merchants are:
 
 ## Merchant Inventory
 
-Merchants can sell specific items defined in a separate `MerchantInventory` sheet (future enhancement) or can buy any item the player wants to sell.
+Merchants can sell specific items defined in the **MerchantInventory** sheet (see MERCHANT_INVENTORY_METADATA.md).
 
-For now, merchants will:
+Merchants:
 - **Buy**: Any item the player has in inventory
-- **Sell**: A curated list based on merchant type (to be implemented)
+- **Sell**: Items defined in the MerchantInventory sheet with stock management and restocking
 
 ---
 
