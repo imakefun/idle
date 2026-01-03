@@ -149,22 +149,35 @@ export const TRAINABLE_SKILLS = {
 /**
  * Calculate skill cap based on level
  */
-export function calculateSkillCap(level) {
-  return (level + 1) * 5;
+export function calculateSkillCap(level, settings = {}) {
+  const levelBonus = settings.skillCapLevelBonus || 1;
+  const multiplier = settings.skillCapLevelMultiplier || 5;
+  return (level + levelBonus) * multiplier;
 }
 
 /**
  * Calculate chance for skill-up based on current skill and level
  */
-export function calculateSkillUpChance(currentSkill, skillCap) {
+export function calculateSkillUpChance(currentSkill, skillCap, settings = {}) {
   // Higher skill = lower chance to skill up
   const percentOfCap = currentSkill / skillCap;
 
-  if (percentOfCap >= 0.95) return 0.01; // 1% at 95%+ of cap
-  if (percentOfCap >= 0.80) return 0.05; // 5% at 80-95% of cap
-  if (percentOfCap >= 0.60) return 0.15; // 15% at 60-80% of cap
-  if (percentOfCap >= 0.40) return 0.30; // 30% at 40-60% of cap
-  return 0.50; // 50% below 40% of cap
+  const threshold95 = settings.skillUp95PctThreshold || 0.95;
+  const threshold80 = settings.skillUp80PctThreshold || 0.80;
+  const threshold60 = settings.skillUp60PctThreshold || 0.60;
+  const threshold40 = settings.skillUp40PctThreshold || 0.40;
+
+  const chance95 = settings.skillUp95PctChance || 0.01;
+  const chance80 = settings.skillUp80PctChance || 0.05;
+  const chance60 = settings.skillUp60PctChance || 0.15;
+  const chance40 = settings.skillUp40PctChance || 0.30;
+  const chanceBasic = settings.skillUpBasicChance || 0.50;
+
+  if (percentOfCap >= threshold95) return chance95;
+  if (percentOfCap >= threshold80) return chance80;
+  if (percentOfCap >= threshold60) return chance60;
+  if (percentOfCap >= threshold40) return chance40;
+  return chanceBasic;
 }
 
 /**

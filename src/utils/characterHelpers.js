@@ -71,7 +71,7 @@ export function createCharacter(characterInfo, gameData) {
 
   // Initialize skills based on class
   const startingSkills = CLASS_STARTING_SKILLS[characterClass.id] || [];
-  const skills = initializeSkills(characterClass.id, startingSkills);
+  const skills = initializeSkills(characterClass.id, startingSkills, gameData.settings);
 
   // Create full character state
   return {

@@ -147,7 +147,7 @@ function App() {
 
           // Update skill caps
           if (prev.skills) {
-            updates.skills = updateSkillCaps(updates.skills || prev.skills, newLevel);
+            updates.skills = updateSkillCaps(updates.skills || prev.skills, newLevel, gameData?.settings);
           }
 
           // Recalculate max HP and stamina

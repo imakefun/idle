@@ -11,14 +11,18 @@ import { getWeaponSkill } from '../data/skills';
  * @param {number} attackerSkill - Attacker's weapon skill
  * @param {number} attackerLevel - Attacker's level
  * @param {number} defenderLevel - Defender's level
+ * @param {Object} settings - Game settings object
  * @returns {boolean} - True if hit, false if miss
  */
-export function calculateHit(attackerSkill = 0, attackerLevel, defenderLevel) {
-  const baseChance = 50;
-  const skillBonus = (attackerSkill - defenderLevel * 5) * 2;
-  const levelPenalty = (defenderLevel - attackerLevel) * 5;
+export function calculateHit(attackerSkill = 0, attackerLevel, defenderLevel, settings = {}) {
+  const baseChance = settings.hitBaseChance || 50;
+  const skillBonus = (attackerSkill - defenderLevel * (settings.hitDefenderSkillMultiplier || 5)) * (settings.hitSkillBonusMultiplier || 2);
+  const levelPenalty = (defenderLevel - attackerLevel) * (settings.hitLevelPenaltyMultiplier || 5);
 
-  const hitChance = Math.max(5, Math.min(95, baseChance + skillBonus - levelPenalty));
+  const hitChance = Math.max(
+    settings.hitMinChance || 5,
+    Math.min(settings.hitMaxChance || 95, baseChance + skillBonus - levelPenalty)
+  );
 
   return Math.random() * 100 < hitChance;
 }
@@ -28,9 +32,10 @@ export function calculateHit(attackerSkill = 0, attackerLevel, defenderLevel) {
  * @param {number} weaponMin - Weapon minimum damage
  * @param {number} weaponMax - Weapon maximum damage
  * @param {number} strength - Attacker's strength stat
+ * @param {Object} settings - Game settings object
  * @returns {number} - Damage dealt
  */
-export function calculateDamage(weaponMin, weaponMax, strength = 0) {
+export function calculateDamage(weaponMin, weaponMax, strength = 0, settings = {}) {
   // Ensure all values are numbers
   const min = parseInt(weaponMin) || 1;
   const max = parseInt(weaponMax) || 3;
@@ -40,10 +45,12 @@ export function calculateDamage(weaponMin, weaponMax, strength = 0) {
   const weaponDamage = Math.floor(Math.random() * (max - min + 1)) + min;
 
   // Strength bonus
-  const strBonus = Math.floor(str / 10);
+  const strBonus = Math.floor(str / (settings.damageStrengthDivisor || 10));
 
-  // Random 1d4
-  const randomBonus = Math.floor(Math.random() * 4) + 1;
+  // Random bonus
+  const bonusMin = settings.damageRandomBonusMin || 1;
+  const bonusMax = settings.damageRandomBonusMax || 4;
+  const randomBonus = Math.floor(Math.random() * (bonusMax - bonusMin + 1)) + bonusMin;
 
   return Math.max(1, weaponDamage + strBonus + randomBonus);
 }
@@ -53,15 +60,18 @@ export function calculateDamage(weaponMin, weaponMax, strength = 0) {
  * @param {number} damage - Base damage
  * @param {number} ac - Armor class
  * @param {number} attackerLevel - Attacker's level
+ * @param {Object} settings - Game settings object
  * @returns {number} - Mitigated damage
  */
-export function applyACMitigation(damage, ac, attackerLevel) {
+export function applyACMitigation(damage, ac, attackerLevel, settings = {}) {
   // Ensure all values are numbers
   const baseDamage = parseInt(damage) || 1;
   const armorClass = parseInt(ac) || 0;
   const level = parseInt(attackerLevel) || 1;
 
-  const mitigation = armorClass / (armorClass + 50 + level * 2);
+  const baseConstant = settings.acBaseConstant || 50;
+  const levelMultiplier = settings.acLevelMultiplier || 2;
+  const mitigation = armorClass / (armorClass + baseConstant + level * levelMultiplier);
   const mitigatedDamage = Math.floor(baseDamage * (1 - mitigation));
 
   return Math.max(1, mitigatedDamage);
@@ -72,19 +82,20 @@ export function applyACMitigation(damage, ac, attackerLevel) {
  * @param {number} baseXP - Base XP reward
  * @param {number} playerLevel - Player's level
  * @param {number} monsterLevel - Monster's level
+ * @param {Object} settings - Game settings object
  * @returns {number} - Actual XP reward
  */
-export function calculateXPReward(baseXP, playerLevel, monsterLevel) {
+export function calculateXPReward(baseXP, playerLevel, monsterLevel, settings = {}) {
   const levelDiff = playerLevel - monsterLevel;
 
-  // Green con: 5+ levels below player = 0 XP
-  if (levelDiff >= 5) {
+  // Green con threshold: trivial = 0 XP
+  if (levelDiff >= (settings.xpGreenConThreshold || 5)) {
     return 0;
   }
 
-  // Reduced XP for lower level mobs (3-4 levels below)
-  if (levelDiff >= 3) {
-    return Math.floor(baseXP * 0.25);
+  // Reduced XP for lower level mobs
+  if (levelDiff >= (settings.xpReducedThreshold || 3)) {
+    return Math.floor(baseXP * (settings.xpReducedMultiplier || 0.25));
   }
 
   return baseXP;
@@ -94,15 +105,16 @@ export function calculateXPReward(baseXP, playerLevel, monsterLevel) {
  * Get con color based on level difference
  * @param {number} playerLevel - Player's level
  * @param {number} monsterLevel - Monster's level
+ * @param {Object} settings - Game settings object
  * @returns {string} - Con color
  */
-export function getConColor(playerLevel, monsterLevel) {
+export function getConColor(playerLevel, monsterLevel, settings = {}) {
   const diff = playerLevel - monsterLevel;
 
-  if (diff >= 5) return 'green';      // Trivial
-  if (diff >= 3) return 'lightblue';  // Easy
-  if (diff >= -2) return 'white';     // Fair match
-  if (diff >= -4) return 'yellow';    // Tough
+  if (diff >= (settings.conGreenThreshold || 5)) return 'green';      // Trivial
+  if (diff >= (settings.conLightBlueThreshold || 3)) return 'lightblue';  // Easy
+  if (diff >= (settings.conWhiteThreshold || -2)) return 'white';     // Fair match
+  if (diff >= (settings.conYellowThreshold || -4)) return 'yellow';    // Tough
   return 'red';                        // Very dangerous
 }
 
@@ -110,15 +122,16 @@ export function getConColor(playerLevel, monsterLevel) {
  * Get con description
  * @param {number} playerLevel - Player's level
  * @param {number} monsterLevel - Monster's level
+ * @param {Object} settings - Game settings object
  * @returns {string} - Con description
  */
-export function getConDescription(playerLevel, monsterLevel) {
+export function getConDescription(playerLevel, monsterLevel, settings = {}) {
   const diff = playerLevel - monsterLevel;
 
-  if (diff >= 5) return 'trivial';
-  if (diff >= 3) return 'easy';
-  if (diff >= -2) return 'fair';
-  if (diff >= -4) return 'tough';
+  if (diff >= (settings.conGreenThreshold || 5)) return 'trivial';
+  if (diff >= (settings.conLightBlueThreshold || 3)) return 'easy';
+  if (diff >= (settings.conWhiteThreshold || -2)) return 'fair';
+  if (diff >= (settings.conYellowThreshold || -4)) return 'tough';
   return 'very dangerous';
 }
 
@@ -214,6 +227,7 @@ export function processCombatRound(player, monster, gameData) {
   const logs = [];
   const updates = {};
   const skillUps = [];
+  const settings = gameData?.settings || {};
 
   // Player attack - safely parse weapon damage
   const playerWeapon = player.equipped?.primary;
@@ -241,10 +255,10 @@ export function processCombatRound(player, monster, gameData) {
   const offenseSkill = player.skills?.offense?.current || 0;
   const combinedSkill = Math.floor((weaponSkill + offenseSkill) / 2);
 
-  const playerHits = calculateHit(combinedSkill, playerLevel, monster.level);
+  const playerHits = calculateHit(combinedSkill, playerLevel, monster.level, settings);
 
   if (playerHits) {
-    let damage = calculateDamage(weaponMin, weaponMax, playerSTR);
+    let damage = calculateDamage(weaponMin, weaponMax, playerSTR, settings);
     let abilityUsed = null;
 
     // Check for active ability procs
@@ -253,7 +267,7 @@ export function processCombatRound(player, monster, gameData) {
       if (player.skills?.[abilityId] && !abilityUsed) {
         // Check requirements (shield for bash, piercing weapon for backstab, etc.)
         if (checkAbilityRequirements(abilityId, player.equipped, skillDefs)) {
-          const abilityResult = checkAbilityProc(abilityId, player.skills[abilityId].current, player.stamina, skillDefs);
+          const abilityResult = checkAbilityProc(abilityId, player.skills[abilityId].current, player.stamina, skillDefs, settings);
 
           if (abilityResult.success) {
             abilityUsed = abilityId;
@@ -265,7 +279,7 @@ export function processCombatRound(player, monster, gameData) {
 
             // Add ability damage (except doubleAttack which just attacks twice)
             if (abilityId !== 'doubleAttack') {
-              const abilityDamage = calculateAbilityDamage(abilityId, damage, player.skills[abilityId].current, skillDefs);
+              const abilityDamage = calculateAbilityDamage(abilityId, damage, player.skills[abilityId].current, skillDefs, settings);
               damage += abilityDamage;
 
               logs.push({
@@ -281,7 +295,7 @@ export function processCombatRound(player, monster, gameData) {
       }
     }
 
-    const finalDamage = applyACMitigation(damage, monster.ac, playerLevel);
+    const finalDamage = applyACMitigation(damage, monster.ac, playerLevel, settings);
     monster.currentHp -= finalDamage;
 
     logs.push({
@@ -296,7 +310,8 @@ export function processCombatRound(player, monster, gameData) {
         weaponSkillId,
         player.skills[weaponSkillId].current,
         player.skills[weaponSkillId].max,
-        skillDefs
+        skillDefs,
+        settings
       );
 
       if (skillUpResult.success) {
@@ -315,7 +330,8 @@ export function processCombatRound(player, monster, gameData) {
         'offense',
         player.skills.offense.current,
         player.skills.offense.max,
-        skillDefs
+        skillDefs,
+        settings
       );
 
       if (offenseUpResult.success) {
@@ -336,10 +352,10 @@ export function processCombatRound(player, monster, gameData) {
         message: `You execute a double attack!`
       });
 
-      const secondHit = calculateHit(combinedSkill, playerLevel, monster.level);
+      const secondHit = calculateHit(combinedSkill, playerLevel, monster.level, settings);
       if (secondHit) {
-        const secondDamage = calculateDamage(weaponMin, weaponMax, playerSTR);
-        const secondFinalDamage = applyACMitigation(secondDamage, monster.ac, playerLevel);
+        const secondDamage = calculateDamage(weaponMin, weaponMax, playerSTR, settings);
+        const secondFinalDamage = applyACMitigation(secondDamage, monster.ac, playerLevel, settings);
         monster.currentHp -= secondFinalDamage;
 
         logs.push({
@@ -365,7 +381,7 @@ export function processCombatRound(player, monster, gameData) {
 
   // Check if monster died
   if (monster.currentHp <= 0) {
-    const xpGained = calculateXPReward(monster.xpReward, playerLevel, monster.level);
+    const xpGained = calculateXPReward(monster.xpReward, playerLevel, monster.level, settings);
 
     logs.push({
       type: 'death',
@@ -397,7 +413,7 @@ export function processCombatRound(player, monster, gameData) {
 
   // Monster counter-attack - check for dodge first
   const dodgeSkill = player.skills?.dodge?.current || 0;
-  const dodgeChance = calculateDodgeChance(dodgeSkill);
+  const dodgeChance = calculateDodgeChance(dodgeSkill, settings);
   const dodgeRoll = Math.random();
 
   if (dodgeRoll < dodgeChance) {
@@ -413,7 +429,8 @@ export function processCombatRound(player, monster, gameData) {
         'dodge',
         player.skills.dodge.current,
         player.skills.dodge.max,
-        skillDefs
+        skillDefs,
+        settings
       );
 
       if (dodgeUpResult.success) {
@@ -435,11 +452,11 @@ export function processCombatRound(player, monster, gameData) {
   const monsterLevel = parseInt(monster.level) || 1;
 
   const defenseSkill = player.skills?.defense?.current || 0;
-  const monsterHits = !calculateHit(defenseSkill, playerLevel, monsterLevel);
+  const monsterHits = !calculateHit(defenseSkill, playerLevel, monsterLevel, settings);
 
   if (monsterHits) {
-    const damage = calculateDamage(monsterMinDmg, monsterMaxDmg, 0);
-    const finalDamage = applyACMitigation(damage, playerAC, monsterLevel);
+    const damage = calculateDamage(monsterMinDmg, monsterMaxDmg, 0, settings);
+    const finalDamage = applyACMitigation(damage, playerAC, monsterLevel, settings);
 
     updates.hp = Math.max(0, player.hp - finalDamage);
 
@@ -455,7 +472,8 @@ export function processCombatRound(player, monster, gameData) {
         'defense',
         player.skills.defense.current,
         player.skills.defense.max,
-        skillDefs
+        skillDefs,
+        settings
       );
 
       if (defenseUpResult.success) {
