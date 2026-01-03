@@ -10,7 +10,7 @@ const CACHE_KEY = 'norrathIdleGameData_v1';
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 // List of all sheets to fetch
-const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps', 'Skills', 'Spawns', 'Settings'];
+const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps', 'Skills', 'Spawns', 'Settings', 'LootTables'];
 
 /**
  * Load game data with caching and fallback support
@@ -59,6 +59,11 @@ export async function loadGameData() {
       rawData.Settings = fallbackData.Settings || [];
     }
 
+    if (rawData.LootTables === null || rawData.LootTables === undefined) {
+      console.log('📋 LootTables sheet not found, using fallback loot tables data');
+      rawData.LootTables = fallbackData.LootTables || [];
+    }
+
     // Transform the data
     const transformedData = transformGameData(rawData);
 
@@ -93,7 +98,8 @@ function transformGameData(rawData) {
     camps: transformCamps(rawData.Camps || []),
     skills: transformSkills(rawData.Skills || []),
     spawns: transformSpawns(rawData.Spawns || []),
-    settings: transformSettings(rawData.Settings || [])
+    settings: transformSettings(rawData.Settings || []),
+    lootTables: transformLootTables(rawData.LootTables || [])
   };
 }
 
@@ -342,6 +348,52 @@ function transformSettings(rows) {
     settings[row.settingId] = isNaN(value) ? row.value : value;
   });
   return settings;
+}
+
+/**
+ * Transform LootTables sheet data
+ */
+function transformLootTables(rows) {
+  const lootTables = {};
+
+  rows.forEach(row => {
+    if (!row.monsterId) return; // Skip invalid rows
+
+    // Initialize loot table for this monster if not exists
+    if (!lootTables[row.monsterId]) {
+      lootTables[row.monsterId] = {
+        currency: {
+          min: parseInt(row.currencyMin) || 0,
+          max: parseInt(row.currencyMax) || 0
+        },
+        items: []
+      };
+    }
+
+    // Add item to loot table if itemId exists
+    if (row.itemId) {
+      lootTables[row.monsterId].items.push({
+        itemId: row.itemId,
+        chance: parseFloat(row.dropChance) || 0,
+        quantity: {
+          min: parseInt(row.minQty) || 1,
+          max: parseInt(row.maxQty) || 1
+        }
+      });
+    }
+
+    // Update currency if this row has higher values
+    const currencyMin = parseInt(row.currencyMin) || 0;
+    const currencyMax = parseInt(row.currencyMax) || 0;
+    if (currencyMin > lootTables[row.monsterId].currency.min) {
+      lootTables[row.monsterId].currency.min = currencyMin;
+    }
+    if (currencyMax > lootTables[row.monsterId].currency.max) {
+      lootTables[row.monsterId].currency.max = currencyMax;
+    }
+  });
+
+  return lootTables;
 }
 
 /**

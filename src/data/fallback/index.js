@@ -767,6 +767,248 @@ export const fallbackData = {
       WIS: '0',
       INT: '0',
       CHA: '0'
+    },
+
+    // Junk/Crafting Materials from monsters
+    {
+      id: 'rat_ear',
+      name: 'Rat Ear',
+      type: 'junk',
+      stackable: 'TRUE',
+      maxStack: '20',
+      value: '1',
+      damage: '0',
+      delay: '0',
+      ac: '0',
+      slot: 'none',
+      foodValue: '0',
+      waterValue: '0',
+      icon: '👂',
+      weaponType: '',
+      handedness: '',
+      shieldType: '',
+      armorType: '',
+      classes: '',
+      races: '',
+      ammoType: '',
+      requiredAmmo: '',
+      STR: '0',
+      STA: '0',
+      AGI: '0',
+      DEX: '0',
+      WIS: '0',
+      INT: '0',
+      CHA: '0'
+    },
+    {
+      id: 'snake_fang',
+      name: 'Snake Fang',
+      type: 'junk',
+      stackable: 'TRUE',
+      maxStack: '20',
+      value: '2',
+      damage: '0',
+      delay: '0',
+      ac: '0',
+      slot: 'none',
+      foodValue: '0',
+      waterValue: '0',
+      icon: '🦷',
+      weaponType: '',
+      handedness: '',
+      shieldType: '',
+      armorType: '',
+      classes: '',
+      races: '',
+      ammoType: '',
+      requiredAmmo: '',
+      STR: '0',
+      STA: '0',
+      AGI: '0',
+      DEX: '0',
+      WIS: '0',
+      INT: '0',
+      CHA: '0'
+    },
+    {
+      id: 'gnoll_fang',
+      name: 'Gnoll Fang',
+      type: 'junk',
+      stackable: 'TRUE',
+      maxStack: '20',
+      value: '3',
+      damage: '0',
+      delay: '0',
+      ac: '0',
+      slot: 'none',
+      foodValue: '0',
+      waterValue: '0',
+      icon: '🦷',
+      weaponType: '',
+      handedness: '',
+      shieldType: '',
+      armorType: '',
+      classes: '',
+      races: '',
+      ammoType: '',
+      requiredAmmo: '',
+      STR: '0',
+      STA: '0',
+      AGI: '0',
+      DEX: '0',
+      WIS: '0',
+      INT: '0',
+      CHA: '0'
+    },
+    {
+      id: 'bone_chips',
+      name: 'Bone Chips',
+      type: 'junk',
+      stackable: 'TRUE',
+      maxStack: '20',
+      value: '1',
+      damage: '0',
+      delay: '0',
+      ac: '0',
+      slot: 'none',
+      foodValue: '0',
+      waterValue: '0',
+      icon: '🦴',
+      weaponType: '',
+      handedness: '',
+      shieldType: '',
+      armorType: '',
+      classes: '',
+      races: '',
+      ammoType: '',
+      requiredAmmo: '',
+      STR: '0',
+      STA: '0',
+      AGI: '0',
+      DEX: '0',
+      WIS: '0',
+      INT: '0',
+      CHA: '0'
+    },
+    {
+      id: 'spider_silk',
+      name: 'Spider Silk',
+      type: 'junk',
+      stackable: 'TRUE',
+      maxStack: '20',
+      value: '5',
+      damage: '0',
+      delay: '0',
+      ac: '0',
+      slot: 'none',
+      foodValue: '0',
+      waterValue: '0',
+      icon: '🕸️',
+      weaponType: '',
+      handedness: '',
+      shieldType: '',
+      armorType: '',
+      classes: '',
+      races: '',
+      ammoType: '',
+      requiredAmmo: '',
+      STR: '0',
+      STA: '0',
+      AGI: '0',
+      DEX: '0',
+      WIS: '0',
+      INT: '0',
+      CHA: '0'
+    },
+    {
+      id: 'wolf_pelt',
+      name: 'Wolf Pelt',
+      type: 'junk',
+      stackable: 'TRUE',
+      maxStack: '20',
+      value: '10',
+      damage: '0',
+      delay: '0',
+      ac: '0',
+      slot: 'none',
+      foodValue: '0',
+      waterValue: '0',
+      icon: '🐺',
+      weaponType: '',
+      handedness: '',
+      shieldType: '',
+      armorType: '',
+      classes: '',
+      races: '',
+      ammoType: '',
+      requiredAmmo: '',
+      STR: '0',
+      STA: '0',
+      AGI: '0',
+      DEX: '0',
+      WIS: '0',
+      INT: '0',
+      CHA: '0'
+    },
+    {
+      id: 'tattered_pelt',
+      name: 'Tattered Pelt',
+      type: 'junk',
+      stackable: 'TRUE',
+      maxStack: '20',
+      value: '3',
+      damage: '0',
+      delay: '0',
+      ac: '0',
+      slot: 'none',
+      foodValue: '0',
+      waterValue: '0',
+      icon: '🦊',
+      weaponType: '',
+      handedness: '',
+      shieldType: '',
+      armorType: '',
+      classes: '',
+      races: '',
+      ammoType: '',
+      requiredAmmo: '',
+      STR: '0',
+      STA: '0',
+      AGI: '0',
+      DEX: '0',
+      WIS: '0',
+      INT: '0',
+      CHA: '0'
+    },
+    {
+      id: 'beetle_carapace',
+      name: 'Beetle Carapace',
+      type: 'junk',
+      stackable: 'TRUE',
+      maxStack: '20',
+      value: '4',
+      damage: '0',
+      delay: '0',
+      ac: '0',
+      slot: 'none',
+      foodValue: '0',
+      waterValue: '0',
+      icon: '🪲',
+      weaponType: '',
+      handedness: '',
+      shieldType: '',
+      armorType: '',
+      classes: '',
+      races: '',
+      ammoType: '',
+      requiredAmmo: '',
+      STR: '0',
+      STA: '0',
+      AGI: '0',
+      DEX: '0',
+      WIS: '0',
+      INT: '0',
+      CHA: '0'
     }
   ],
 
@@ -1146,5 +1388,82 @@ export const fallbackData = {
     { category: 'skill', settingId: 'dodgeBaseChance', value: '0.05', description: 'Base dodge chance (5%)' },
     { category: 'skill', settingId: 'dodgeSkillDivisor', value: '500', description: 'Divisor for dodge skill bonus' },
     { category: 'skill', settingId: 'dodgeMaxSkillBonus', value: '0.20', description: 'Maximum skill bonus to dodge (20%)' }
+  ],
+
+  LootTables: [
+    // Giant Rat (level 1)
+    { monsterId: 'giant_rat', itemId: 'rat_ear', dropChance: '30', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '3' },
+    { monsterId: 'giant_rat', itemId: 'rusty_dagger', dropChance: '2', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' },
+
+    // Snake (level 2)
+    { monsterId: 'snake', itemId: 'snake_fang', dropChance: '25', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '4' },
+
+    // Fire Beetle (level 2)
+    { monsterId: 'fire_beetle', itemId: 'beetle_carapace', dropChance: '20', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '4' },
+
+    // Gnoll Pup (level 3)
+    { monsterId: 'gnoll_pup', itemId: 'gnoll_fang', dropChance: '20', minQty: '1', maxQty: '1', currencyMin: '1', currencyMax: '5' },
+    { monsterId: 'gnoll_pup', itemId: 'tattered_pelt', dropChance: '10', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' },
+
+    // Decaying Skeleton (level 4)
+    { monsterId: 'decaying_skeleton', itemId: 'bone_chips', dropChance: '40', minQty: '1', maxQty: '2', currencyMin: '1', currencyMax: '6' },
+    { monsterId: 'decaying_skeleton', itemId: 'rusty_dagger', dropChance: '3', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' },
+
+    // Young Spider (level 3)
+    { monsterId: 'young_spider', itemId: 'spider_silk', dropChance: '30', minQty: '1', maxQty: '1', currencyMin: '1', currencyMax: '5' },
+
+    // Gnoll Scout (level 5)
+    { monsterId: 'gnoll_scout', itemId: 'gnoll_fang', dropChance: '25', minQty: '1', maxQty: '1', currencyMin: '2', currencyMax: '8' },
+    { monsterId: 'gnoll_scout', itemId: 'tattered_pelt', dropChance: '15', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' },
+
+    // Dark Wolf (level 5)
+    { monsterId: 'dark_wolf', itemId: 'wolf_pelt', dropChance: '35', minQty: '1', maxQty: '1', currencyMin: '2', currencyMax: '8' },
+    { monsterId: 'dark_wolf', itemId: 'wolf_fang', dropChance: '20', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' },
+
+    // Gnoll Guard (level 6)
+    { monsterId: 'gnoll_guard', itemId: 'gnoll_fang', dropChance: '30', minQty: '1', maxQty: '2', currencyMin: '3', currencyMax: '10' },
+
+    // Skeletal Warrior (level 7)
+    { monsterId: 'skeletal_warrior', itemId: 'bone_chips', dropChance: '45', minQty: '2', maxQty: '3', currencyMin: '3', currencyMax: '12' },
+
+    // Gnoll Warrior (level 7)
+    { monsterId: 'gnoll_warrior', itemId: 'gnoll_fang', dropChance: '35', minQty: '1', maxQty: '2', currencyMin: '4', currencyMax: '15' },
+
+    // Gnoll Shaman (level 8)
+    { monsterId: 'gnoll_shaman', itemId: 'gnoll_fang', dropChance: '25', minQty: '1', maxQty: '1', currencyMin: '5', currencyMax: '18' },
+
+    // Bandit Thug (level 8)
+    { monsterId: 'bandit_thug', itemId: 'copper_ring', dropChance: '15', minQty: '1', maxQty: '1', currencyMin: '4', currencyMax: '16' },
+
+    // Guard Dog (level 8)
+    { monsterId: 'guard_dog', itemId: 'dog_collar', dropChance: '20', minQty: '1', maxQty: '1', currencyMin: '3', currencyMax: '12' },
+    { monsterId: 'guard_dog', itemId: 'rawhide_strip', dropChance: '25', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' },
+
+    // Bandit Guard (level 9)
+    { monsterId: 'bandit_guard', itemId: 'bronze_dagger', dropChance: '5', minQty: '1', maxQty: '1', currencyMin: '6', currencyMax: '20' },
+    { monsterId: 'bandit_guard', itemId: 'rations', dropChance: '30', minQty: '1', maxQty: '2', currencyMin: '0', currencyMax: '0' },
+
+    // Bandit Archer (level 10)
+    { monsterId: 'bandit_archer', itemId: 'arrows', dropChance: '40', minQty: '5', maxQty: '10', currencyMin: '7', currencyMax: '25' },
+
+    // Bandit Veteran (level 11)
+    { monsterId: 'bandit_veteran', itemId: 'silver_ring', dropChance: '6', minQty: '1', maxQty: '1', currencyMin: '10', currencyMax: '30' },
+
+    // Bandit Mage (level 11)
+    { monsterId: 'bandit_mage', itemId: 'spell_scroll', dropChance: '8', minQty: '1', maxQty: '1', currencyMin: '10', currencyMax: '35' },
+
+    // Bandit Captain (level 12)
+    { monsterId: 'bandit_captain', itemId: 'captain_insignia', dropChance: '12', minQty: '1', maxQty: '1', currencyMin: '15', currencyMax: '40' },
+
+    // Elite Bandit (level 13)
+    { monsterId: 'elite_bandit', itemId: 'gold_ring', dropChance: '8', minQty: '1', maxQty: '1', currencyMin: '20', currencyMax: '50' },
+
+    // Bandit Champion (level 14)
+    { monsterId: 'bandit_champion', itemId: 'gem_ruby', dropChance: '5', minQty: '1', maxQty: '1', currencyMin: '30', currencyMax: '60' },
+
+    // Bandit Lord (level 15 - rare boss)
+    { monsterId: 'bandit_lord', itemId: 'lords_greatsword', dropChance: '15', minQty: '1', maxQty: '1', currencyMin: '50', currencyMax: '100' },
+    { monsterId: 'bandit_lord', itemId: 'lords_crown', dropChance: '10', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' },
+    { monsterId: 'bandit_lord', itemId: 'gem_diamond', dropChance: '20', minQty: '1', maxQty: '1', currencyMin: '0', currencyMax: '0' }
   ]
 };
