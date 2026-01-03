@@ -180,7 +180,8 @@ function transformMonsters(rows) {
       },
       ac: parseInt(row.ac) || 0,
       xpReward: parseInt(row.xpReward) || 5,
-      isRare: row.isRare === 'TRUE' || row.isRare === true
+      isRare: row.isRare === 'TRUE' || row.isRare === true,
+      lootTableId: row.lootTableId || row.id // Include loot table reference
     };
   });
   return monsters;
