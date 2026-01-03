@@ -10,7 +10,9 @@ import Zones from './components/Zones/Zones'
 import Combat from './components/Combat/Combat'
 import Skills from './components/Skills/Skills'
 import GuildMaster from './components/Skills/GuildMaster'
+import Merchant from './components/Merchant/Merchant'
 import { createCharacter, consumeItem, equipItem, removeItemFromInventory, addItemToInventory } from './utils/characterHelpers'
+import { sellItemToMerchant, buyItemFromMerchant } from './systems/MerchantSystem'
 import { calculateXPForLevel, calculateDrainRate, formatCurrency, calculateAC, calculateHPRegen, calculateMaxHP, calculateMaxStamina } from './utils/calculations'
 import { clearCache } from './systems/DataSync'
 import { selectRandomMonster, selectMonsterFromSpawnTable, processCombatRound } from './systems/CombatEngine'
@@ -344,6 +346,54 @@ function App() {
   };
 
   // Skill training handler
+  const handleSellItem = useCallback((inventorySlotIndex, quantity, merchant) => {
+    const player = {
+      inventory: gameState.inventory,
+      currency: gameState.currency
+    };
+
+    const result = sellItemToMerchant(player, inventorySlotIndex, quantity, merchant);
+
+    if (result.success) {
+      setGameState(prev => ({
+        ...prev,
+        ...result.updates
+      }));
+
+      addCombatLog({
+        type: 'loot',
+        color: '#90EE90',
+        message: result.message
+      });
+    }
+
+    return result;
+  }, [gameState.inventory, gameState.currency]);
+
+  const handleBuyItem = useCallback((item, quantity, merchant) => {
+    const player = {
+      inventory: gameState.inventory,
+      currency: gameState.currency
+    };
+
+    const result = buyItemFromMerchant(player, item, quantity, merchant);
+
+    if (result.success) {
+      setGameState(prev => ({
+        ...prev,
+        ...result.updates
+      }));
+
+      addCombatLog({
+        type: 'loot',
+        color: '#90EE90',
+        message: result.message
+      });
+    }
+
+    return result;
+  }, [gameState.inventory, gameState.currency]);
+
   const handleTrainSkill = (skill) => {
     setGameState(prev => {
       // Deduct currency
@@ -719,6 +769,18 @@ function App() {
                     playerCurrency={gameState.currency}
                     playerSkills={gameState.skills}
                     onTrainSkill={handleTrainSkill}
+                  />
+                )}
+
+                {/* Merchants (only show in safe zones) */}
+                {gameData?.zones?.[gameState.currentZone]?.isSafe && (
+                  <Merchant
+                    gameData={gameData}
+                    currentZone={gameState.currentZone}
+                    playerCurrency={gameState.currency}
+                    playerInventory={gameState.inventory}
+                    onSellItem={handleSellItem}
+                    onBuyItem={handleBuyItem}
                   />
                 )}
 

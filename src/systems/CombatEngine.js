@@ -5,6 +5,7 @@
 
 import { attemptSkillUp, checkAbilityProc, calculateAbilityDamage, checkAbilityRequirements, calculateDodgeChance } from './SkillSystem';
 import { getWeaponSkill } from '../data/skills';
+import { generateLoot, addLootToInventory, formatLootMessages } from './LootSystem';
 
 /**
  * Calculate if an attack hits
@@ -402,6 +403,42 @@ export function processCombatRound(player, monster, gameData) {
         type: 'system',
         color: '#888888',
         message: `This monster is too trivial to grant experience.`
+      });
+    }
+
+    // Generate loot
+    const lootTables = gameData?.lootTables || {};
+    const items = gameData?.items || {};
+    const lootTableId = monster.lootTableId || monster.id; // Fallback to monster.id for backwards compatibility
+    const generatedLoot = generateLoot(lootTableId, lootTables, items);
+
+    // Add currency to player
+    if (generatedLoot.currency > 0) {
+      updates.currency = player.currency + generatedLoot.currency;
+    }
+
+    // Add items to inventory
+    if (generatedLoot.items.length > 0) {
+      const inventory = [...player.inventory]; // Clone inventory
+      const lootResult = addLootToInventory(inventory, generatedLoot.items);
+      updates.inventory = inventory;
+
+      // Add loot messages to log
+      const lootMessages = formatLootMessages(generatedLoot, lootResult);
+      lootMessages.forEach(msg => logs.push(msg));
+    } else if (generatedLoot.currency === 0) {
+      // No loot at all
+      logs.push({
+        type: 'loot',
+        color: '#888888',
+        message: `No loot.`
+      });
+    } else {
+      // Only currency, no items - message already added by currency check
+      logs.push({
+        type: 'loot',
+        color: '#ffff44',
+        message: `You loot ${generatedLoot.currency} copper.`
       });
     }
 

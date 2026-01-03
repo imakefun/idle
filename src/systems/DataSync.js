@@ -10,7 +10,7 @@ const CACHE_KEY = 'norrathIdleGameData_v1';
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 // List of all sheets to fetch
-const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps', 'Skills', 'Spawns', 'Settings'];
+const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps', 'Skills', 'Spawns', 'Settings', 'LootTables', 'Merchants', 'MerchantInventory'];
 
 /**
  * Load game data with caching and fallback support
@@ -59,6 +59,21 @@ export async function loadGameData() {
       rawData.Settings = fallbackData.Settings || [];
     }
 
+    if (rawData.LootTables === null || rawData.LootTables === undefined) {
+      console.log('📋 LootTables sheet not found, using fallback loot tables data');
+      rawData.LootTables = fallbackData.LootTables || [];
+    }
+
+    if (rawData.Merchants === null || rawData.Merchants === undefined) {
+      console.log('📋 Merchants sheet not found, using fallback merchants data');
+      rawData.Merchants = fallbackData.Merchants || [];
+    }
+
+    if (rawData.MerchantInventory === null || rawData.MerchantInventory === undefined) {
+      console.log('📋 MerchantInventory sheet not found, using fallback merchant inventory data');
+      rawData.MerchantInventory = fallbackData.MerchantInventory || [];
+    }
+
     // Transform the data
     const transformedData = transformGameData(rawData);
 
@@ -93,7 +108,10 @@ function transformGameData(rawData) {
     camps: transformCamps(rawData.Camps || []),
     skills: transformSkills(rawData.Skills || []),
     spawns: transformSpawns(rawData.Spawns || []),
-    settings: transformSettings(rawData.Settings || [])
+    settings: transformSettings(rawData.Settings || []),
+    lootTables: transformLootTables(rawData.LootTables || []),
+    merchants: transformMerchants(rawData.Merchants || []),
+    merchantInventory: transformMerchantInventory(rawData.MerchantInventory || [], rawData.Items || [])
   };
 }
 
@@ -342,6 +360,90 @@ function transformSettings(rows) {
     settings[row.settingId] = isNaN(value) ? row.value : value;
   });
   return settings;
+}
+
+/**
+ * Transform LootTables sheet data
+ * New structure: id, group, item, min, max, step, weight
+ */
+function transformLootTables(rows) {
+  const lootTables = {};
+
+  rows.forEach(row => {
+    if (!row.id) return; // Skip invalid rows
+
+    // Initialize loot table array if not exists
+    if (!lootTables[row.id]) {
+      lootTables[row.id] = [];
+    }
+
+    // Add entry to loot table
+    lootTables[row.id].push({
+      group: parseInt(row.group) || 1,
+      item: row.item || '',
+      min: parseInt(row.min) || 0,
+      max: parseInt(row.max) || 0,
+      step: parseInt(row.step) || 1,
+      weight: parseFloat(row.weight) || 0
+    });
+  });
+
+  return lootTables;
+}
+
+/**
+ * Transform Merchants sheet data
+ */
+function transformMerchants(rows) {
+  const merchants = {};
+  rows.forEach(row => {
+    if (!row.id) return; // Skip invalid rows
+
+    merchants[row.id] = {
+      id: row.id,
+      name: row.name,
+      zoneId: row.zoneId || '',
+      description: row.description || '',
+      buyRate: parseFloat(row.buyRate) || 50,
+      sellRate: parseFloat(row.sellRate) || 150
+    };
+  });
+  return merchants;
+}
+
+/**
+ * Transform MerchantInventory sheet data
+ */
+function transformMerchantInventory(rows, itemRows) {
+  const merchantInventory = {};
+  const items = transformItems(itemRows); // Transform items to get full definitions
+
+  rows.forEach(row => {
+    if (!row.merchantId || !row.itemId) return; // Skip invalid rows
+
+    // Initialize merchant inventory array if not exists
+    if (!merchantInventory[row.merchantId]) {
+      merchantInventory[row.merchantId] = [];
+    }
+
+    // Get item definition
+    const itemDef = items[row.itemId];
+    if (!itemDef) {
+      console.warn(`Item not found for merchant inventory: ${row.itemId}`);
+      return;
+    }
+
+    // Add inventory entry
+    merchantInventory[row.merchantId].push({
+      item: itemDef,
+      stock: parseInt(row.stock) || -1,
+      restockTime: parseInt(row.restockTime) || 0,
+      restockAmount: parseInt(row.restockAmount) || 0,
+      lastRestock: Date.now() // Initialize with current time
+    });
+  });
+
+  return merchantInventory;
 }
 
 /**

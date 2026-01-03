@@ -41,22 +41,28 @@ This file contains the structure and data for the **Items** sheet in Google Shee
 
 ```
 id	name	type	slot	icon	stackable	maxStack	value	damage	delay	ac	weaponType	handedness	shieldType	armorType	classes	races	foodValue	waterValue	ammoType	requiredAmmo	STR	STA	AGI	DEX	WIS	INT	CHA
-rusty_sword	Rusty Sword	weapon	primary	⚔️	FALSE	1	5	5	20	0	sword	1H								0	0	0	0	0	0	0
-steel_longsword	Steel Longsword	weapon	primary	⚔️	FALSE	1	50	10	22	0	sword	1H								2	0	0	0	0	0	0
-iron_greatsword	Iron Greatsword	weapon	primary	⚗️	FALSE	1	75	18	30	0	greatsword	2H								4	2	0	0	0	0	0
 rusty_dagger	Rusty Dagger	weapon	primary	🗡️	FALSE	1	3	3	18	0	dagger	1H								0	0	1	0	0	0	0
-iron_spear	Iron Spear	weapon	primary	🔱	FALSE	1	40	12	24	0	spear	2H								2	0	0	0	0	0	0
+bronze_dagger	Bronze Dagger	weapon	primary	🗡️	FALSE	1	8	4	18	0	dagger	1H								0	0	1	1	0	0	0
+steel_dagger	Steel Dagger	weapon	primary	🗡️	FALSE	1	18	6	18	0	dagger	1H								0	0	2	2	0	0	0
+enchanted_dagger	Enchanted Dagger	weapon	primary	✨	FALSE	1	75	10	18	0	dagger	1H								2	0	3	3	0	2	0
+rusty_shortsword	Rusty Shortsword	weapon	primary	⚔️	FALSE	1	6	5	22	0	sword	1H								0	0	0	0	0	0	0
+iron_shortsword	Iron Shortsword	weapon	primary	⚔️	FALSE	1	20	8	22	0	sword	1H								1	0	0	1	0	0	0
+steel_longsword	Steel Longsword	weapon	primary	⚔️	FALSE	1	50	12	24	0	sword	1H								2	1	0	0	0	0	0
+iron_longsword	Iron Longsword	weapon	primary	⚔️	FALSE	1	35	10	24	0	sword	1H								2	0	0	0	0	0	0
+shortbow	Shortbow	weapon	range	🏹	FALSE	1	15	6	28	0	bow	2H						arrow	0	0	1	1	0	0	0
+oak_bow	Oak Bow	weapon	range	🏹	FALSE	1	30	8	26	0	bow	2H						arrow	0	0	1	1	0	0	0
 wooden_staff	Wooden Staff	weapon	primary	🪄	FALSE	1	15	6	22	0	staff	2H					cleric			0	0	0	0	2	2	0
 monk_fist_wraps	Monk Fist Wraps	weapon	primary	✊	FALSE	1	20	7	18	0	fists	1H					monk			0	1	0	0	0	0	0
-oak_bow	Oak Bow	weapon	range	🏹	FALSE	1	30	8	26	0	bow	2H						arrow	0	0	1	1	0	0	0
 ```
 
 ## Example Data (Armor & Shields)
 
 ```
 id	name	type	slot	icon	stackable	maxStack	value	damage	delay	ac	weaponType	handedness	shieldType	armorType	classes	races	foodValue	waterValue	ammoType	requiredAmmo	STR	STA	AGI	DEX	WIS	INT	CHA
+leather_tunic	Leather Tunic	armor	chest	🛡️	FALSE	1	12	0	0	5			cloth	leather					0	1	0	0	0	0	0
+chainmail_tunic	Chainmail Tunic	armor	chest	🛡️	FALSE	1	40	0	0	10			cloth	chain	warrior,cleric				0	2	0	0	0	0	0
+platemail_tunic	Platemail Tunic	armor	chest	🛡️	FALSE	1	100	0	0	18			cloth	plate	warrior				2	4	0	0	0	0	0
 leather_helm	Leather Helm	armor	head	🪖	FALSE	1	10	0	0	3			cloth	leather					0	0	0	0	0	0	0
-iron_chestplate	Iron Chestplate	armor	chest	🛡️	FALSE	1	80	0	0	12			cloth	chain	warrior,cleric				0	0	0	0	0	0	0
 wooden_buckler	Wooden Buckler	shield	secondary	🛡️	FALSE	1	15	0	0	5		1H	buckler					0	0	1	0	0	0	0
 iron_shield	Iron Shield	shield	secondary	🛡️	FALSE	1	40	0	0	10		1H	medium		warrior,cleric			0	2	0	0	0	0	0
 ```
@@ -65,10 +71,40 @@ iron_shield	Iron Shield	shield	secondary	🛡️	FALSE	1	40	0	0	10		1H	medium		w
 
 ```
 id	name	type	slot	icon	stackable	maxStack	value	damage	delay	ac	weaponType	handedness	shieldType	armorType	classes	races	foodValue	waterValue	ammoType	requiredAmmo	STR	STA	AGI	DEX	WIS	INT	CHA
+health_potion	Health Potion	consumable		🧪	TRUE	20	5	0	0	0									50	0			0	0	0	0	0	0	0
+stamina_potion	Stamina Potion	consumable		⚡	TRUE	20	4	0	0	0									0	0			0	0	0	0	0	0	0
+mana_potion	Mana Potion	consumable		🔮	TRUE	20	6	0	0	0									0	0			0	0	0	0	0	0	0
 rations	Rations	consumable		🍖	TRUE	20	3	0	0	0									25	0			0	0	0	0	0	0	0
 water_flask	Water Flask	consumable		💧	TRUE	20	2	0	0	0									0	25			0	0	0	0	0	0	0
+arrows	Arrows	ammo	ammo	🏹	TRUE	100	0.2	0	0	0								arrow		0	0	0	0	0	0	0
 wooden_arrow	Wooden Arrow	ammo	ammo	🏹	TRUE	100	0.1	0	0	0								arrow		0	0	0	0	0	0	0
 iron_arrow	Iron Arrow	ammo	ammo	🏹	TRUE	100	0.5	0	0	0								arrow		0	0	0	0	0	0	0
+```
+
+## Example Data (Accessories)
+
+```
+id	name	type	slot	icon	stackable	maxStack	value	damage	delay	ac	weaponType	handedness	shieldType	armorType	classes	races	foodValue	waterValue	ammoType	requiredAmmo	STR	STA	AGI	DEX	WIS	INT	CHA
+magic_ring	Magic Ring	accessory	finger_left		FALSE	1	50	0	0	0											0	0	0	0	2	3	0
+```
+
+## Example Data (Junk/Crafting Materials)
+
+```
+id	name	type	slot	icon	stackable	maxStack	value	damage	delay	ac	weaponType	handedness	shieldType	armorType	classes	races	foodValue	waterValue	ammoType	requiredAmmo	STR	STA	AGI	DEX	WIS	INT	CHA
+rat_ear	Rat Ear	junk		👂	TRUE	20	1	0	0	0											0	0	0	0	0	0	0
+snake_scales	Snake Scales	junk		🐍	TRUE	20	2	0	0	0											0	0	0	0	0	0	0
+venom_sac	Venom Sac	junk		💉	TRUE	20	5	0	0	0											0	0	0	0	0	0	0
+gnoll_tooth	Gnoll Tooth	junk		🦷	TRUE	20	3	0	0	0											0	0	0	0	0	0	0
+gnoll_fur	Gnoll Fur	junk		🧶	TRUE	20	4	0	0	0											0	0	0	0	0	0	0
+tattered_pelt	Tattered Pelt	junk		🦌	TRUE	20	2	0	0	0											0	0	0	0	0	0	0
+beetle_shell	Beetle Shell	junk		🐞	TRUE	20	3	0	0	0											0	0	0	0	0	0	0
+spider_silk	Spider Silk	junk		🕸️	TRUE	20	4	0	0	0											0	0	0	0	0	0	0
+bone_chips	Bone Chips	junk		🦴	TRUE	20	2	0	0	0											0	0	0	0	0	0	0
+wolf_pelt	Wolf Pelt	junk		🐺	TRUE	20	6	0	0	0											0	0	0	0	0	0	0
+wolf_tooth	Wolf Tooth	junk		🦷	TRUE	20	4	0	0	0											0	0	0	0	0	0	0
+dog_pelt	Dog Pelt	junk		🦴	TRUE	20	3	0	0	0											0	0	0	0	0	0	0
+spell_components	Spell Components	junk		✨	TRUE	20	8	0	0	0											0	0	0	0	0	0	0
 ```
 
 ## Notes
