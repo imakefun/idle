@@ -3,6 +3,8 @@
  * Handles buying and selling items with NPCs
  */
 
+import { consolidateInventory } from '../utils/characterHelpers';
+
 /**
  * Calculate the sell price for an item (what merchant pays player)
  * @param {Object} item - Item being sold
@@ -77,6 +79,9 @@ export function sellItemToMerchant(player, inventorySlotIndex, quantity, merchan
     };
   }
 
+  // Consolidate inventory to merge stacks and free up space
+  const consolidatedInventory = consolidateInventory(inventory);
+
   // Add currency to player
   const newCurrency = player.currency + totalPayment;
 
@@ -84,7 +89,7 @@ export function sellItemToMerchant(player, inventorySlotIndex, quantity, merchan
     success: true,
     message: `You sell ${quantityToSell}x ${item.name} for ${totalPayment} copper.`,
     updates: {
-      inventory,
+      inventory: consolidatedInventory,
       currency: newCurrency
     }
   };
