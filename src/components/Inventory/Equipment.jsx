@@ -6,7 +6,7 @@
 import ItemCard from './ItemCard';
 import './Equipment.css';
 
-export default function Equipment({ equipped = {}, onUnequip }) {
+export default function Equipment({ equipped = {}, onUnequip, gameData = null }) {
   // Full EverQuest-style equipment slots
   const slots = {
     // Weapons
@@ -70,6 +70,7 @@ export default function Equipment({ equipped = {}, onUnequip }) {
                       showActions={true}
                       equipped={true}
                       slot={slotId}
+                      gameData={gameData}
                     />
                   ) : (
                     <div className="empty-slot">

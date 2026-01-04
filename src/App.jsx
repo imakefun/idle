@@ -884,12 +884,14 @@ function App() {
                   <Equipment
                     equipped={gameState.equipped}
                     onUnequip={handleUnequipItem}
+                    gameData={gameData}
                   />
                   <Inventory
                     inventory={gameState.inventory}
                     onUseItem={handleUseItem}
                     onEquipItem={handleEquipItem}
                     onDropItem={handleDropItem}
+                    gameData={gameData}
                   />
                 </div>
 

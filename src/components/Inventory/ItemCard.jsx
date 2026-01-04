@@ -6,7 +6,7 @@
 import { useState } from 'react';
 import './ItemCard.css';
 
-export default function ItemCard({ item, onUse, onEquip, onDrop, showActions = true, equipped = false, slot = 'inventory' }) {
+export default function ItemCard({ item, onUse, onEquip, onDrop, showActions = true, equipped = false, slot = 'inventory', gameData = null }) {
   const [showTooltip, setShowTooltip] = useState(false);
 
   if (!item) {
@@ -16,6 +16,15 @@ export default function ItemCard({ item, onUse, onEquip, onDrop, showActions = t
         <div className="item-icon">-</div>
       </div>
     );
+  }
+
+  // Get fresh item value from gameData if available
+  let itemValue = item.value || 0;
+  if (gameData && gameData.items && item.id) {
+    const freshItem = gameData.items[item.id];
+    if (freshItem && freshItem.value !== undefined) {
+      itemValue = freshItem.value;
+    }
   }
 
   const canUse = item.type === 'consumable';
@@ -70,8 +79,8 @@ export default function ItemCard({ item, onUse, onEquip, onDrop, showActions = t
           )}
 
           {/* Value */}
-          {item.value > 0 && (
-            <div className="tooltip-value">Value: {item.value} copper</div>
+          {itemValue > 0 && (
+            <div className="tooltip-value">Value: {itemValue} copper</div>
           )}
 
           {/* Slot */}
