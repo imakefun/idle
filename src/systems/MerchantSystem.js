@@ -59,9 +59,10 @@ export function calculateBuyPrice(item, merchant, gameData = null) {
  * @param {number} inventorySlotIndex - Index of item in inventory
  * @param {number} quantity - Number to sell
  * @param {Object} merchant - Merchant buying the item
+ * @param {Object} gameData - Optional game data for fresh item values
  * @returns {Object} - Result { success, message, updates }
  */
-export function sellItemToMerchant(player, inventorySlotIndex, quantity, merchant) {
+export function sellItemToMerchant(player, inventorySlotIndex, quantity, merchant, gameData = null) {
   const inventory = [...player.inventory];
   const item = inventory[inventorySlotIndex];
 
@@ -83,8 +84,8 @@ export function sellItemToMerchant(player, inventorySlotIndex, quantity, merchan
     };
   }
 
-  // Calculate payment
-  const pricePerItem = calculateSellPrice(item, merchant);
+  // Calculate payment using fresh gameData
+  const pricePerItem = calculateSellPrice(item, merchant, gameData);
   const totalPayment = pricePerItem * quantityToSell;
 
   // Remove items from inventory
@@ -121,9 +122,10 @@ export function sellItemToMerchant(player, inventorySlotIndex, quantity, merchan
  * @param {Object} item - Item being purchased
  * @param {number} quantity - Number to buy
  * @param {Object} merchant - Merchant selling the item
+ * @param {Object} gameData - Optional game data for fresh item values
  * @returns {Object} - Result { success, message, updates }
  */
-export function buyItemFromMerchant(player, item, quantity, merchant) {
+export function buyItemFromMerchant(player, item, quantity, merchant, gameData = null) {
   const MAX_INVENTORY_SLOTS = 10;
   const inventory = [...player.inventory];
 
@@ -134,8 +136,8 @@ export function buyItemFromMerchant(player, item, quantity, merchant) {
     };
   }
 
-  // Calculate cost
-  const pricePerItem = calculateBuyPrice(item, merchant);
+  // Calculate cost using fresh gameData
+  const pricePerItem = calculateBuyPrice(item, merchant, gameData);
   const totalCost = pricePerItem * quantity;
 
   // Check if player can afford it

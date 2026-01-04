@@ -430,7 +430,7 @@ function App() {
       currency: gameState.currency
     };
 
-    const result = sellItemToMerchant(player, inventorySlotIndex, quantity, merchant);
+    const result = sellItemToMerchant(player, inventorySlotIndex, quantity, merchant, gameData);
 
     if (result.success) {
       setGameState(prev => ({
@@ -446,7 +446,7 @@ function App() {
     }
 
     return result;
-  }, [gameState.inventory, gameState.currency]);
+  }, [gameState.inventory, gameState.currency, gameData]);
 
   const handleBuyItem = useCallback((item, quantity, merchant) => {
     const player = {
@@ -454,7 +454,7 @@ function App() {
       currency: gameState.currency
     };
 
-    const result = buyItemFromMerchant(player, item, quantity, merchant);
+    const result = buyItemFromMerchant(player, item, quantity, merchant, gameData);
 
     if (result.success) {
       setGameState(prev => ({
@@ -470,7 +470,7 @@ function App() {
     }
 
     return result;
-  }, [gameState.inventory, gameState.currency]);
+  }, [gameState.inventory, gameState.currency, gameData]);
 
   const handleTrainSkill = (skill) => {
     setGameState(prev => {
