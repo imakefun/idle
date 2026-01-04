@@ -6,7 +6,7 @@
 import ItemCard from './ItemCard';
 import './Inventory.css';
 
-export default function Inventory({ inventory = [], onUseItem, onEquipItem, onDropItem }) {
+export default function Inventory({ inventory = [], onUseItem, onEquipItem, onDropItem, gameData = null }) {
   const MAX_SLOTS = 10;
 
   // Pad inventory to always show 10 slots
@@ -29,6 +29,7 @@ export default function Inventory({ inventory = [], onUseItem, onEquipItem, onDr
             onEquip={onEquipItem}
             onDrop={onDropItem}
             slot="inventory"
+            gameData={gameData}
           />
         ))}
       </div>
