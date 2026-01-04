@@ -9,10 +9,20 @@ import { consolidateInventory } from '../utils/characterHelpers';
  * Calculate the sell price for an item (what merchant pays player)
  * @param {Object} item - Item being sold
  * @param {Object} merchant - Merchant buying the item
+ * @param {Object} gameData - Optional game data to look up fresh item values
  * @returns {number} - Amount of copper merchant will pay
  */
-export function calculateSellPrice(item, merchant) {
-  const baseValue = parseInt(item.value) || 0;
+export function calculateSellPrice(item, merchant, gameData = null) {
+  // Look up fresh value from gameData if available, otherwise use embedded value
+  let baseValue = parseInt(item.value) || 0;
+
+  if (gameData && gameData.items && item.id) {
+    const freshItem = gameData.items[item.id];
+    if (freshItem && freshItem.value !== undefined) {
+      baseValue = parseInt(freshItem.value) || 0;
+    }
+  }
+
   const buyRate = parseFloat(merchant.buyRate) || 50;
 
   // Merchant pays buyRate% of item's base value
@@ -23,10 +33,20 @@ export function calculateSellPrice(item, merchant) {
  * Calculate the buy price for an item (what merchant charges player)
  * @param {Object} item - Item being bought
  * @param {Object} merchant - Merchant selling the item
+ * @param {Object} gameData - Optional game data to look up fresh item values
  * @returns {number} - Amount of copper player must pay
  */
-export function calculateBuyPrice(item, merchant) {
-  const baseValue = parseInt(item.value) || 0;
+export function calculateBuyPrice(item, merchant, gameData = null) {
+  // Look up fresh value from gameData if available, otherwise use embedded value
+  let baseValue = parseInt(item.value) || 0;
+
+  if (gameData && gameData.items && item.id) {
+    const freshItem = gameData.items[item.id];
+    if (freshItem && freshItem.value !== undefined) {
+      baseValue = parseInt(freshItem.value) || 0;
+    }
+  }
+
   const sellRate = parseFloat(merchant.sellRate) || 150;
 
   // Merchant charges sellRate% of item's base value
