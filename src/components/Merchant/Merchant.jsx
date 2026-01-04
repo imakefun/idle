@@ -120,7 +120,7 @@ export default function Merchant({ gameData, currentZone, playerCurrency, player
           <h4>Merchant Inventory</h4>
           <div className="merchant-buy-grid">
             {merchantInventory.map((inventoryItem, index) => {
-              const buyPrice = calculateBuyPrice(inventoryItem.item, merchant);
+              const buyPrice = calculateBuyPrice(inventoryItem.item, merchant, gameData);
               const canAfford = playerCurrency >= buyPrice;
               const inStock = inventoryItem.stock === -1 || inventoryItem.stock > 0;
 
@@ -194,7 +194,7 @@ export default function Merchant({ gameData, currentZone, playerCurrency, player
             {playerInventory.map((item, index) => {
               if (!item) return null;
 
-              const sellPrice = calculateSellPrice(item, merchant);
+              const sellPrice = calculateSellPrice(item, merchant, gameData);
               const quantity = item.quantity || 1;
 
               return (
