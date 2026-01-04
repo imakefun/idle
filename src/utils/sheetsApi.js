@@ -17,10 +17,14 @@ export async function fetchSheetData(sheetName) {
   }
 
   const range = `${sheetName}!A:Z`; // Fetch columns A through Z
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${range}?key=${API_KEY}`;
+  // Add cache-busting timestamp to force fresh data
+  const cacheBuster = `&_=${Date.now()}`;
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${range}?key=${API_KEY}${cacheBuster}`;
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      cache: 'no-store' // Disable browser caching
+    });
 
     if (!response.ok) {
       const error = await response.json();
