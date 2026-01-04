@@ -17,6 +17,8 @@ import { calculateXPForLevel, calculateDrainRate, formatCurrency, calculateAC, c
 import { clearCache } from './systems/DataSync'
 import { selectRandomMonster, selectMonsterFromSpawnTable, processCombatRound } from './systems/CombatEngine'
 import { updateSkillCaps } from './systems/SkillSystem'
+import { generateQuest, canAcceptQuest, updateKillQuestProgress, updateCollectQuestProgress, acceptQuest, abandonQuest, hasReachedDailyLimit, shouldResetDaily, getNextDayResetTime } from './utils/questHelpers'
+import { generateLoot } from './systems/LootSystem'
 
 function App() {
   // Load game data from Google Sheets
@@ -497,6 +499,127 @@ function App() {
         currency: newCurrency,
         skills: updatedSkills
       };
+    });
+  };
+
+  // Quest handlers
+  const handleAcceptQuest = (questId) => {
+    setGameState(prev => ({
+      ...prev,
+      quests: acceptQuest(prev.quests, questId)
+    }));
+
+    addCombatLog({
+      type: 'quest',
+      color: '#ffaa00',
+      message: 'Quest accepted!'
+    });
+  };
+
+  const handleAbandonQuest = (questId) => {
+    if (window.confirm('Are you sure you want to abandon this quest?')) {
+      setGameState(prev => ({
+        ...prev,
+        quests: abandonQuest(prev.quests, questId)
+      }));
+
+      addCombatLog({
+        type: 'quest',
+        color: '#888888',
+        message: 'Quest abandoned.'
+      });
+    }
+  };
+
+  const handleTurnInQuest = (questId) => {
+    setGameState(prev => {
+      const quest = prev.quests.find(q => q.id === questId);
+      if (!quest || quest.status !== 'ready') {
+        return prev;
+      }
+
+      const updates = {
+        quests: prev.quests.filter(q => q.id !== questId),
+        questsCompletedToday: prev.questsCompletedToday + 1
+      };
+
+      // Award XP
+      if (quest.rewards.xp > 0) {
+        updates.xp = prev.xp + quest.rewards.xp;
+
+        addCombatLog({
+          type: 'xp',
+          color: '#00aaff',
+          message: `You gain ${quest.rewards.xp} experience!`
+        });
+
+        // Check for level up
+        while (updates.xp >= prev.xpForNextLevel) {
+          const newLevel = prev.level + 1;
+          const xpOverflow = updates.xp - prev.xpForNextLevel;
+          const newXPRequired = calculateXPForLevel(newLevel);
+          const newMaxHP = calculateMaxHP(newLevel, gameData.classes[prev.class], prev.stats.STA);
+          const newMaxStamina = calculateMaxStamina(newLevel);
+
+          updates.level = newLevel;
+          updates.xp = xpOverflow;
+          updates.xpForNextLevel = newXPRequired;
+          updates.maxHp = newMaxHP;
+          updates.hp = newMaxHP; // Heal to full on level up
+          updates.maxStamina = newMaxStamina;
+          updates.stamina = newMaxStamina;
+
+          // Update skill caps
+          updates.skills = updateSkillCaps(prev.skills, newLevel, gameData.settings);
+
+          addCombatLog({
+            type: 'level-up',
+            color: '#ffff00',
+            message: `You have reached level ${newLevel}!`
+          });
+        }
+      }
+
+      // Award copper
+      if (quest.rewards.copper > 0) {
+        updates.currency = prev.currency + quest.rewards.copper;
+
+        addCombatLog({
+          type: 'loot',
+          color: '#ffaa00',
+          message: `You receive ${quest.rewards.copper} copper!`
+        });
+      }
+
+      // Award loot table items
+      if (quest.rewards.lootTableId && gameData?.lootTables) {
+        const loot = generateLoot(quest.rewards.lootTableId, gameData.lootTables, gameData.items);
+
+        if (loot && loot.items && loot.items.length > 0) {
+          const newInventory = [...(updates.inventory || prev.inventory)];
+
+          loot.items.forEach(item => {
+            const result = addItemToInventory(newInventory, item.item, item.quantity);
+            if (result.success) {
+              addCombatLog({
+                type: 'loot',
+                color: '#90EE90',
+                message: `You receive ${item.quantity}x ${item.item.name}!`
+              });
+            }
+          });
+
+          updates.inventory = newInventory;
+        }
+      }
+
+      addCombatLog({
+        type: 'quest',
+        color: '#00ff00',
+        message: `Quest complete: ${quest.title}`
+      });
+
+      return { ...prev, ...updates };
     });
   };
 

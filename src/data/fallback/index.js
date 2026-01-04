@@ -2642,7 +2642,15 @@ export const fallbackData = {
     { id: 'loot_bandit_lord', group: 2, item: 'magic_ring', min: 1, max: 1, step: 1, weight: 10 },
     { id: 'loot_bandit_lord', group: 3, item: 'health_potion', min: 5, max: 8, step: 1, weight: 100 },
     { id: 'loot_bandit_lord', group: 4, item: 'stamina_potion', min: 3, max: 5, step: 1, weight: 100 },
-    { id: 'loot_bandit_lord', group: 5, item: 'mana_potion', min: 2, max: 4, step: 1, weight: 100 }
+    { id: 'loot_bandit_lord', group: 5, item: 'mana_potion', min: 2, max: 4, step: 1, weight: 100 },
+
+    // Quest Reward - Low Level (loot_quest_low)
+    { id: 'loot_quest_low', group: 1, item: 'health_potion', min: 1, max: 2, step: 1, weight: 60 },
+    { id: 'loot_quest_low', group: 1, item: 'stamina_potion', min: 1, max: 2, step: 1, weight: 40 },
+    { id: 'loot_quest_low', group: 2, item: 'bronze_dagger', min: 1, max: 1, step: 1, weight: 20 },
+    { id: 'loot_quest_low', group: 2, item: 'rusty_shortsword', min: 1, max: 1, step: 1, weight: 15 },
+    { id: 'loot_quest_low', group: 2, item: 'leather_gloves', min: 1, max: 1, step: 1, weight: 25 },
+    { id: 'loot_quest_low', group: 2, item: 'nothing', min: 0, max: 0, step: 1, weight: 40 }
   ],
 
   Merchants: [
@@ -2703,5 +2711,146 @@ export const fallbackData = {
     { merchantId: 'merchant_food', itemId: 'ale', stock: -1, restockTime: 0, restockAmount: 0 },
     { merchantId: 'merchant_food', itemId: 'health_potion', stock: 15, restockTime: 45, restockAmount: 8 },
     { merchantId: 'merchant_food', itemId: 'stamina_potion', stock: 15, restockTime: 45, restockAmount: 8 }
+  ],
+
+  QuestTemplates: [
+    // Kill Quests - Low Level
+    {
+      id: 'quest_kill_rats',
+      type: 'kill',
+      targetType: 'monster',
+      targetIds: 'rat',
+      minRequired: '5',
+      maxRequired: '10',
+      minLevel: '1',
+      maxLevel: '5',
+      xpReward: '50',
+      copperReward: '25',
+      lootTableId: '',
+      title: 'Slay {count} {target}',
+      description: 'The town is overrun with {target}. Kill {count} of them and return for a reward.'
+    },
+    {
+      id: 'quest_kill_snakes',
+      type: 'kill',
+      targetType: 'monster',
+      targetIds: 'snake',
+      minRequired: '3',
+      maxRequired: '8',
+      minLevel: '2',
+      maxLevel: '6',
+      xpReward: '75',
+      copperReward: '35',
+      lootTableId: '',
+      title: 'Hunt {count} {target}',
+      description: 'Snakes have been spotted near town. Hunt down {count} {target} and I will reward you.'
+    },
+    {
+      id: 'quest_kill_bats',
+      type: 'kill',
+      targetType: 'monster',
+      targetIds: 'bat',
+      minRequired: '4',
+      maxRequired: '10',
+      minLevel: '2',
+      maxLevel: '7',
+      xpReward: '60',
+      copperReward: '30',
+      lootTableId: '',
+      title: 'Clear {count} {target}',
+      description: 'Bats are infesting the caves. Clear out {count} of them for me.'
+    },
+    {
+      id: 'quest_kill_gnolls',
+      type: 'kill',
+      targetType: 'monster',
+      targetIds: 'gnoll_pup,gnoll_scout',
+      minRequired: '3',
+      maxRequired: '7',
+      minLevel: '3',
+      maxLevel: '8',
+      xpReward: '100',
+      copperReward: '50',
+      lootTableId: 'loot_quest_low',
+      title: 'Defeat {count} {target}',
+      description: 'Gnolls are raiding our supply routes. Defeat {count} {target} and bring proof of your deed.'
+    },
+    {
+      id: 'quest_kill_any_low',
+      type: 'kill',
+      targetType: 'monster',
+      targetIds: 'any',
+      minRequired: '10',
+      maxRequired: '20',
+      minLevel: '1',
+      maxLevel: '10',
+      xpReward: '150',
+      copperReward: '75',
+      lootTableId: '',
+      title: 'Slay {count} creatures',
+      description: 'Prove your worth as an adventurer by slaying {count} creatures in the wild.'
+    },
+
+    // Collect Quests
+    {
+      id: 'quest_collect_rat_ears',
+      type: 'collect',
+      targetType: 'item',
+      targetIds: 'rat_ear',
+      minRequired: '5',
+      maxRequired: '10',
+      minLevel: '1',
+      maxLevel: '5',
+      xpReward: '60',
+      copperReward: '30',
+      lootTableId: '',
+      title: 'Collect {count} {target}',
+      description: 'I need {count} {target} for my research. Bring them to me and I will reward you handsomely.'
+    },
+    {
+      id: 'quest_collect_snake_fangs',
+      type: 'collect',
+      targetType: 'item',
+      targetIds: 'snake_fang',
+      minRequired: '3',
+      maxRequired: '8',
+      minLevel: '2',
+      maxLevel: '6',
+      xpReward: '80',
+      copperReward: '40',
+      lootTableId: 'loot_quest_low',
+      title: 'Gather {count} {target}',
+      description: 'Snake fangs have valuable alchemical properties. Gather {count} {target} for me.'
+    },
+    {
+      id: 'quest_collect_bat_wings',
+      type: 'collect',
+      targetType: 'item',
+      targetIds: 'bat_wing',
+      minRequired: '4',
+      maxRequired: '10',
+      minLevel: '2',
+      maxLevel: '7',
+      xpReward: '70',
+      copperReward: '35',
+      lootTableId: '',
+      title: 'Retrieve {count} {target}',
+      description: 'I require {count} {target} for an important recipe. Please retrieve them for me.'
+    },
+    {
+      id: 'quest_collect_gnoll_teeth',
+      type: 'collect',
+      targetType: 'item',
+      targetIds: 'gnoll_tooth',
+      minRequired: '3',
+      maxRequired: '7',
+      minLevel: '3',
+      maxLevel: '8',
+      xpReward: '110',
+      copperReward: '55',
+      lootTableId: 'loot_quest_low',
+      title: 'Acquire {count} {target}',
+      description: 'Gnoll teeth are trophies of great value. Acquire {count} {target} and bring them to me.'
+    }
   ]
 };

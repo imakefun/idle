@@ -10,7 +10,7 @@ const CACHE_KEY = 'norrathIdleGameData_v1';
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 // List of all sheets to fetch
-const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps', 'Skills', 'Spawns', 'Settings', 'LootTables', 'Merchants', 'MerchantInventory'];
+const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps', 'Skills', 'Spawns', 'Settings', 'LootTables', 'Merchants', 'MerchantInventory', 'QuestTemplates'];
 
 /**
  * Load game data with caching and fallback support
@@ -74,6 +74,11 @@ export async function loadGameData() {
       rawData.MerchantInventory = fallbackData.MerchantInventory || [];
     }
 
+    if (rawData.QuestTemplates === null || rawData.QuestTemplates === undefined) {
+      console.log('📋 QuestTemplates sheet not found, using fallback quest templates data');
+      rawData.QuestTemplates = fallbackData.QuestTemplates || [];
+    }
+
     // Transform the data
     const transformedData = transformGameData(rawData);
 
@@ -111,7 +116,8 @@ function transformGameData(rawData) {
     settings: transformSettings(rawData.Settings || []),
     lootTables: transformLootTables(rawData.LootTables || []),
     merchants: transformMerchants(rawData.Merchants || []),
-    merchantInventory: transformMerchantInventory(rawData.MerchantInventory || [], rawData.Items || [])
+    merchantInventory: transformMerchantInventory(rawData.MerchantInventory || [], rawData.Items || []),
+    questTemplates: transformQuestTemplates(rawData.QuestTemplates || [])
   };
 }
 
@@ -445,6 +451,40 @@ function transformMerchantInventory(rows, itemRows) {
   });
 
   return merchantInventory;
+}
+
+/**
+ * Transform QuestTemplates sheet data
+ */
+function transformQuestTemplates(rows) {
+  const questTemplates = {};
+
+  rows.forEach(row => {
+    if (!row.id) return; // Skip invalid rows
+
+    // Parse targetIds (comma-separated or "any")
+    const targetIds = row.targetIds && row.targetIds.trim().toLowerCase() !== 'any'
+      ? row.targetIds.split(',').map(id => id.trim())
+      : 'any';
+
+    questTemplates[row.id] = {
+      id: row.id,
+      type: row.type || 'kill',
+      targetType: row.targetType || 'monster',
+      targetIds: targetIds,
+      minRequired: parseInt(row.minRequired) || 1,
+      maxRequired: parseInt(row.maxRequired) || 10,
+      minLevel: parseInt(row.minLevel) || 1,
+      maxLevel: parseInt(row.maxLevel) || 50,
+      xpReward: parseInt(row.xpReward) || 0,
+      copperReward: parseInt(row.copperReward) || 0,
+      lootTableId: row.lootTableId || null,
+      title: row.title || 'Unknown Quest',
+      description: row.description || ''
+    };
+  });
+
+  return questTemplates;
 }
 
 /**
