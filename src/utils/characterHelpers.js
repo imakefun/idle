@@ -238,12 +238,12 @@ export function consolidateInventory(inventory) {
               currentQty += amountToMove;
               otherQty -= amountToMove;
 
-              // Update quantities
-              current.item.quantity = currentQty;
-              other.item.quantity = otherQty;
+              // Update quantities (prevent negative values)
+              current.item.quantity = Math.max(1, currentQty);
+              other.item.quantity = Math.max(0, otherQty);
 
               // Mark empty stacks for removal
-              if (otherQty <= 0) {
+              if (other.item.quantity <= 0) {
                 inventory[other.index] = null;
               }
             }
@@ -263,10 +263,14 @@ export function consolidateInventory(inventory) {
  */
 export function removeItemFromInventory(inventory, itemId, quantity = 1) {
   // Find all stacks of this item, sorted by quantity (smallest first)
-  const stacks = inventory
-    .map((item, index) => ({ item, index }))
-    .filter(({ item }) => item && item.id === itemId)
-    .sort((a, b) => (a.item.quantity || 1) - (b.item.quantity || 1));
+  const stacks = [];
+  inventory.forEach((item, index) => {
+    if (item && item.id === itemId) {
+      stacks.push({ item, index });
+    }
+  });
+
+  stacks.sort((a, b) => (a.item.quantity || 1) - (b.item.quantity || 1));
 
   if (stacks.length === 0) {
     return { success: false, reason: 'Item not found' };
@@ -274,8 +278,9 @@ export function removeItemFromInventory(inventory, itemId, quantity = 1) {
 
   let remainingToRemove = quantity;
   const removedItems = [];
+  const indicesToRemove = [];
 
-  // Remove from smallest stacks first
+  // Mark items for removal (don't splice yet to avoid index shifting)
   for (const { item, index } of stacks) {
     if (remainingToRemove <= 0) break;
 
@@ -283,15 +288,22 @@ export function removeItemFromInventory(inventory, itemId, quantity = 1) {
     const toRemove = Math.min(itemQty, remainingToRemove);
 
     if (toRemove >= itemQty) {
-      // Remove entire stack
-      removedItems.push(inventory.splice(index, 1)[0]);
+      // Mark entire stack for removal
+      indicesToRemove.push(index);
+      removedItems.push({ ...item });
       remainingToRemove -= itemQty;
     } else {
-      // Reduce quantity
-      item.quantity -= toRemove;
+      // Reduce quantity (don't allow negative)
+      item.quantity = Math.max(0, itemQty - toRemove);
       remainingToRemove -= toRemove;
       removedItems.push({ ...item, quantity: toRemove });
     }
+  }
+
+  // Remove marked indices in reverse order to avoid index shifting
+  indicesToRemove.sort((a, b) => b - a);
+  for (const index of indicesToRemove) {
+    inventory.splice(index, 1);
   }
 
   // Consolidate inventory after removal
