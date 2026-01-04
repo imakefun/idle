@@ -11,7 +11,7 @@ import Combat from './components/Combat/Combat'
 import Skills from './components/Skills/Skills'
 import GuildMaster from './components/Skills/GuildMaster'
 import Merchant from './components/Merchant/Merchant'
-import { createCharacter, consumeItem, equipItem, removeItemFromInventory, addItemToInventory } from './utils/characterHelpers'
+import { createCharacter, consumeItem, equipItem, removeItemFromInventory, addItemToInventory, consolidateInventory } from './utils/characterHelpers'
 import { sellItemToMerchant, buyItemFromMerchant } from './systems/MerchantSystem'
 import { calculateXPForLevel, calculateDrainRate, formatCurrency, calculateAC, calculateHPRegen, calculateStaminaRegen, calculateMaxHP, calculateMaxStamina } from './utils/calculations'
 import { clearCache } from './systems/DataSync'
@@ -72,32 +72,30 @@ function App() {
       const currentFood = updates.food !== undefined ? updates.food : prev.food;
       const foodThreshold = gameData?.settings?.autoConsumeFoodThreshold || 50;
       if (currentFood < foodThreshold && prev.inventory && prev.inventory.length > 0) {
-        const foodItem = prev.inventory.find(item =>
-          item && item.type === 'consumable' && (item.foodValue || item.consumable?.foodValue || 0) > 0
-        );
+        // Find all food items, sorted by quantity (smallest first)
+        const foodItems = prev.inventory
+          .filter(item => item && item.type === 'consumable' && (item.foodValue || item.consumable?.foodValue || 0) > 0)
+          .sort((a, b) => (a.quantity || 1) - (b.quantity || 1));
 
-        if (foodItem) {
+        if (foodItems.length > 0) {
+          const foodItem = foodItems[0]; // Use smallest stack first
           const foodValue = foodItem.foodValue || foodItem.consumable?.foodValue || 0;
           const newFoodLevel = Math.min(100, currentFood + foodValue);
           updates.food = newFoodLevel;
 
-          // Remove item from inventory
-          const newInventory = [...prev.inventory];
-          const itemIndex = newInventory.findIndex(item => item && item.id === foodItem.id);
-          if (itemIndex !== -1) {
-            if (foodItem.stackable && foodItem.quantity > 1) {
-              newInventory[itemIndex] = { ...newInventory[itemIndex], quantity: newInventory[itemIndex].quantity - 1 };
-            } else {
-              newInventory.splice(itemIndex, 1);
-            }
-            updates.inventory = newInventory;
-          }
+          // Remove item from inventory and consolidate
+          const newInventory = updates.inventory || [...prev.inventory];
+          const result = removeItemFromInventory(newInventory, foodItem.id, 1);
 
-          addCombatLog({
-            type: 'system',
-            color: '#88ff88',
-            message: `Auto-consumed ${foodItem.name}.`
-          });
+          if (result.success) {
+            updates.inventory = newInventory;
+
+            addCombatLog({
+              type: 'system',
+              color: '#88ff88',
+              message: `Auto-consumed ${foodItem.name}.`
+            });
+          }
         }
       }
 
@@ -105,32 +103,31 @@ function App() {
       const currentWater = updates.water !== undefined ? updates.water : prev.water;
       const waterThreshold = gameData?.settings?.autoConsumeWaterThreshold || 50;
       if (currentWater < waterThreshold && prev.inventory && prev.inventory.length > 0) {
-        const waterItem = prev.inventory.find(item =>
-          item && item.type === 'consumable' && (item.waterValue || item.consumable?.waterValue || 0) > 0
-        );
+        // Find all water items, sorted by quantity (smallest first)
+        const inventoryToCheck = updates.inventory || prev.inventory;
+        const waterItems = inventoryToCheck
+          .filter(item => item && item.type === 'consumable' && (item.waterValue || item.consumable?.waterValue || 0) > 0)
+          .sort((a, b) => (a.quantity || 1) - (b.quantity || 1));
 
-        if (waterItem) {
+        if (waterItems.length > 0) {
+          const waterItem = waterItems[0]; // Use smallest stack first
           const waterValue = waterItem.waterValue || waterItem.consumable?.waterValue || 0;
           const newWaterLevel = Math.min(100, currentWater + waterValue);
           updates.water = newWaterLevel;
 
-          // Remove item from inventory (check if already updated by food consumption)
+          // Remove item from inventory and consolidate
           const inventoryToUpdate = updates.inventory || [...prev.inventory];
-          const itemIndex = inventoryToUpdate.findIndex(item => item && item.id === waterItem.id);
-          if (itemIndex !== -1) {
-            if (waterItem.stackable && waterItem.quantity > 1) {
-              inventoryToUpdate[itemIndex] = { ...inventoryToUpdate[itemIndex], quantity: inventoryToUpdate[itemIndex].quantity - 1 };
-            } else {
-              inventoryToUpdate.splice(itemIndex, 1);
-            }
-            updates.inventory = inventoryToUpdate;
-          }
+          const result = removeItemFromInventory(inventoryToUpdate, waterItem.id, 1);
 
-          addCombatLog({
-            type: 'system',
-            color: '#88ffff',
-            message: `Auto-consumed ${waterItem.name}.`
-          });
+          if (result.success) {
+            updates.inventory = inventoryToUpdate;
+
+            addCombatLog({
+              type: 'system',
+              color: '#88ffff',
+              message: `Auto-consumed ${waterItem.name}.`
+            });
+          }
         }
       }
 

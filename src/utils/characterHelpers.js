@@ -189,26 +189,117 @@ export function addItemToInventory(inventory, item, quantity = 1) {
 }
 
 /**
+ * Consolidate inventory stacks
+ * Merges multiple stacks of the same item to optimize space
+ * @param {Array} inventory - Player's inventory array
+ */
+export function consolidateInventory(inventory) {
+  // Group items by ID
+  const itemGroups = {};
+
+  inventory.forEach((item, index) => {
+    if (!item) return;
+
+    if (!itemGroups[item.id]) {
+      itemGroups[item.id] = [];
+    }
+
+    itemGroups[item.id].push({ item, index });
+  });
+
+  // For each item group with multiple stacks, consolidate
+  Object.keys(itemGroups).forEach(itemId => {
+    const group = itemGroups[itemId];
+
+    if (group.length > 1 && group[0].item.stackable) {
+      // Sort by quantity (smallest first)
+      group.sort((a, b) => (a.item.quantity || 1) - (b.item.quantity || 1));
+
+      const maxStack = group[0].item.maxStack || 20;
+
+      // Try to merge stacks
+      for (let i = 0; i < group.length; i++) {
+        const current = group[i];
+        if (!current || !current.item) continue;
+
+        let currentQty = current.item.quantity || 1;
+
+        if (currentQty < maxStack) {
+          // Try to fill this stack from other stacks
+          for (let j = i + 1; j < group.length; j++) {
+            const other = group[j];
+            if (!other || !other.item) continue;
+
+            let otherQty = other.item.quantity || 1;
+            const spaceInCurrent = maxStack - currentQty;
+
+            if (spaceInCurrent > 0 && otherQty > 0) {
+              const amountToMove = Math.min(spaceInCurrent, otherQty);
+              currentQty += amountToMove;
+              otherQty -= amountToMove;
+
+              // Update quantities
+              current.item.quantity = currentQty;
+              other.item.quantity = otherQty;
+
+              // Mark empty stacks for removal
+              if (otherQty <= 0) {
+                inventory[other.index] = null;
+              }
+            }
+          }
+        }
+      }
+    }
+  });
+
+  // Remove null entries and return compacted array
+  return inventory.filter(item => item !== null);
+}
+
+/**
  * Remove item from inventory
+ * Prioritizes removing from smaller stacks to free up inventory space
  */
 export function removeItemFromInventory(inventory, itemId, quantity = 1) {
-  const itemIndex = inventory.findIndex(item => item.id === itemId);
+  // Find all stacks of this item, sorted by quantity (smallest first)
+  const stacks = inventory
+    .map((item, index) => ({ item, index }))
+    .filter(({ item }) => item && item.id === itemId)
+    .sort((a, b) => (a.item.quantity || 1) - (b.item.quantity || 1));
 
-  if (itemIndex === -1) {
+  if (stacks.length === 0) {
     return { success: false, reason: 'Item not found' };
   }
 
-  const item = inventory[itemIndex];
+  let remainingToRemove = quantity;
+  const removedItems = [];
 
-  if (item.quantity > quantity) {
-    // Reduce quantity
-    item.quantity -= quantity;
-    return { success: true, item };
-  } else {
-    // Remove entire stack
-    const removed = inventory.splice(itemIndex, 1)[0];
-    return { success: true, item: removed };
+  // Remove from smallest stacks first
+  for (const { item, index } of stacks) {
+    if (remainingToRemove <= 0) break;
+
+    const itemQty = item.quantity || 1;
+    const toRemove = Math.min(itemQty, remainingToRemove);
+
+    if (toRemove >= itemQty) {
+      // Remove entire stack
+      removedItems.push(inventory.splice(index, 1)[0]);
+      remainingToRemove -= itemQty;
+    } else {
+      // Reduce quantity
+      item.quantity -= toRemove;
+      remainingToRemove -= toRemove;
+      removedItems.push({ ...item, quantity: toRemove });
+    }
   }
+
+  // Consolidate inventory after removal
+  const consolidated = consolidateInventory(inventory);
+  inventory.length = 0;
+  inventory.push(...consolidated);
+
+  return { success: true, removed: removedItems };
 }
 
 /**
