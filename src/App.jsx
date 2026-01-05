@@ -796,7 +796,7 @@ function App() {
                 <p>• {Object.keys(gameData.skills || {}).length} Skills</p>
                 <p>• {(gameData.spawns || []).length} Spawns</p>
                 <p>• {Object.keys(gameData.merchants || {}).length} Merchants</p>
-                <p>• {new Set((gameData.lootTables || []).map(lt => lt.id)).size} Loot Tables</p>
+                <p>• {Object.keys(gameData.lootTables || {}).length} Loot Tables</p>
                 <p>• {Object.keys(gameData.questTemplates || {}).length} Quests</p>
                 {gameData.items && (
                   <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: 'var(--text-secondary)', borderTop: '1px solid var(--border)', paddingTop: '0.5rem' }}>
@@ -1195,7 +1195,7 @@ function App() {
                     <p>• {Object.keys(gameData?.skills || {}).length} Skills</p>
                     <p>• {(gameData?.spawns || []).length} Spawns</p>
                     <p>• {Object.keys(gameData?.merchants || {}).length} Merchants</p>
-                    <p>• {new Set((gameData?.lootTables || []).map(lt => lt.id)).size} Loot Tables</p>
+                    <p>• {Object.keys(gameData?.lootTables || {}).length} Loot Tables</p>
                     <p>• {Object.keys(gameData?.questTemplates || {}).length} Quests</p>
                   </div>
                 </div>
