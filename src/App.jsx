@@ -18,7 +18,7 @@ import { calculateXPForLevel, calculateDrainRate, formatCurrency, calculateAC, c
 import { clearCache } from './systems/DataSync'
 import { selectRandomMonster, selectMonsterFromSpawnTable, processCombatRound } from './systems/CombatEngine'
 import { updateSkillCaps } from './systems/SkillSystem'
-import { generateQuest, canAcceptQuest, updateKillQuestProgress, updateCollectQuestProgress, acceptQuest, abandonQuest, hasReachedDailyLimit, shouldResetDaily, getNextDayResetTime } from './utils/questHelpers'
+import { generateQuest, canAcceptQuest, updateKillQuestProgress, updateCollectQuestProgress, acceptQuest, abandonQuest, hasReachedDailyLimit, shouldResetDaily, getNextDayResetTime, hasRequiredItems, removeQuestItems } from './utils/questHelpers'
 import { generateLoot } from './systems/LootSystem'
 
 function App() {
@@ -672,10 +672,30 @@ function App() {
         return prev;
       }
 
+      // Validate player has required items for collect quests
+      if (quest.type === 'collect' && !hasRequiredItems(quest, prev.inventory)) {
+        addCombatLog({
+          type: 'error',
+          color: '#ff0000',
+          message: `You don't have ${quest.required}x ${quest.targetName} to turn in this quest!`
+        });
+        return prev;
+      }
+
       const updates = {
         quests: prev.quests.filter(q => q.id !== questId),
         questsCompletedToday: prev.questsCompletedToday + 1
       };
+
+      // Remove items from inventory for collect quests
+      if (quest.type === 'collect') {
+        updates.inventory = removeQuestItems(prev.inventory, quest.target, quest.required);
+        addCombatLog({
+          type: 'quest',
+          color: '#ffaa00',
+          message: `You turn in ${quest.required}x ${quest.targetName}.`
+        });
+      }
 
       // Award XP
       if (quest.rewards.xp > 0) {
@@ -1196,6 +1216,7 @@ function App() {
                     quests={gameState.quests}
                     questsCompletedToday={gameState.questsCompletedToday}
                     playerLevel={gameState.level}
+                    playerInventory={gameState.inventory}
                     onAcceptQuest={handleAcceptQuest}
                     onAbandonQuest={handleAbandonQuest}
                     onTurnInQuest={handleTurnInQuest}

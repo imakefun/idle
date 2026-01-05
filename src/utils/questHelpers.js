@@ -16,9 +16,16 @@ export function generateQuest(questTemplates, playerLevel, activeQuests, gameDat
     return null;
   }
 
-  // Filter templates by player level
+  // Get list of template IDs already in use (available, active, or ready status)
+  const existingTemplateIds = activeQuests
+    .filter(q => q.status === 'available' || q.status === 'active' || q.status === 'ready')
+    .map(q => q.templateId);
+
+  // Filter templates by player level AND exclude already existing quests
   const validTemplates = Object.values(questTemplates).filter(template =>
-    playerLevel >= template.minLevel && playerLevel <= template.maxLevel
+    playerLevel >= template.minLevel &&
+    playerLevel <= template.maxLevel &&
+    !existingTemplateIds.includes(template.id)
   );
 
   if (validTemplates.length === 0) {
@@ -212,4 +219,60 @@ export function getNextDayResetTime() {
  */
 export function shouldResetDaily(lastResetTime) {
   return Date.now() >= lastResetTime;
+}
+
+/**
+ * Check if player has required items in inventory for a collect quest
+ * @param {Object} quest - Quest to check
+ * @param {Array} inventory - Player's inventory
+ * @returns {boolean} True if player has required items
+ */
+export function hasRequiredItems(quest, inventory) {
+  if (quest.type !== 'collect') {
+    return true; // Kill quests don't need items
+  }
+
+  // Count how many of the target item the player has
+  const itemCount = inventory.reduce((count, invItem) => {
+    if (invItem.item.id === quest.target) {
+      return count + invItem.quantity;
+    }
+    return count;
+  }, 0);
+
+  return itemCount >= quest.required;
+}
+
+/**
+ * Remove quest items from inventory
+ * @param {Array} inventory - Player's inventory
+ * @param {string} itemId - Item ID to remove
+ * @param {number} quantity - Quantity to remove
+ * @returns {Array} Updated inventory
+ */
+export function removeQuestItems(inventory, itemId, quantity) {
+  let remainingToRemove = quantity;
+  const newInventory = [];
+
+  for (const invItem of inventory) {
+    if (invItem.item.id === itemId && remainingToRemove > 0) {
+      if (invItem.quantity <= remainingToRemove) {
+        // Remove entire stack
+        remainingToRemove -= invItem.quantity;
+        // Don't add to newInventory (effectively removing it)
+      } else {
+        // Remove partial stack
+        newInventory.push({
+          ...invItem,
+          quantity: invItem.quantity - remainingToRemove
+        });
+        remainingToRemove = 0;
+      }
+    } else {
+      // Keep item as-is
+      newInventory.push(invItem);
+    }
+  }
+
+  return newInventory;
 }

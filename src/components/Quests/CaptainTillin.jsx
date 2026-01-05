@@ -9,6 +9,7 @@ export default function CaptainTillin({
   quests = [],
   questsCompletedToday = 0,
   playerLevel,
+  playerInventory = [],
   onAcceptQuest,
   onAbandonQuest,
   onTurnInQuest
@@ -19,6 +20,22 @@ export default function CaptainTillin({
 
   const dailyLimit = 5;
   const canTurnInMore = questsCompletedToday < dailyLimit;
+
+  // Check if player has required items for a collect quest
+  const hasRequiredItems = (quest) => {
+    if (quest.type !== 'collect') {
+      return true; // Kill quests don't need items
+    }
+
+    const itemCount = playerInventory.reduce((count, invItem) => {
+      if (invItem.item.id === quest.target) {
+        return count + invItem.quantity;
+      }
+      return count;
+    }, 0);
+
+    return itemCount >= quest.required;
+  };
 
   return (
     <div className="captain-tillin-container">
@@ -57,9 +74,11 @@ export default function CaptainTillin({
                   <button
                     className="quest-button turn-in-button"
                     onClick={() => onTurnInQuest(quest.id)}
-                    disabled={!canTurnInMore}
+                    disabled={!canTurnInMore || !hasRequiredItems(quest)}
                   >
-                    {canTurnInMore ? 'Turn In Quest' : 'Daily Limit Reached'}
+                    {!canTurnInMore ? 'Daily Limit Reached' :
+                     !hasRequiredItems(quest) ? `Missing Items (${quest.required}x ${quest.targetName})` :
+                     'Turn In Quest'}
                   </button>
                 </div>
               </div>
