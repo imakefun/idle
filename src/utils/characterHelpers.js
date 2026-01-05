@@ -117,7 +117,7 @@ export function createCharacter(characterInfo, gameData) {
     quests: [], // All quests (available, active, ready, completed)
     questsCompletedToday: 0,
     lastQuestResetTime: Date.now() + (24 * 60 * 60 * 1000), // Next midnight
-    lastQuestGenTime: Date.now(),
+    lastQuestGenTime: 0, // Set to 0 so quests generate immediately on first tick
 
     // Skills
     skills,
