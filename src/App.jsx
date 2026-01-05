@@ -266,14 +266,49 @@ function App() {
           // Update kill and collect quests when monster dies
           if (combatResult.monsterDied && prev.target) {
             let questsToUpdate = prev.quests || [];
+            const originalQuests = [...questsToUpdate];
 
-            // Track kill quests
+            // Track kill quests and show progress
+            const killQuestsBefore = questsToUpdate.filter(q =>
+              q.status === 'active' && q.type === 'kill' && q.target === prev.target.id
+            );
             questsToUpdate = updateKillQuestProgress(questsToUpdate, prev.target.id);
 
-            // Track collect quests for looted items
+            // Add kill quest progress to combat log (find the updated quest)
+            killQuestsBefore.forEach(beforeQuest => {
+              const afterQuest = questsToUpdate.find(q => q.id === beforeQuest.id);
+              if (afterQuest && afterQuest.progress > beforeQuest.progress && afterQuest.progress < afterQuest.required) {
+                // Find the last "has been slain" message in combatResult.logs and append progress
+                const slainLogIndex = combatResult.logs.findLastIndex(log => log.message.includes('has been slain'));
+                if (slainLogIndex !== -1) {
+                  combatResult.logs[slainLogIndex].message += ` (${afterQuest.progress}/${afterQuest.required})`;
+                }
+              }
+            });
+
+            // Track collect quests for looted items and show progress
             if (combatResult.lootedItems && combatResult.lootedItems.length > 0) {
               combatResult.lootedItems.forEach(lootedItem => {
+                const collectQuestBefore = questsToUpdate.find(q =>
+                  q.status === 'active' && q.type === 'collect' && q.target === lootedItem.id
+                );
+
                 questsToUpdate = updateCollectQuestProgress(questsToUpdate, lootedItem.id, lootedItem.quantity);
+
+                // Add collect quest progress to combat log
+                if (collectQuestBefore) {
+                  const collectQuestAfter = questsToUpdate.find(q => q.id === collectQuestBefore.id);
+                  if (collectQuestAfter && collectQuestAfter.progress > collectQuestBefore.progress && collectQuestAfter.progress < collectQuestAfter.required) {
+                    // Find loot message for this item and append progress
+                    const itemName = gameData?.items?.[lootedItem.id]?.name || lootedItem.id;
+                    const lootLogIndex = combatResult.logs.findLastIndex(log =>
+                      log.type === 'loot' && log.message.includes(itemName)
+                    );
+                    if (lootLogIndex !== -1) {
+                      combatResult.logs[lootLogIndex].message += ` (${collectQuestAfter.progress}/${collectQuestAfter.required})`;
+                    }
+                  }
+                }
               });
             }
 
@@ -282,16 +317,16 @@ function App() {
               updates.quests = questsToUpdate;
 
               // Check if any quest became ready
-              const readyQuest = questsToUpdate.find((q, i) =>
-                q.status === 'ready' && (prev.quests[i]?.status !== 'ready')
+              const readyQuests = questsToUpdate.filter((q, i) =>
+                q.status === 'ready' && (originalQuests[i]?.status !== 'ready')
               );
-              if (readyQuest) {
+              readyQuests.forEach(readyQuest => {
                 addCombatLog({
                   type: 'quest',
-                  color: '#00ff00',
-                  message: `Quest progress: ${readyQuest.title} is ready to turn in!`
+                  color: '#2ecc71',
+                  message: `Quest Completed: ${readyQuest.title}`
                 });
-              }
+              });
             }
           }
 
@@ -1045,6 +1080,74 @@ function App() {
                     <p>⏱️ Play Time: {formatTime(gameState.playTime)}</p>
                   </div>
                 </div>
+
+                {/* Current Quests (show active quests outside of safe zones) */}
+                {!gameData?.zones?.[gameState.currentZone]?.isSafe && gameState.quests && gameState.quests.filter(q => q.status === 'active' || q.status === 'ready').length > 0 && (
+                  <div style={{
+                    background: 'var(--bg-secondary)',
+                    padding: '1rem',
+                    borderRadius: '8px',
+                    marginBottom: '1rem'
+                  }}>
+                    <h3 style={{ marginBottom: '0.75rem', fontSize: '1rem' }}>📜 Current Quests</h3>
+                    {gameState.quests.filter(q => q.status === 'active' || q.status === 'ready').map(quest => (
+                      <div key={quest.id} style={{
+                        background: quest.status === 'ready' ? 'rgba(46, 204, 113, 0.1)' : 'var(--bg-tertiary)',
+                        border: quest.status === 'ready' ? '1px solid #2ecc71' : '1px solid var(--border)',
+                        padding: '0.75rem',
+                        borderRadius: '6px',
+                        marginBottom: '0.5rem',
+                        fontSize: '0.875rem'
+                      }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                          <strong style={{ color: quest.status === 'ready' ? '#2ecc71' : 'var(--text-primary)' }}>
+                            {quest.title}
+                          </strong>
+                          {quest.status === 'ready' && (
+                            <span style={{
+                              color: '#2ecc71',
+                              fontSize: '0.75rem',
+                              fontWeight: 'bold',
+                              padding: '0.25rem 0.5rem',
+                              background: 'rgba(46, 204, 113, 0.2)',
+                              borderRadius: '4px'
+                            }}>
+                              ✓ READY
+                            </span>
+                          )}
+                        </div>
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginBottom: '0.5rem' }}>
+                          {quest.type === 'kill' ? '⚔️ Kill' : '📦 Collect'}: {quest.targetName}
+                        </p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <div style={{
+                            flex: 1,
+                            height: '6px',
+                            background: 'var(--bg-primary)',
+                            borderRadius: '3px',
+                            overflow: 'hidden'
+                          }}>
+                            <div style={{
+                              width: `${Math.min((quest.progress / quest.required) * 100, 100)}%`,
+                              height: '100%',
+                              background: quest.status === 'ready' ? '#2ecc71' : 'var(--accent)',
+                              transition: 'width 0.3s'
+                            }} />
+                          </div>
+                          <span style={{
+                            fontSize: '0.75rem',
+                            color: quest.status === 'ready' ? '#2ecc71' : 'var(--text-secondary)',
+                            fontWeight: 'bold',
+                            minWidth: '3rem',
+                            textAlign: 'right'
+                          }}>
+                            {quest.progress}/{quest.required}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
                 {/* Combat (only show when NOT in safe zone) */}
                 {!gameData?.zones?.[gameState.currentZone]?.isSafe && (
