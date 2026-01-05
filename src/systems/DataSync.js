@@ -77,6 +77,8 @@ export async function loadGameData() {
     if (rawData.QuestTemplates === null || rawData.QuestTemplates === undefined) {
       console.log('📋 QuestTemplates sheet not found, using fallback quest templates data');
       rawData.QuestTemplates = fallbackData.QuestTemplates || [];
+    } else {
+      console.log('✅ QuestTemplates loaded from Google Sheets:', rawData.QuestTemplates.length, 'templates');
     }
 
     // Transform the data

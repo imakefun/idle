@@ -86,7 +86,7 @@ export function generateQuest(questTemplates, playerLevel, activeQuests, gameDat
     .replace('{target}', targetName);
 
   // Create quest instance
-  return {
+  const quest = {
     id: `quest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`, // Unique instance ID
     templateId: template.id,
     type: template.type,
@@ -104,6 +104,10 @@ export function generateQuest(questTemplates, playerLevel, activeQuests, gameDat
     title: title,
     description: description
   };
+
+  console.log(`🎯 Generated quest from template "${template.id}" with lootTableId:`, template.lootTableId || '(empty)');
+
+  return quest;
 }
 
 /**
