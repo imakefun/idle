@@ -10,7 +10,7 @@ const CACHE_KEY = 'norrathIdleGameData_v1';
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 // List of all sheets to fetch
-const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps', 'Skills', 'Spawns', 'Settings', 'LootTables', 'Merchants', 'MerchantInventory', 'QuestTemplates'];
+const SHEET_NAMES = ['Races', 'Classes', 'Monsters', 'Items', 'Zones', 'Camps', 'Skills', 'Spawns', 'Settings', 'LootTables', 'Merchants', 'MerchantInventory', 'Quests'];
 
 /**
  * Load game data with caching and fallback support
@@ -74,9 +74,11 @@ export async function loadGameData() {
       rawData.MerchantInventory = fallbackData.MerchantInventory || [];
     }
 
-    if (rawData.QuestTemplates === null || rawData.QuestTemplates === undefined) {
-      console.log('📋 QuestTemplates sheet not found, using fallback quest templates data');
-      rawData.QuestTemplates = fallbackData.QuestTemplates || [];
+    if (rawData.Quests === null || rawData.Quests === undefined) {
+      console.log('📋 Quests sheet not found, using fallback quest templates data');
+      rawData.Quests = fallbackData.QuestTemplates || [];
+    } else {
+      console.log('✅ Quests loaded from Google Sheets:', rawData.Quests.length, 'templates');
     }
 
     // Transform the data
@@ -117,7 +119,7 @@ function transformGameData(rawData) {
     lootTables: transformLootTables(rawData.LootTables || []),
     merchants: transformMerchants(rawData.Merchants || []),
     merchantInventory: transformMerchantInventory(rawData.MerchantInventory || [], rawData.Items || []),
-    questTemplates: transformQuestTemplates(rawData.QuestTemplates || [])
+    questTemplates: transformQuestTemplates(rawData.Quests || [])
   };
 }
 
