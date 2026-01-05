@@ -158,5 +158,40 @@ Each generated quest instance has:
 
 ---
 
+## Sample Quest Data (Tab-Separated for Google Sheets)
+
+Copy the table below and paste directly into Google Sheets:
+
+```
+id	type	targetType	targetIds	minRequired	maxRequired	minLevel	maxLevel	xpReward	copperReward	lootTableId	title	description
+quest_exterminate_rats	kill	monster	giant_rat	5	10	1	3	50	25	loot_quest_low	Exterminate {count} {target}	The town cellars are infested! Kill {count} {target} and return for your reward.
+quest_snake_hunt	kill	monster	snake	4	8	2	4	75	35	loot_quest_low	Hunt {count} {target}	Snakes have been spotted near the roads. Slay {count} {target} to keep travelers safe.
+quest_beetle_problem	kill	monster	fire_beetle	5	12	2	4	70	30	loot_quest_low	Beetle Extermination	Fire beetles are damaging crops. Kill {count} {target} to protect the fields.
+quest_spider_menace	kill	monster	young_spider	4	10	3	5	100	50	loot_quest_low	Spider Threat	Spiders have been seen in the southern fields. Eliminate {count} {target}.
+quest_gnoll_threat	kill	monster	gnoll_pup	3	7	3	6	125	60	loot_quest_low	Gnoll Threat	Gnoll pups have been spotted near the forest. Kill {count} {target} before they grow stronger.
+quest_skeleton_patrol	kill	monster	decaying_skeleton	3	6	4	7	150	75		Clear the Undead	Skeletons haunt the old ruins. Destroy {count} {target} and bring peace to the area.
+quest_wolf_pack	kill	monster	dark_wolf	3	7	5	8	200	100	loot_quest_low	Wolf Pack	A pack of dark wolves threatens the forest paths. Hunt down {count} {target}.
+quest_gnoll_scouts	kill	monster	gnoll_scout	3	6	5	8	225	110	loot_quest_low	Scout Patrol	Gnoll scouts are scouting our defenses. Eliminate {count} {target}.
+quest_guard_duty	kill	monster	gnoll_guard	2	5	6	9	275	130		Guard Elimination	Gnoll guards protect their territory. Defeat {count} {target} to weaken their forces.
+quest_warrior_challenge	kill	monster	gnoll_warrior	2	4	7	10	350	175	loot_quest_low	Warrior Challenge	Face the gnoll warriors in battle. Slay {count} {target} to prove your strength.
+quest_collect_rat_ears	collect	item	rat_ear	5	10	1	4	60	20	loot_quest_low	Collect {count} {target}	I need {target} for my alchemy. Bring me {count} of them.
+quest_collect_snake_scales	collect	item	snake_scales	4	8	2	5	90	40		Snake Scale Collection	Snake scales are valuable for armor crafting. Collect {count} {target}.
+quest_collect_beetle_eyes	collect	item	beetle_eye	5	12	2	5	85	35	loot_quest_low	Beetle Eye Harvest	Beetle eyes have alchemical properties. Gather {count} {target} for me.
+quest_collect_bone_chips	collect	item	bone_chips	6	15	4	7	120	55		Bone Gathering	I need bone chips for my studies. Collect {count} {target} from the undead.
+quest_collect_spider_silk	collect	item	spider_silk	4	10	3	6	110	50	loot_quest_low	Spider Silk Collection	Spider silk is prized by tailors. Gather {count} {target}.
+quest_collect_wolf_pelts	collect	item	wolf_pelt	3	7	5	9	180	90	loot_quest_low	Wolf Pelt Hunt	Wolf pelts are needed for winter gear. Bring me {count} {target}.
+quest_collect_gnoll_fangs	collect	item	gnoll_fang	4	8	3	7	140	65	loot_quest_low	Gnoll Fang Collection	Gnoll fangs make excellent trophies. Collect {count} {target}.
+quest_scavenge_materials	collect	item	beetle_carapace	3	8	4	8	160	70		Material Scavenging	Beetle carapaces are useful for armor. Gather {count} {target}.
+quest_prove_worth	kill	monster	any	8	15	1	3	80	40	loot_quest_low	Prove Your Worth	Slay {count} creatures to prove you're ready for adventure.
+quest_hunt_beasts	kill	monster	any	10	20	5	10	250	120		Beast Hunter	Hunt down {count} dangerous beasts in the wilds.
+quest_undead_cleansing	kill	monster	decaying_skeleton,skeletal_warrior	4	8	4	8	180	85	loot_quest_low	Undead Cleansing	The undead plague our lands. Destroy {count} {target}.
+quest_gnoll_campaign	kill	monster	gnoll_pup,gnoll_scout,gnoll_guard	5	10	3	8	200	95	loot_quest_low	Gnoll Campaign	The gnolls grow bolder. Kill {count} {target} to push them back.
+quest_canine_control	kill	monster	dark_wolf,guard_dog	4	8	5	9	220	105		Canine Control	Wild canines threaten the settlements. Hunt {count} {target}.
+quest_arachnid_elimination	kill	monster	young_spider	6	12	3	6	130	60	loot_quest_low	Arachnid Problem	Spiders are multiplying too quickly. Eliminate {count} {target}.
+quest_bandit_patrol	kill	monster	bandit_thug,bandit_guard	3	6	8	12	400	200	loot_quest_low	Bandit Patrol	Bandits harass travelers on the roads. Defeat {count} {target}.
+```
+
+---
+
 **Created:** 2026-01-04
 **Status:** Active - Quest system in development
