@@ -11,12 +11,15 @@ import Combat from './components/Combat/Combat'
 import Skills from './components/Skills/Skills'
 import GuildMaster from './components/Skills/GuildMaster'
 import Merchant from './components/Merchant/Merchant'
+import CaptainTillin from './components/Quests/CaptainTillin'
 import { createCharacter, consumeItem, equipItem, removeItemFromInventory, addItemToInventory, consolidateInventory } from './utils/characterHelpers'
 import { sellItemToMerchant, buyItemFromMerchant } from './systems/MerchantSystem'
 import { calculateXPForLevel, calculateDrainRate, formatCurrency, calculateAC, calculateHPRegen, calculateStaminaRegen, calculateMaxHP, calculateMaxStamina } from './utils/calculations'
 import { clearCache } from './systems/DataSync'
 import { selectRandomMonster, selectMonsterFromSpawnTable, processCombatRound } from './systems/CombatEngine'
 import { updateSkillCaps } from './systems/SkillSystem'
+import { generateQuest, canAcceptQuest, updateKillQuestProgress, updateCollectQuestProgress, acceptQuest, abandonQuest, hasReachedDailyLimit, shouldResetDaily, getNextDayResetTime } from './utils/questHelpers'
+import { generateLoot } from './systems/LootSystem'
 
 function App() {
   // Load game data from Google Sheets
@@ -159,6 +162,46 @@ function App() {
         updates.stamina = Math.min(prev.maxStamina, prev.stamina + staminaRegen);
       }
 
+      // Quest system
+      if (gameData?.questTemplates) {
+        const now = Date.now();
+        const quests = prev.quests || [];
+
+        // Check for daily reset
+        if (shouldResetDaily(prev.lastQuestResetTime || 0)) {
+          updates.questsCompletedToday = 0;
+          updates.lastQuestResetTime = getNextDayResetTime();
+        }
+
+        // Quest generation (every 5 minutes, max 3 available quests)
+        const timeSinceLastGen = now - (prev.lastQuestGenTime || 0);
+        const QUEST_GEN_INTERVAL = 5 * 60 * 1000; // 5 minutes
+        const MAX_AVAILABLE_QUESTS = 3;
+
+        const availableQuests = quests.filter(q => q.status === 'available');
+        const activeQuests = quests.filter(q => q.status === 'active');
+
+        if (timeSinceLastGen >= QUEST_GEN_INTERVAL && availableQuests.length < MAX_AVAILABLE_QUESTS) {
+          const newQuest = generateQuest(
+            gameData.questTemplates,
+            prev.level,
+            quests,
+            gameData
+          );
+
+          if (newQuest) {
+            updates.quests = [...quests, newQuest];
+            updates.lastQuestGenTime = now;
+
+            addCombatLog({
+              type: 'quest',
+              color: '#ffaa00',
+              message: `New quest available: ${newQuest.title}`
+            });
+          }
+        }
+      }
+
       // Combat processing
       if (prev.target && prev.inCombat) {
         // Check weapon delay (attack every 2 seconds for now)
@@ -192,6 +235,38 @@ function App() {
           // Update target if still alive
           if (!combatResult.monsterDied && combatResult.monster) {
             updates.target = combatResult.monster;
+          }
+
+          // Update kill and collect quests when monster dies
+          if (combatResult.monsterDied && prev.target) {
+            let questsToUpdate = prev.quests || [];
+
+            // Track kill quests
+            questsToUpdate = updateKillQuestProgress(questsToUpdate, prev.target.id);
+
+            // Track collect quests for looted items
+            if (combatResult.lootedItems && combatResult.lootedItems.length > 0) {
+              combatResult.lootedItems.forEach(lootedItem => {
+                questsToUpdate = updateCollectQuestProgress(questsToUpdate, lootedItem.id, lootedItem.quantity);
+              });
+            }
+
+            // Update quests if changed
+            if (JSON.stringify(questsToUpdate) !== JSON.stringify(prev.quests)) {
+              updates.quests = questsToUpdate;
+
+              // Check if any quest became ready
+              const readyQuest = questsToUpdate.find((q, i) =>
+                q.status === 'ready' && (prev.quests[i]?.status !== 'ready')
+              );
+              if (readyQuest) {
+                addCombatLog({
+                  type: 'quest',
+                  color: '#00ff00',
+                  message: `Quest progress: ${readyQuest.title} is ready to turn in!`
+                });
+              }
+            }
           }
 
           // Handle player death
@@ -497,6 +572,127 @@ function App() {
         currency: newCurrency,
         skills: updatedSkills
       };
+    });
+  };
+
+  // Quest handlers
+  const handleAcceptQuest = (questId) => {
+    setGameState(prev => ({
+      ...prev,
+      quests: acceptQuest(prev.quests, questId)
+    }));
+
+    addCombatLog({
+      type: 'quest',
+      color: '#ffaa00',
+      message: 'Quest accepted!'
+    });
+  };
+
+  const handleAbandonQuest = (questId) => {
+    if (window.confirm('Are you sure you want to abandon this quest?')) {
+      setGameState(prev => ({
+        ...prev,
+        quests: abandonQuest(prev.quests, questId)
+      }));
+
+      addCombatLog({
+        type: 'quest',
+        color: '#888888',
+        message: 'Quest abandoned.'
+      });
+    }
+  };
+
+  const handleTurnInQuest = (questId) => {
+    setGameState(prev => {
+      const quest = prev.quests.find(q => q.id === questId);
+      if (!quest || quest.status !== 'ready') {
+        return prev;
+      }
+
+      const updates = {
+        quests: prev.quests.filter(q => q.id !== questId),
+        questsCompletedToday: prev.questsCompletedToday + 1
+      };
+
+      // Award XP
+      if (quest.rewards.xp > 0) {
+        updates.xp = prev.xp + quest.rewards.xp;
+
+        addCombatLog({
+          type: 'xp',
+          color: '#00aaff',
+          message: `You gain ${quest.rewards.xp} experience!`
+        });
+
+        // Check for level up
+        while (updates.xp >= prev.xpForNextLevel) {
+          const newLevel = prev.level + 1;
+          const xpOverflow = updates.xp - prev.xpForNextLevel;
+          const newXPRequired = calculateXPForLevel(newLevel);
+          const newMaxHP = calculateMaxHP(newLevel, gameData.classes[prev.class], prev.stats.STA);
+          const newMaxStamina = calculateMaxStamina(newLevel);
+
+          updates.level = newLevel;
+          updates.xp = xpOverflow;
+          updates.xpForNextLevel = newXPRequired;
+          updates.maxHp = newMaxHP;
+          updates.hp = newMaxHP; // Heal to full on level up
+          updates.maxStamina = newMaxStamina;
+          updates.stamina = newMaxStamina;
+
+          // Update skill caps
+          updates.skills = updateSkillCaps(prev.skills, newLevel, gameData.settings);
+
+          addCombatLog({
+            type: 'level-up',
+            color: '#ffff00',
+            message: `You have reached level ${newLevel}!`
+          });
+        }
+      }
+
+      // Award copper
+      if (quest.rewards.copper > 0) {
+        updates.currency = prev.currency + quest.rewards.copper;
+
+        addCombatLog({
+          type: 'loot',
+          color: '#ffaa00',
+          message: `You receive ${quest.rewards.copper} copper!`
+        });
+      }
+
+      // Award loot table items
+      if (quest.rewards.lootTableId && gameData?.lootTables) {
+        const loot = generateLoot(quest.rewards.lootTableId, gameData.lootTables, gameData.items);
+
+        if (loot && loot.items && loot.items.length > 0) {
+          const newInventory = [...(updates.inventory || prev.inventory)];
+
+          loot.items.forEach(item => {
+            const result = addItemToInventory(newInventory, item.item, item.quantity);
+            if (result.success) {
+              addCombatLog({
+                type: 'loot',
+                color: '#90EE90',
+                message: `You receive ${item.quantity}x ${item.item.name}!`
+              });
+            }
+          });
+
+          updates.inventory = newInventory;
+        }
+      }
+
+      addCombatLog({
+        type: 'quest',
+        color: '#00ff00',
+        message: `Quest complete: ${quest.title}`
+      });
+
+      return { ...prev, ...updates };
     });
   };
 
@@ -859,6 +1055,18 @@ function App() {
                     playerInventory={gameState.inventory}
                     onSellItem={handleSellItem}
                     onBuyItem={handleBuyItem}
+                  />
+                )}
+
+                {/* Captain Tillin - Quest Giver (only show in safe zones) */}
+                {gameData?.zones?.[gameState.currentZone]?.isSafe && (
+                  <CaptainTillin
+                    quests={gameState.quests}
+                    questsCompletedToday={gameState.questsCompletedToday}
+                    playerLevel={gameState.level}
+                    onAcceptQuest={handleAcceptQuest}
+                    onAbandonQuest={handleAbandonQuest}
+                    onTurnInQuest={handleTurnInQuest}
                   />
                 )}
 

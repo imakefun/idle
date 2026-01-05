@@ -1,0 +1,200 @@
+.captain-tillin-container {
+  background: var(--bg-secondary);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.quest-npc-description {
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: var(--bg-tertiary);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+}
+
+.quest-daily-progress {
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.quest-limit-reached {
+  color: #ff6b6b;
+  font-size: 0.9rem;
+}
+
+.quest-section {
+  margin-bottom: 1.5rem;
+}
+
+.quest-section h4 {
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+}
+
+.quest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.quest-item {
+  background: var(--bg-tertiary);
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 4px solid;
+}
+
+.quest-ready {
+  border-left-color: #00ff00;
+}
+
+.quest-active {
+  border-left-color: #ffaa00;
+}
+
+.quest-available {
+  border-left-color: #888888;
+}
+
+.quest-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.quest-title {
+  font-weight: bold;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.quest-progress {
+  font-size: 0.9rem;
+  color: #ffaa00;
+  font-weight: bold;
+}
+
+.quest-progress.complete {
+  color: #00ff00;
+}
+
+.quest-description {
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.quest-objective {
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  background: var(--bg-primary);
+  border-radius: 4px;
+}
+
+.quest-rewards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.reward-xp,
+.reward-copper,
+.reward-items {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.reward-xp {
+  background: #0066ff;
+  color: white;
+}
+
+.reward-copper {
+  background: #ff9900;
+  color: white;
+}
+
+.reward-items {
+  background: #9b59b6;
+  color: white;
+}
+
+.quest-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.quest-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.quest-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.quest-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.accept-button {
+  background: linear-gradient(135deg, #00aa00 0%, #007700 100%);
+  color: white;
+  border: 1px solid #005500;
+}
+
+.accept-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #00cc00 0%, #009900 100%);
+}
+
+.abandon-button {
+  background: linear-gradient(135deg, #cc0000 0%, #990000 100%);
+  color: white;
+  border: 1px solid #770000;
+}
+
+.abandon-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ee0000 0%, #bb0000 100%);
+}
+
+.turn-in-button {
+  background: linear-gradient(135deg, #0088ff 0%, #0066cc 100%);
+  color: white;
+  border: 1px solid #004499;
+}
+
+.turn-in-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #00aaff 0%, #0088dd 100%);
+}
+
+.quest-none {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+}
+
+.quest-hint {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #888;
+}
