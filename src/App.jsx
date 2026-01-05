@@ -11,6 +11,7 @@ import Combat from './components/Combat/Combat'
 import Skills from './components/Skills/Skills'
 import GuildMaster from './components/Skills/GuildMaster'
 import Merchant from './components/Merchant/Merchant'
+import CaptainTillin from './components/Quests/CaptainTillin'
 import { createCharacter, consumeItem, equipItem, removeItemFromInventory, addItemToInventory, consolidateInventory } from './utils/characterHelpers'
 import { sellItemToMerchant, buyItemFromMerchant } from './systems/MerchantSystem'
 import { calculateXPForLevel, calculateDrainRate, formatCurrency, calculateAC, calculateHPRegen, calculateStaminaRegen, calculateMaxHP, calculateMaxStamina } from './utils/calculations'
@@ -161,6 +162,46 @@ function App() {
         updates.stamina = Math.min(prev.maxStamina, prev.stamina + staminaRegen);
       }
 
+      // Quest system
+      if (gameData?.questTemplates) {
+        const now = Date.now();
+        const quests = prev.quests || [];
+
+        // Check for daily reset
+        if (shouldResetDaily(prev.lastQuestResetTime || 0)) {
+          updates.questsCompletedToday = 0;
+          updates.lastQuestResetTime = getNextDayResetTime();
+        }
+
+        // Quest generation (every 5 minutes, max 3 available quests)
+        const timeSinceLastGen = now - (prev.lastQuestGenTime || 0);
+        const QUEST_GEN_INTERVAL = 5 * 60 * 1000; // 5 minutes
+        const MAX_AVAILABLE_QUESTS = 3;
+
+        const availableQuests = quests.filter(q => q.status === 'available');
+        const activeQuests = quests.filter(q => q.status === 'active');
+
+        if (timeSinceLastGen >= QUEST_GEN_INTERVAL && availableQuests.length < MAX_AVAILABLE_QUESTS) {
+          const newQuest = generateQuest(
+            gameData.questTemplates,
+            prev.level,
+            quests,
+            gameData
+          );
+
+          if (newQuest) {
+            updates.quests = [...quests, newQuest];
+            updates.lastQuestGenTime = now;
+
+            addCombatLog({
+              type: 'quest',
+              color: '#ffaa00',
+              message: `New quest available: ${newQuest.title}`
+            });
+          }
+        }
+      }
+
       // Combat processing
       if (prev.target && prev.inCombat) {
         // Check weapon delay (attack every 2 seconds for now)
@@ -194,6 +235,38 @@ function App() {
           // Update target if still alive
           if (!combatResult.monsterDied && combatResult.monster) {
             updates.target = combatResult.monster;
+          }
+
+          // Update kill and collect quests when monster dies
+          if (combatResult.monsterDied && prev.target) {
+            let questsToUpdate = prev.quests || [];
+
+            // Track kill quests
+            questsToUpdate = updateKillQuestProgress(questsToUpdate, prev.target.id);
+
+            // Track collect quests for looted items
+            if (combatResult.lootedItems && combatResult.lootedItems.length > 0) {
+              combatResult.lootedItems.forEach(lootedItem => {
+                questsToUpdate = updateCollectQuestProgress(questsToUpdate, lootedItem.id, lootedItem.quantity);
+              });
+            }
+
+            // Update quests if changed
+            if (JSON.stringify(questsToUpdate) !== JSON.stringify(prev.quests)) {
+              updates.quests = questsToUpdate;
+
+              // Check if any quest became ready
+              const readyQuest = questsToUpdate.find((q, i) =>
+                q.status === 'ready' && (prev.quests[i]?.status !== 'ready')
+              );
+              if (readyQuest) {
+                addCombatLog({
+                  type: 'quest',
+                  color: '#00ff00',
+                  message: `Quest progress: ${readyQuest.title} is ready to turn in!`
+                });
+              }
+            }
           }
 
           // Handle player death
@@ -982,6 +1055,18 @@ function App() {
                     playerInventory={gameState.inventory}
                     onSellItem={handleSellItem}
                     onBuyItem={handleBuyItem}
+                  />
+                )}
+
+                {/* Captain Tillin - Quest Giver (only show in safe zones) */}
+                {gameData?.zones?.[gameState.currentZone]?.isSafe && (
+                  <CaptainTillin
+                    quests={gameState.quests}
+                    questsCompletedToday={gameState.questsCompletedToday}
+                    playerLevel={gameState.level}
+                    onAcceptQuest={handleAcceptQuest}
+                    onAbandonQuest={handleAbandonQuest}
+                    onTurnInQuest={handleTurnInQuest}
                   />
                 )}
 

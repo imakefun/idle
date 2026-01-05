@@ -456,7 +456,10 @@ export function processCombatRound(player, monster, gameData) {
     updates.target = null;
     updates.inCombat = false;
 
-    return { logs, updates, skillUps, monsterDied: true };
+    // Return looted items for quest tracking
+    const lootedItems = generatedLoot?.items?.map(item => ({ id: item.item.id, quantity: item.quantity })) || [];
+
+    return { logs, updates, skillUps, monsterDied: true, lootedItems };
   }
 
   // Monster counter-attack - check for dodge first
