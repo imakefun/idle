@@ -1,6 +1,6 @@
 # Norrath Idle - Project Status
 
-## Last Updated: 2026-01-03
+## Last Updated: 2026-01-05
 
 ## Phase Completion Status
 
@@ -94,12 +94,24 @@
 - ✅ 7.3 Starvation/Dehydration Penalties (90% regeneration penalty when < 1)
 - ✅ 7.4 Regeneration System (HP regen based on STA, stamina regen, survival penalties)
 
-### 🟡 Phase 8: Quest System (Week 8) - NOT STARTED
-- [ ] 8.1 Quest Data Structure
-- [ ] 8.2 Quest Generation
-- [ ] 8.3 Quest Progression
-- [ ] 8.4 Quest Turn-In
-- [ ] 8.5 Quest Management
+### ✅ Phase 8: Quest System (Week 8) - COMPLETED
+- ✅ 8.1 Quest Data Structure (Google Sheets integration with "Quests" sheet)
+- ✅ 8.2 Quest Generation (Automatic generation every 5 minutes, max 3 available)
+- ✅ 8.3 Quest Progression (Kill and collect quest tracking with progress display)
+- ✅ 8.4 Quest Turn-In (Reward distribution: XP, copper, loot tables)
+- ✅ 8.5 Quest Management (Daily limit, quest abandoning, duplicate prevention)
+
+**Implemented Features:**
+- 25 quest templates from Google Sheets (kill and collect quests, levels 1-12)
+- Captain Tillin quest NPC in safe zones
+- Quest generation: 3 initial quests on character creation, then 1 per 5 minutes
+- Kill quests: Track monster kills with progress in combat log
+- Collect quests: Track looted items, remove items on turn-in
+- Quest UI: Active quests display outside towns, Captain Tillin in towns
+- Quest rewards: XP (with level-ups), copper, and loot table items
+- Daily quest limit: 5 quests per day with midnight reset
+- Duplicate prevention: Each template can only appear once at a time
+- Item validation: Collect quests verify player has required items before turn-in
 
 ### ✅ Phase 9: Economy & Loot (Week 9) - COMPLETED
 - ✅ 9.1 Loot Tables (Implemented with Google Sheets integration)
@@ -122,11 +134,11 @@
 - [ ] 10.4 Recipe Discovery
 - [ ] 10.5 Tradeskill Leveling
 
-### 🟡 Phase 11: NPC System (Week 11) - PARTIALLY COMPLETED
-- [x] Guild Master (skill training) ✅
-- [ ] Merchants (buy/sell goods)
-- [ ] Quest Givers
-- [ ] Tradeskill Trainers
+### ✅ Phase 11: NPC System (Week 11) - COMPLETED
+- ✅ Guild Master (skill training)
+- ✅ Merchants (buy/sell goods - 3 merchants in Qeynos)
+- ✅ Quest Givers (Captain Tillin with daily quests)
+- [ ] Tradeskill Trainers (pending Phase 10)
 
 ### ✅ Phase 12: Mobile-First UI/UX (Week 12) - COMPLETED
 - ✅ Tabbed navigation (Game, Player, Settings)
@@ -183,6 +195,20 @@
 - ✅ Status bars with color coding
 - ✅ Mobile-responsive design
 
+### Quests
+- ✅ Quest generation system (3 initial, then 1 per 5 minutes)
+- ✅ Kill and collect quest types
+- ✅ Quest progress tracking in combat log
+- ✅ Quest rewards (XP, copper, loot tables)
+- ✅ Daily quest limit (5 per day)
+- ✅ Captain Tillin quest NPC
+
+### Economy
+- ✅ Loot system with configurable drop tables
+- ✅ 3 merchant NPCs (General, Armor, Food)
+- ✅ Buy/sell functionality
+- ✅ Dynamic pricing
+
 ### Configuration
 - ✅ Google Sheets-based game data
 - ✅ Settings system for game balance tuning
@@ -199,28 +225,32 @@
 - ✅ SKILLS_METADATA.md
 - ✅ SPAWNS_METADATA.md
 - ✅ SETTINGS_METADATA.md
-- ✅ **LOOT_TABLES_METADATA.md** (NEW)
-- ✅ **MERCHANTS_METADATA.md** (NEW)
+- ✅ LOOT_TABLES_METADATA.md
+- ✅ MERCHANTS_METADATA.md
+- ✅ **QUEST_TEMPLATES_METADATA.md** (NEW)
 
 ## Next Steps
 
 ### Completed in This Session
-- ✅ Phase 9: Economy & Loot (Complete)
-  - Loot tables and drops from monsters
-  - Merchant NPCs with buy/sell functionality
+- ✅ Phase 8: Quest System (Complete)
+  - 25 quest templates from Google Sheets
+  - Kill and collect quest types
+  - Quest generation, progression, and turn-in
+  - Captain Tillin quest NPC
+  - Daily quest limits and duplicate prevention
 
-### Next Priority: Phase 8 - Quest System
-1. Create quest data structure
-2. Implement quest generation system
-3. Add Captain Tillin NPC in town
-4. Create quest tracking UI
-5. Implement quest turn-in mechanics
-6. Add quest rewards (XP, items, currency)
+### Next Priority: Phase 10 - Tradeskills
+1. Create tradeskill and recipe data structures
+2. Implement container system for crafting
+3. Build crafting interface UI
+4. Add recipe discovery mechanics
+5. Implement tradeskill leveling system
+6. Add crafted items to loot/merchant systems
 
 ### Future Priorities
-1. **Phase 10: Tradeskills** - Crafting system, recipes, containers
-2. **Phase 11: Complete NPC System** - More NPCs, dialogue, interactions
-3. **Phase 12: Polish & Balance** - UI improvements, mobile optimization, game balance
+1. **Phase 13: Advanced Features** - Factions, achievements, leaderboards
+2. **Phase 14: Polish & Balance** - UI improvements, mobile optimization, game balance
+3. **Phase 15: Content Expansion** - More zones, monsters, items, quests
 
 ## Technical Debt
 - [ ] Add TypeScript (optional)
