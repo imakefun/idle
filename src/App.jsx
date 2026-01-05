@@ -181,7 +181,33 @@ function App() {
         const availableQuests = quests.filter(q => q.status === 'available');
         const activeQuests = quests.filter(q => q.status === 'active');
 
-        if (timeSinceLastGen >= QUEST_GEN_INTERVAL && availableQuests.length < MAX_AVAILABLE_QUESTS) {
+        // Initial quest generation - generate 3 quests when starting fresh
+        if (quests.length === 0 && prev.lastQuestGenTime === 0) {
+          const newQuests = [];
+          for (let i = 0; i < MAX_AVAILABLE_QUESTS; i++) {
+            const newQuest = generateQuest(
+              gameData.questTemplates,
+              prev.level,
+              [...quests, ...newQuests],
+              gameData
+            );
+            if (newQuest) {
+              newQuests.push(newQuest);
+            }
+          }
+
+          if (newQuests.length > 0) {
+            updates.quests = newQuests;
+            updates.lastQuestGenTime = now;
+            addCombatLog({
+              type: 'quest',
+              color: '#ffaa00',
+              message: `${newQuests.length} quests are now available from Captain Tillin!`
+            });
+          }
+        }
+        // Regular quest generation - one quest per interval
+        else if (timeSinceLastGen >= QUEST_GEN_INTERVAL && availableQuests.length < MAX_AVAILABLE_QUESTS) {
           const newQuest = generateQuest(
             gameData.questTemplates,
             prev.level,
