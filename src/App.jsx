@@ -1174,6 +1174,27 @@ function App() {
                       Reload game data from Google Sheets
                     </p>
                   </div>
+
+                  {/* Game Data Summary */}
+                  <div style={{
+                    padding: '1rem',
+                    background: 'var(--bg-tertiary)',
+                    borderRadius: '8px',
+                    fontSize: '0.875rem'
+                  }}>
+                    <p style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>📊 Game Data Loaded:</p>
+                    <p>• {Object.keys(gameData?.races || {}).length} Races</p>
+                    <p>• {Object.keys(gameData?.classes || {}).length} Classes</p>
+                    <p>• {Object.keys(gameData?.monsters || {}).length} Monsters</p>
+                    <p>• {Object.keys(gameData?.items || {}).length} Items</p>
+                    <p>• {Object.keys(gameData?.zones || {}).length} Zones</p>
+                    <p>• {Object.keys(gameData?.camps || {}).length} Camps</p>
+                    <p>• {Object.keys(gameData?.skills || {}).length} Skills</p>
+                    <p>• {(gameData?.spawns || []).length} Spawns</p>
+                    <p>• {Object.keys(gameData?.merchants || {}).length} Merchants</p>
+                    <p>• {(gameData?.lootTables || []).length} Loot Tables</p>
+                    <p>• {Object.keys(gameData?.questTemplates || {}).length} Quest Templates</p>
+                  </div>
                 </div>
               </div>
             )}
