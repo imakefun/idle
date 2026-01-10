@@ -154,7 +154,176 @@ Generate [count] quests for level [level]:
 - "Generate complete armor set for level 10"
 - "Generate 20 recipes for Blacksmithing skill 1-100"
 
-### 4. Asset Generation
+### 4. Data Visualization & Analytics
+
+**Analytics Dashboard:**
+- Game economy overview
+- Content distribution charts
+- Balance metrics
+- Player progression modeling
+- Content gaps analysis
+
+**Visualization Library:**
+- Chart.js or Recharts for interactive charts
+- D3.js for advanced visualizations
+- Data tables with export capabilities
+- Comparison tools
+
+**Charts & Graphs:**
+
+**XP Progression Curve:**
+- Visualize XP required per level (1-50)
+- Compare XP from monsters vs quests
+- Calculate leveling time estimates
+- Identify XP gaps or spikes
+- Interactive curve editor to adjust formula
+
+**Monster Balance Charts:**
+- HP by level (scatter plot)
+- Damage by level (line chart)
+- XP rewards by level (bar chart)
+- Compare monsters across levels
+- Identify outliers (too weak/strong)
+
+**Item Progression Charts:**
+- Weapon damage by level (line chart)
+- Armor AC by level (line chart)
+- Item value by level (scatter plot)
+- Equipment slot distribution (pie chart)
+- Compare item power curves
+
+**Zone Distribution:**
+- Monster levels per zone (histogram)
+- Monster count per camp (bar chart)
+- Loot quality by zone (heatmap)
+- Zone difficulty progression (line chart)
+
+**Economy Analytics:**
+- Item vendor prices (scatter plot)
+- Loot table drop rates (stacked bar)
+- Currency sources (pie chart: monsters, quests, vendors)
+- Currency sinks (pie chart: merchants, skills, repairs)
+- Inflation calculator
+
+**Quest Analytics:**
+- Quest rewards by level (multi-line: XP, copper, items)
+- Quest types distribution (pie chart)
+- Quest difficulty spread (histogram)
+- Reward efficiency (XP per minute, copper per minute)
+
+**Loot Table Analysis:**
+- Drop rate visualization (tree map)
+- Item rarity distribution (pie chart)
+- Expected loot value per kill
+- Compare loot tables across monster levels
+
+**Recipe Economics:**
+- Component cost vs result value (scatter plot)
+- Tradeskill leveling curve (line chart)
+- Recipe difficulty distribution (histogram)
+- Crafting profitability analysis
+
+**Comparison Tools:**
+
+**Monster Comparison:**
+- Side-by-side stat comparison
+- Radar chart for multi-stat comparison
+- Select 2-10 monsters to compare
+- Highlight differences
+- Generate comparison report
+
+**Item Comparison:**
+- Compare weapons: DPS, delay, damage range
+- Compare armor: AC, stats, weight
+- Side-by-side equipment sets
+- Upgrade path visualization (item A → item B)
+
+**Zone Comparison:**
+- Monster density and levels
+- Loot quality and quantity
+- XP efficiency (XP per hour estimate)
+- Safety level (monster difficulty)
+
+**Quest Comparison:**
+- Reward efficiency
+- Time to complete estimates
+- Difficulty ratings
+- Prerequisites and chains
+
+**Modeling Tools:**
+
+**XP Progression Modeler:**
+```
+Inputs:
+- XP curve formula (editable)
+- Monster XP by level
+- Quest XP by level
+- Daily play time
+
+Outputs:
+- Levels per hour chart
+- Time to max level
+- XP sources breakdown
+- Recommended content by level
+```
+
+**Economy Simulator:**
+```
+Inputs:
+- Starting currency
+- Income sources (monsters, quests, vendors)
+- Expense sinks (gear, skills, consumables)
+- Play pattern (hours per day)
+
+Outputs:
+- Currency over time projection
+- Break-even analysis
+- Savings rate
+- Equipment affordability timeline
+```
+
+**Drop Rate Calculator:**
+```
+Inputs:
+- Loot table weights
+- Monster kill rate
+- Play time
+
+Outputs:
+- Expected items per hour
+- Time to acquire specific item
+- Rare item probability
+- Farming efficiency rankings
+```
+
+**Character Progression Planner:**
+```
+Track progression through content:
+- Recommended zones by level
+- Equipment upgrade path
+- Skill training priority
+- Quest availability timeline
+- Tradeskill leveling plan
+```
+
+**Balance Analyzer:**
+```
+Automated checks:
+- Monster HP/damage outliers
+- Under/overpowered items
+- XP curve smoothness
+- Quest reward fairness
+- Economy inflation risks
+- Content gaps (missing level ranges)
+```
+
+**Data Export:**
+- Export charts as PNG/SVG
+- Export data as CSV/JSON
+- Generate PDF reports
+- Share comparison links
+
+### 5. Asset Generation
 
 **Icon Generator (Google Imagen/Gemini):**
 - Text prompt: "Simple pixel art icon of a bronze sword"
