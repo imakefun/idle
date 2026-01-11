@@ -1,22 +1,23 @@
 import { Link } from 'react-router-dom'
+import { useData } from '../contexts/DataContext'
 import './Dashboard.css'
 
 function Dashboard() {
-  // Mock data - will be replaced with real data from Google Sheets
+  const { gameData, isLoading, error } = useData();
+
+  // Calculate stats from real game data
   const stats = {
-    races: 14,
-    classes: 14,
-    monsters: 45,
-    items: 120,
-    zones: 8,
-    camps: 25,
-    skills: 30,
-    spawns: 60,
-    lootTables: 28,
-    merchants: 12,
-    quests: 25,
-    recipes: 20,
-    tradeskills: 7,
+    races: gameData.Races?.rows?.length || 0,
+    classes: gameData.Classes?.rows?.length || 0,
+    monsters: gameData.Monsters?.rows?.length || 0,
+    items: gameData.Items?.rows?.length || 0,
+    zones: gameData.Zones?.rows?.length || 0,
+    camps: gameData.Camps?.rows?.length || 0,
+    skills: gameData.Skills?.rows?.length || 0,
+    spawns: gameData.Spawns?.rows?.length || 0,
+    lootTables: gameData.LootTables?.rows?.length || 0,
+    merchants: gameData.Merchants?.rows?.length || 0,
+    quests: gameData.Quests?.rows?.length || 0,
   }
 
   const quickActions = [
@@ -35,12 +36,24 @@ function Dashboard() {
     { type: 'info', message: 'Orphaned spawns', count: 2 },
   ]
 
+  if (isLoading && Object.keys(gameData).length === 0) {
+    return (
+      <div className="dashboard">
+        <div className="dashboard-header">
+          <h1>Dashboard</h1>
+          <p className="text-secondary">Loading game data...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard">
       <div className="dashboard-header">
         <div>
           <h1>Dashboard</h1>
           <p className="text-secondary">Welcome to the Norrath Idle Admin Panel</p>
+          {error && <p className="text-error" style={{marginTop: '0.5rem'}}>⚠️ {error}</p>}
         </div>
       </div>
 
@@ -60,7 +73,6 @@ function Dashboard() {
             <StatCard label="Loot Tables" value={stats.lootTables} />
             <StatCard label="Merchants" value={stats.merchants} />
             <StatCard label="Quests" value={stats.quests} />
-            <StatCard label="Recipes" value={stats.recipes} />
           </div>
         </section>
 

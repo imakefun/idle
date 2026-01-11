@@ -42,18 +42,28 @@
 
 .btn-header {
   padding: 0.5rem 1rem;
-  background: var(--accent-color);
-  color: white;
-  border: none;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: 500;
-  transition: opacity 0.2s;
+  transition: all 0.2s;
 }
 
 .btn-header:hover {
-  opacity: 0.9;
+  background: var(--border-color);
+}
+
+.btn-header.btn-primary {
+  background: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
+}
+
+.btn-header.btn-primary:hover {
+  background: var(--accent-hover);
 }
 
 .admin-container {

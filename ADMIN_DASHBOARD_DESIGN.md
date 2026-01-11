@@ -424,25 +424,27 @@ Automated checks:
 - ✅ Sidebar navigation
 - ✅ Dashboard home page
 
-### Phase 2: Data Browser (Week 2)
-- [ ] Google Sheets API integration (read-only)
-- [ ] Data table components
+### Phase 2: Data Browser & Editor (Week 2-3)
+- [ ] Google Sheets API integration (read & write)
+- [ ] Data service with CRUD operations
+- [ ] Data context provider for React
+- [ ] Editable data table components
 - [ ] Pagination, sorting, filtering
 - [ ] Search functionality
-- [ ] Basic data viewer for all content types
+- [ ] Inline editing for simple fields
+- [ ] Modal editors for complex content
+- [ ] Auto-sync to Google Sheets on save
+- [ ] Conflict detection and error handling
+- [ ] Implement for Monsters, Items, Quests first
 
-### Phase 3: Visual Editors (Week 3)
-- [ ] Form components library
-- [ ] Monster editor
-- [ ] Item editor
-- [ ] Quest editor
-- [ ] Validation system
-
-### Phase 4: Google Sheets Sync (Week 4)
-- [ ] Write API integration
-- [ ] Sync manager
-- [ ] Conflict detection
-- [ ] Change log viewer
+### Phase 3: Remaining Content Types (Week 4)
+- [ ] Races, Classes editors
+- [ ] Zones, Camps, Spawns editors
+- [ ] Skills editor
+- [ ] Loot Tables editor
+- [ ] Merchants editor
+- [ ] Recipes, Tradeskills editors
+- [ ] Validation system with real-time checks
 - [ ] Rollback system
 
 ### Phase 5: AI Generation (Week 5)

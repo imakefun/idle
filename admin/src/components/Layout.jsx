@@ -1,15 +1,45 @@
 import { Outlet, NavLink } from 'react-router-dom'
+import { useData } from '../contexts/DataContext'
 import './Layout.css'
 
 function Layout() {
+  const { syncStatus, isAuthenticated, signIn, signOut, isLoading } = useData();
+
+  const getSyncStatusDisplay = () => {
+    switch (syncStatus) {
+      case 'connected':
+        return { icon: '🟢', text: 'Connected' };
+      case 'syncing':
+        return { icon: '🔄', text: 'Syncing...' };
+      case 'error':
+        return { icon: '🔴', text: 'Error' };
+      case 'disconnected':
+      default:
+        return { icon: '⚪', text: 'Disconnected' };
+    }
+  };
+
+  const status = getSyncStatusDisplay();
+
   return (
     <div className="admin-layout">
       <header className="admin-header">
         <div className="header-content">
           <h1>🎮 Norrath Idle Admin</h1>
           <div className="header-actions">
-            <span className="sync-status">⚪ Not Synced</span>
-            <button className="btn-header">Settings</button>
+            <span className="sync-status">
+              {status.icon} {status.text}
+              {isLoading && ' • Loading...'}
+            </span>
+            {isAuthenticated ? (
+              <button className="btn-header" onClick={signOut} title="Sign out (read-only mode)">
+                🔓 Sign Out
+              </button>
+            ) : (
+              <button className="btn-header btn-primary" onClick={signIn} title="Sign in to edit data">
+                🔒 Sign In to Edit
+              </button>
+            )}
           </div>
         </div>
       </header>
